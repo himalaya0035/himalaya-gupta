@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>himalaya.dev — terminal</title>
+  <meta name="description" content="Himalaya Gupta — Senior Full-Stack Engineer" />
+
+  <!-- Favicon: simple > in a box -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230d1117'/%3E%3Ctext x='4' y='24' font-family='monospace' font-size='22' fill='%2300ff9d'%3E%3E_%3C/text%3E%3C/svg%3E" />
+
+  <!-- Monospace font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="terminal">
+    <!-- all output (boot + command results) lands here -->
+    <div id="output"></div>
+  </div>
+
+  <!-- fixed prompt bar at the bottom -->
+  <div id="prompt-row" class="hidden">
+    <span class="prompt-label">
+      <span class="user">guest</span><span class="at">@</span><span
+        class="host">himalaya.dev</span><span class="sep">:~$</span>
+    </span>
+
+    <div id="prompt-visible">
+      <span id="cmd-display"></span><span id="cursor"></span>
+    </div>
+
+    <!-- hidden real input -->
+    <input
+      id="cmd-input"
+      type="text"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-label="terminal input"
+    />
+  </div>
+
+  <!-- load order matters: content → commands → terminal → boot -->
+  <script src="js/content.js"></script>
+  <script src="js/commands.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/boot.js"></script>
+</body>
+</html>
