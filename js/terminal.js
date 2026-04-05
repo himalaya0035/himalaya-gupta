@@ -196,7 +196,16 @@
   });
 
   // click anywhere → focus input
-  document.addEventListener("click", () => inputEl.focus());
+  document.addEventListener("click", (e) => {
+    // If it's a command link, execute it instead of just focusing
+    const cmdLink = e.target.closest(".cmd-link");
+    if (cmdLink) {
+      const command = cmdLink.dataset.cmd;
+      execute(command);
+      return;
+    }
+    inputEl.focus();
+  });
 
   // ── expose for boot.js ────────────────────────────────────────────────────
   window.Terminal = {

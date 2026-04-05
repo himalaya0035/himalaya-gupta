@@ -10,19 +10,24 @@
   const bold = (t) => `<span class="bold">${t}</span>`;
   const link = (href, label) =>
     `<a href="${href}" target="_blank" rel="noopener">${label || href}</a>`;
+  const esc  = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const cmd  = (text) => `<span class="cmd-link" data-cmd="${text.split(' ')[0]}">${esc(text)}</span>`;
 
   // ── theme definitions ────────────────────────────────────────────────────
   const THEMES = {
-    green:  { bg:"#0d1117",bg2:"#161b22",fg:"#e6edf3",dim:"#6e7681",acc:"#00ff9d",blu:"#58a6ff",border:"#30363d",ok:"#3fb950",err:"#f85149" },
-    amber:  { bg:"#100c00",bg2:"#1a1400",fg:"#ffe4a0",dim:"#7a6a3a",acc:"#ffd700",blu:"#ff8c00",border:"#3a2e00",ok:"#ffa500",err:"#ff4040" },
-    purple: { bg:"#0e0e1a",bg2:"#161626",fg:"#e2e0ff",dim:"#6c6a8a",acc:"#bd93f9",blu:"#ff79c6",border:"#2a2a40",ok:"#50fa7b",err:"#ff5555" }
+    green:  { bg:"#0d1117",bg2:"#161b22",fg:"#e6edf3",dim:"#6e7681",acc:"#00ff9d",acc_rgb:"0, 255, 157",blu:"#58a6ff",border:"#30363d",ok:"#3fb950",err:"#f85149" },
+    amber:  { bg:"#100c00",bg2:"#1a1400",fg:"#ffe4a0",dim:"#7a6a3a",acc:"#ffd700",acc_rgb:"255, 215, 0",blu:"#ff8c00",border:"#3a2e00",ok:"#ffa500",err:"#ff4040" },
+    purple: { bg:"#0e0e1a",bg2:"#161626",fg:"#e2e0ff",dim:"#6c6a8a",acc:"#bd93f9",acc_rgb:"189, 147, 249",blu:"#ff79c6",border:"#2a2a40",ok:"#50fa7b",err:"#ff5555" }
   };
 
   function applyTheme(name) {
     const t = THEMES[name];
     if (!t) return false;
     const r = document.documentElement.style;
-    Object.entries(t).forEach(([k, v]) => r.setProperty("--" + k, v));
+    Object.entries(t).forEach(([k, v]) => {
+      r.setProperty("--" + k, v);
+      if (k === "acc_rgb") r.setProperty("--acc-rgb", v);
+    });
     localStorage.setItem("theme", name);
     return true;
   }
@@ -46,27 +51,26 @@
 
     help() {
       const rows = [
-        ["whoami",          "Who I am — the short version"],
-        ["about",           "Full bio and background"],
-        ["skills",          "Tech stack and tools I work with"],
-        ["projects",        "Things I've built"],
-        ["experience",      "Work history and highlights"],
-        ["education",       "Academic background"],
-        ["achievements",    "Awards, certifications, and wins"],
-        ["contact",         "How to reach me"],
-        ["github",          "Open my GitHub profile"],
-        ["linkedin",        "Open my LinkedIn profile"],
-        ["neofetch",        "System info — the engineer edition"],
-        ["theme <name>",    "Switch color theme (green/amber/purple)"],
-        ["history",         "Show command history"],
-        ["ls",              "List available commands"],
-        ["cat resume.pdf",  "Download my resume"],
-        ["clear",           "Clear the terminal"],
+        ["whoami",          "Identity summary"],
+        ["about",           "Full bio & background"],
+        ["skills",          "Tech stack & tools"],
+        ["projects",        "Featured work"],
+        ["experience",      "Work history"],
+        ["education",       "Academic profile"],
+        ["achievements",    "Certifications & awards"],
+        ["contact",         "Reach out"],
+        ["neofetch",        "System info summary"],
+        ["theme <name>",    "Change theme"],
+        ["ls",              "List all commands"],
+        ["history",         "Command history"],
+        ["cat resume.pdf",  "Download CV"],
+        ["clear",           "Clear screen"],
       ];
-      const lines = rows.map(([cmd, desc]) =>
-        `  ${blu(cmd.padEnd(20))}${dim(desc)}`
-      ).join("\n");
-      return `\n${bold("AVAILABLE COMMANDS")}\n${"─".repeat(55)}\n${lines}\n`;
+      const lines = rows.map(([c, desc]) => {
+        const paddedCmd = c.padEnd(24);
+        return `  ${cmd(paddedCmd)}${dim(desc)}`;
+      }).join("\n");
+      return `\n${bold("AVAILABLE COMMANDS")}\n${dim("─".repeat(55))}\n${lines}\n\n  ${dim("Tip: Click any command above to run it.")}\n`;
     },
 
     whoami() {
@@ -245,7 +249,7 @@ ${bullets}`;
       const cmds = Object.keys(window.COMMANDS).filter(
         k => !k.startsWith("__") && !k.startsWith("rm ") && k !== "exit" && k !== "man himalaya" && k !== "sudo hire me"
       );
-      return "\n  " + cmds.map(blu).join("  ") + "\n";
+      return "\n  " + cmds.map(c => cmd(c)).join("  ") + "\n";
     },
 
     "cat resume.pdf"() {

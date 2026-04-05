@@ -53,7 +53,7 @@
     requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
   }
 
-  async function typewriter(el, text, speed = 18) {
+  async function typewriter(el, text, speed = 14) {
     el.textContent = "";
     for (const ch of text) {
       el.textContent += ch;

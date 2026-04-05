@@ -2,30 +2,51 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #0d1117;
-  --bg2:      #161b22;
+  --bg:       rgba(13, 17, 23, 0.85);
+  --bg2:      rgba(22, 27, 34, 0.95);
   --fg:       #e6edf3;
   --dim:      #6e7681;
   --acc:      #00ff9d;
+  --acc-rgb:  0, 255, 157;
   --blu:      #58a6ff;
   --err:      #f85149;
   --ok:       #3fb950;
-  --border:   #30363d;
+  --border:   rgba(48, 54, 61, 0.5);
   --font:     'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   --fs:       14px;
   --lh:       1.7;
+  transition: all 0.3s ease;
 }
 
 /* no scroll-padding needed — prompt is inline */
 
 html, body {
-  min-height: 100%;
-  background: #000;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* Premium Dark Mesh Gradient Background */
+  background: radial-gradient(circle at 50% 50%, #1a1e26 0%, #000000 100%);
+  background-attachment: fixed;
   color: var(--fg);
   font-family: var(--font);
   font-size: var(--fs);
   line-height: var(--lh);
   overflow-x: hidden;
+  transition: background 0.4s ease;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(88, 166, 255, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(0, 255, 157, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* scrollbar */
@@ -42,13 +63,17 @@ a:hover { text-decoration: underline; color: var(--acc); }
 /* ── terminal window chrome ─────────────────────────────────────────────── */
 #terminal-window {
   max-width: 920px;
-  margin: 24px auto;
+  margin: 40px auto;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+  /* Glassmorphism */
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  background-color: var(--bg);
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.03);
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* title bar */
@@ -90,11 +115,34 @@ a:hover { text-decoration: underline; color: var(--acc); }
 
 /* ── terminal body ──────────────────────────────────────────────────────── */
 #terminal {
-  background: var(--bg);
+  background: transparent; /* Background handled by terminal-window */
   min-height: 70vh;
-  padding: 20px 20px 40px;
-  /* subtle noise texture */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* CRT Scanline Effect Overlay */
+#terminal::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.05) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.01),
+    rgba(0, 255, 0, 0.005),
+    rgba(0, 0, 255, 0.01)
+  );
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.4;
 }
 
 /* ── output blocks ──────────────────────────────────────────────────────── */
@@ -227,14 +275,43 @@ a:hover { text-decoration: underline; color: var(--acc); }
   caret-color: transparent;
 }
 
-/* ── color utility spans ────────────────────────────────────────────────── */
-.acc  { color: var(--acc); }
-.blu  { color: var(--blu); }
+/* ── color utility spans & text glow ────────────────────────────────────── */
+.acc  { color: var(--acc); text-shadow: 0 0 8px rgba(0, 255, 157, 0.3); }
+.blu  { color: var(--blu); text-shadow: 0 0 8px rgba(88, 166, 255, 0.3); }
 .dim  { color: var(--dim); }
-.err  { color: var(--err); }
-.ok   { color: var(--ok);  }
+.err  { color: var(--err); text-shadow: 0 0 8px rgba(248, 81, 73, 0.3); }
+.ok   { color: var(--ok);  text-shadow: 0 0 8px rgba(63, 185, 80, 0.3); }
 .bold { font-weight: 700;  }
 .cmd-text { color: var(--fg); }
+
+/* ── interactive command links ─────────────────────────────────────────── */
+.cmd-link {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 2px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.cmd-link:hover {
+  background: rgba(var(--acc-rgb), 0.1);
+  color: var(--acc);
+  text-shadow: 0 0 12px var(--acc);
+  transform: translateY(-1px);
+}
+.cmd-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--acc);
+  transition: width 0.3s ease;
+}
+.cmd-link:hover::after {
+  width: 100%;
+}
 
 /* ── neofetch ───────────────────────────────────────────────────────────── */
 .neofetch-grid {
