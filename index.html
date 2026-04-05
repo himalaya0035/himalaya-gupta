@@ -15,38 +15,63 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Apply saved theme before first paint -->
+  <script>
+    (function() {
+      var themes = {
+        green:  { bg:"#0d1117",bg2:"#161b22",fg:"#e6edf3",dim:"#6e7681",acc:"#00ff9d",blu:"#58a6ff",border:"#30363d",ok:"#3fb950",err:"#f85149" },
+        amber:  { bg:"#100c00",bg2:"#1a1400",fg:"#ffe4a0",dim:"#7a6a3a",acc:"#ffd700",blu:"#ff8c00",border:"#3a2e00",ok:"#ffa500",err:"#ff4040" },
+        purple: { bg:"#0e0e1a",bg2:"#161626",fg:"#e2e0ff",dim:"#6c6a8a",acc:"#bd93f9",blu:"#ff79c6",border:"#2a2a40",ok:"#50fa7b",err:"#ff5555" }
+      };
+      var saved = localStorage.getItem("theme") || "green";
+      var t = themes[saved] || themes.green;
+      var r = document.documentElement.style;
+      for (var k in t) r.setProperty("--" + k, t[k]);
+    })();
+  </script>
 </head>
 <body>
 
-  <div id="terminal">
-    <!-- all output (boot + command results) lands here -->
-    <div id="output"></div>
-  </div>
-
-  <!-- fixed prompt bar at the bottom -->
-  <div id="prompt-row" class="hidden">
-    <span class="prompt-label">
-      <span class="user">guest</span><span class="at">@</span><span
-        class="host">himalaya.dev</span><span class="sep">:~$</span>
-    </span>
-
-    <div id="prompt-visible">
-      <span id="cmd-display"></span><span id="cursor"></span>
+  <!-- terminal window with macOS-style chrome -->
+  <div id="terminal-window">
+    <div id="title-bar">
+      <div class="traffic-lights">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span class="title-text">guest@himalaya.dev:~</span>
     </div>
 
-    <!-- hidden real input -->
-    <input
-      id="cmd-input"
-      type="text"
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="false"
-      aria-label="terminal input"
-    />
+    <div id="terminal">
+      <div id="output"></div>
+
+      <!-- inline prompt — lives inside the terminal flow -->
+      <div id="prompt-row" class="hidden">
+        <span class="prompt-label">
+          <span class="user">guest</span><span class="at">@</span><span
+            class="host">himalaya.dev</span><span class="sep">:~$</span>
+        </span>
+
+        <div id="prompt-visible">
+          <span id="cmd-display"></span><span id="cursor"></span>
+        </div>
+
+        <input
+          id="cmd-input"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="terminal input"
+        />
+      </div>
+    </div>
   </div>
 
-  <!-- load order matters: content → commands → terminal → boot -->
+  <!-- load order: content → commands → terminal → boot -->
   <script src="js/content.js"></script>
   <script src="js/commands.js"></script>
   <script src="js/terminal.js"></script>

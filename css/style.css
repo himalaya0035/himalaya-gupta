@@ -16,20 +16,16 @@
   --lh:       1.7;
 }
 
-html {
-  scroll-padding-bottom: 70px; /* clears the fixed prompt bar */
-}
+/* no scroll-padding needed — prompt is inline */
 
 html, body {
   min-height: 100%;
-  background: var(--bg);
+  background: #000;
   color: var(--fg);
   font-family: var(--font);
   font-size: var(--fs);
   line-height: var(--lh);
   overflow-x: hidden;
-  /* subtle noise texture via svg background */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
 }
 
 /* scrollbar */
@@ -43,12 +39,62 @@ a {
 }
 a:hover { text-decoration: underline; color: var(--acc); }
 
-/* ── terminal wrapper ───────────────────────────────────────────────────── */
+/* ── terminal window chrome ─────────────────────────────────────────────── */
+#terminal-window {
+  max-width: 920px;
+  margin: 24px auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* title bar */
+#title-bar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.traffic-lights span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+.dot-red    { background: #ff5f57; }
+.dot-yellow { background: #febc2e; }
+.dot-green  { background: #28c840; }
+
+.title-text {
+  flex: 1;
+  text-align: center;
+  color: var(--dim);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  user-select: none;
+  margin-right: 52px; /* offset for the 3 dots so text is truly centered */
+}
+
+/* ── terminal body ──────────────────────────────────────────────────────── */
 #terminal {
-  max-width: 900px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 24px 20px 120px;
+  background: var(--bg);
+  min-height: 70vh;
+  padding: 20px 20px 40px;
+  /* subtle noise texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
 }
 
 /* ── output blocks ──────────────────────────────────────────────────────── */
@@ -89,40 +135,23 @@ a:hover { text-decoration: underline; color: var(--acc); }
   .banner { font-size: 7px; }
 }
 
-/* ── prompt row ─────────────────────────────────────────────────────────── */
+/* ── prompt row (inline in terminal flow) ────────────────────────────────── */
 #prompt-row {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  padding: 10px 20px 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  max-width: 900px;
-  margin: 0 auto;
-  /* stretch to edges */
-  width: 100%;
-}
-
-/* hack: fixed + auto margin doesn't stretch; use left/right instead */
-#prompt-row {
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(900px, 100%);
+  margin-top: 12px;
+  padding: 0;
 }
 
 #prompt-row.hidden { display: none; }
 
-/* the prompt label */
+/* prompt label */
 .prompt-label {
   white-space: nowrap;
   user-select: none;
   flex-shrink: 0;
 }
-
 .prompt-label .user { color: var(--acc); }
 .prompt-label .at   { color: var(--dim); }
 .prompt-label .host { color: var(--blu); }
@@ -179,7 +208,33 @@ a:hover { text-decoration: underline; color: var(--acc); }
 .bold { font-weight: 700;  }
 .cmd-text { color: var(--fg); }
 
-/* ── prompt label inside echo lines (re-used class) ────────────────────── */
+/* ── neofetch ───────────────────────────────────────────────────────────── */
+.neofetch-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 24px;
+  align-items: start;
+}
+.neofetch-art {
+  color: var(--acc);
+  white-space: pre;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.neofetch-info {
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+.neofetch-palette span {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+/* ── prompt label inside echo lines ─────────────────────────────────────── */
 .echo-line .prompt-label .user { color: var(--acc); }
 .echo-line .prompt-label .at   { color: var(--dim); }
 .echo-line .prompt-label .host { color: var(--blu); }
@@ -188,5 +243,8 @@ a:hover { text-decoration: underline; color: var(--acc); }
 /* ── mobile tweaks ──────────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   :root { --fs: 13px; }
-  #terminal { padding: 16px 12px 110px; }
+  #terminal-window { margin: 0; border-radius: 0; border: none; }
+  #terminal { padding: 16px 12px 30px; }
+  .neofetch-grid { grid-template-columns: 1fr; }
+  .neofetch-art { font-size: 9px; margin-bottom: 12px; }
 }

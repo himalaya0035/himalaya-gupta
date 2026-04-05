@@ -8,33 +8,50 @@
   ╚═╝  ╚═╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝`;
 
   const BOOT_LINES = [
-    { text: "Initializing system",               status: "OK",   delay: 60  },
-    { text: `Loading profile: ${CONTENT.name}`,  status: "OK",   delay: 80  },
-    { text: "Mounting file system",              status: "OK",   delay: 70  },
-    { text: "Establishing secure connection",    status: "OK",   delay: 100 },
-    { text: "Compiling experience",              status: "OK",   delay: 90  },
-    { text: "Running diagnostics",               status: "OK",   delay: 110 },
+    { text: "Initializing system",               delay: 60  },
+    { text: `Loading profile: ${CONTENT.name}`,  delay: 80  },
+    { text: "Mounting file system",              delay: 70  },
+    { text: "Establishing secure connection",    delay: 100 },
+    { text: "Compiling experience",              delay: 90  },
+    { text: "Running diagnostics",               delay: 110 },
   ];
 
   const WELCOME = `
   <span class="acc">${CONTENT.title}</span>
   <span class="dim">──────────────────────────────────────────────</span>
   Type <span class="blu">help</span> to see available commands.
-  Type <span class="blu">whoami</span> for a quick intro.
+  Type <span class="blu">neofetch</span> for the quick rundown.
 `;
 
-  // ── utilities ─────────────────────────────────────────────────────────────
-  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const output = document.getElementById("output");
+  const sleep  = (ms) => new Promise(r => setTimeout(r, ms));
 
+  // ── last login ────────────────────────────────────────────────────────────
+  function getLastLoginLine() {
+    const prev = localStorage.getItem("lastLogin");
+    const now  = new Date();
+    localStorage.setItem("lastLogin", now.toISOString());
+
+    if (prev) {
+      const d = new Date(prev);
+      const formatted = d.toLocaleString("en-US", {
+        weekday: "short", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+      });
+      return `<span class="dim">Last login: ${formatted} on ttys001</span>`;
+    }
+    return `<span class="dim">Welcome! First time here? Type</span> <span class="blu">help</span> <span class="dim">to get started.</span>`;
+  }
+
+  // ── helpers ───────────────────────────────────────────────────────────────
   function appendRaw(html) {
     const div = document.createElement("div");
     div.className = "output-block";
     div.innerHTML = html;
-    document.getElementById("output").appendChild(div);
-    requestAnimationFrame(() => document.getElementById("output").lastElementChild?.scrollIntoView({ block: "end" }));
+    output.appendChild(div);
+    requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
   }
 
-  // typewriter: reveal text char by char into an existing element
   async function typewriter(el, text, speed = 18) {
     el.textContent = "";
     for (const ch of text) {
@@ -43,21 +60,25 @@
     }
   }
 
-  // ── boot sequence ─────────────────────────────────────────────────────────
-  async function runBoot() {
+  function escBanner(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // ── full boot (first visit in session) ────────────────────────────────────
+  async function runFullBoot() {
     await sleep(200);
 
     for (const line of BOOT_LINES) {
       const row = document.createElement("div");
       row.className = "output-block boot-line";
-      const textSpan = document.createElement("span");
+      const textSpan   = document.createElement("span");
       textSpan.className = "boot-text";
       const statusSpan = document.createElement("span");
       statusSpan.className = "boot-status";
       row.appendChild(textSpan);
       row.appendChild(statusSpan);
-      document.getElementById("output").appendChild(row);
-      requestAnimationFrame(() => document.getElementById("output").lastElementChild?.scrollIntoView({ block: "end" }));
+      output.appendChild(row);
+      requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
 
       await typewriter(textSpan, line.text, 22);
       await sleep(line.delay);
@@ -66,20 +87,30 @@
     }
 
     await sleep(300);
+    finishBoot();
+  }
 
-    // ASCII banner
+  // ── instant boot (revisit in same session) ────────────────────────────────
+  function runInstantBoot() {
+    finishBoot();
+  }
+
+  // ── shared finish ─────────────────────────────────────────────────────────
+  function finishBoot() {
     appendRaw(`<pre class="banner">${escBanner(BANNER)}</pre>`);
-    await sleep(150);
-
-    // welcome message
+    appendRaw(getLastLoginLine());
     appendRaw(WELCOME);
 
+    sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
   }
 
-  function escBanner(s) {
-    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  }
-
-  document.addEventListener("DOMContentLoaded", runBoot);
+  // ── entry point ───────────────────────────────────────────────────────────
+  document.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("booted")) {
+      runInstantBoot();
+    } else {
+      runFullBoot();
+    }
+  });
 })();

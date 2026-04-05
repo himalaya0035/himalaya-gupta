@@ -30,7 +30,7 @@
 
   function scrollBottom() {
     requestAnimationFrame(() => {
-      output.lastElementChild?.scrollIntoView({ block: "end" });
+      window.scrollTo(0, document.documentElement.scrollHeight);
     });
   }
 
@@ -53,12 +53,16 @@
     let result;
     if (typeof COMMANDS[cmd] === "function") {
       result = COMMANDS[cmd]();
+    } else if (cmd.startsWith("theme")) {
+      // parameterized command: theme <name>
+      result = THEME_HANDLER(cmd.slice(5));
     } else {
       result = COMMANDS.__noSuchCommand__(cmd);
     }
 
     if (result === "__CLEAR__") {
       output.innerHTML = "";
+      scrollBottom();
     } else {
       appendOutput(result);
     }
@@ -70,10 +74,12 @@
   // ── tab autocomplete ──────────────────────────────────────────────────────
   function autocomplete(partial) {
     const allCmds = Object.keys(COMMANDS).filter(
-      k => k !== "__noSuchCommand__" && k !== "clear"
+      k => !k.startsWith("__")
     );
-    allCmds.push("clear"); // keep it in list
-    const matches = allCmds.filter(c => c.startsWith(partial));
+    allCmds.push("theme");
+    // dedupe
+    const cmdSet = [...new Set(allCmds)];
+    const matches = cmdSet.filter(c => c.startsWith(partial));
 
     if (matches.length === 0) return;
 
@@ -156,9 +162,11 @@
     appendOutput,
     execute,
     focusInput: () => inputEl.focus(),
+    getHistory: () => [...history],
     enablePrompt() {
       promptRow.classList.remove("hidden");
       inputEl.focus();
+      scrollBottom();
     }
   };
 })();
