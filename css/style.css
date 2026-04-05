@@ -172,21 +172,49 @@ a:hover { text-decoration: underline; color: var(--acc); }
   min-width: 2px;
 }
 
-/* blinking block cursor */
+/* inline ghost autocomplete — sits right after typed text, no gap */
+#ghost-hint {
+  color: var(--dim);
+  opacity: 0.7;
+  white-space: pre;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* blinking block cursor — overlaps the first ghost char */
 #cursor {
-  display: inline-block;
+  position: absolute;
   width: 8px;
-  height: 1em;
+  height: 1.2em;
   background: var(--acc);
-  margin-left: 1px;
+  opacity: 0.7;
   vertical-align: text-bottom;
   animation: blink 1.1s step-end infinite;
+  pointer-events: none;
+  /* positioned via JS */
 }
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
+
+#tab-badge {
+  font-size: 9px;
+  color: var(--dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 8px;
+  vertical-align: middle;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  opacity: 0.7;
+}
+#tab-badge.hidden { display: none; }
 
 /* real input is hidden but captures keystrokes */
 #cmd-input {

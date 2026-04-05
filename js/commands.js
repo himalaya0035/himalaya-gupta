@@ -54,6 +54,8 @@
         ["education",       "Academic background"],
         ["achievements",    "Awards, certifications, and wins"],
         ["contact",         "How to reach me"],
+        ["github",          "Open my GitHub profile"],
+        ["linkedin",        "Open my LinkedIn profile"],
         ["neofetch",        "System info — the engineer edition"],
         ["theme <name>",    "Switch color theme (green/amber/purple)"],
         ["history",         "Show command history"],
@@ -164,6 +166,22 @@ ${bullets}`;
 
       const lines = rows.map(([label, val]) => `  ${label.padEnd(20)}${val}`).join("\n");
       return `\n${bold("CONTACT")}\n${"─".repeat(55)}\n${lines}\n`;
+    },
+
+    github() {
+      if (C.contact.github) {
+        window.open(C.contact.github, "_blank");
+        return ok(`\n  Opening ${C.contact.github} ...\n`);
+      }
+      return err("\n  GitHub URL not configured — edit js/content.js\n");
+    },
+
+    linkedin() {
+      if (C.contact.linkedin) {
+        window.open(C.contact.linkedin, "_blank");
+        return ok(`\n  Opening ${C.contact.linkedin} ...\n`);
+      }
+      return err("\n  LinkedIn URL not configured — edit js/content.js\n");
     },
 
     neofetch() {

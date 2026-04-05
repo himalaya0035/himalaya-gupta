@@ -4,6 +4,8 @@
   const displayEl   = document.getElementById("cmd-display");
   const cursorEl    = document.getElementById("cursor");
   const promptRow   = document.getElementById("prompt-row");
+  const ghostHint   = document.getElementById("ghost-hint");
+  const tabBadge    = document.getElementById("tab-badge");
 
   let history = [];
   let histIdx  = -1;
@@ -38,6 +40,37 @@
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  // ── ghost autocomplete hint ───────────────────────────────────────────────
+  function getAllCmds() {
+    const cmds = Object.keys(COMMANDS).filter(k => !k.startsWith("__"));
+    cmds.push("theme");
+    return [...new Set(cmds)];
+  }
+
+  function updateGhost(val) {
+    if (!val) {
+      ghostHint.textContent = "";
+      tabBadge.classList.add("hidden");
+      positionCursor();
+      return;
+    }
+    const match = getAllCmds().find(c => c.startsWith(val) && c !== val);
+    if (match) {
+      ghostHint.textContent = match.slice(val.length);
+      tabBadge.classList.remove("hidden");
+    } else {
+      ghostHint.textContent = "";
+      tabBadge.classList.add("hidden");
+    }
+    positionCursor();
+  }
+
+  function positionCursor() {
+    // Place cursor right after the typed text (overlapping first ghost char)
+    const left = displayEl.offsetLeft + displayEl.offsetWidth;
+    cursorEl.style.left = left + "px";
+  }
+
   // ── execute ───────────────────────────────────────────────────────────────
   function execute(raw) {
     const cmd = raw.trim();
@@ -69,6 +102,8 @@
 
     inputEl.value = "";
     displayEl.textContent = "";
+    updateGhost("");
+    positionCursor();
   }
 
   // ── tab autocomplete ──────────────────────────────────────────────────────
@@ -86,6 +121,7 @@
     if (matches.length === 1) {
       inputEl.value = matches[0];
       displayEl.textContent = matches[0];
+      updateGhost(matches[0]);
     } else {
       // show all matches as output
       appendOutput(
@@ -126,6 +162,7 @@
         histIdx++;
         inputEl.value = history[histIdx];
         displayEl.textContent = history[histIdx];
+        updateGhost(history[histIdx]);
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -133,10 +170,12 @@
         histIdx--;
         inputEl.value = history[histIdx];
         displayEl.textContent = history[histIdx];
+        updateGhost(history[histIdx]);
       } else if (histIdx === 0) {
         histIdx = -1;
         inputEl.value = inputBuf;
         displayEl.textContent = inputBuf;
+        updateGhost(inputBuf);
       }
     } else if (e.key === "l" && e.ctrlKey) {
       e.preventDefault();
@@ -145,6 +184,7 @@
       // sync display after next render tick
       requestAnimationFrame(() => {
         displayEl.textContent = inputEl.value;
+        updateGhost(inputEl.value);
       });
     }
   });
@@ -152,6 +192,7 @@
   // keep display in sync for paste events too
   inputEl.addEventListener("input", () => {
     displayEl.textContent = inputEl.value;
+    updateGhost(inputEl.value);
   });
 
   // click anywhere → focus input
