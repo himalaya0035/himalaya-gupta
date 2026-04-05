@@ -31,7 +31,7 @@
     div.className = "output-block";
     div.innerHTML = html;
     document.getElementById("output").appendChild(div);
-    window.scrollTo(0, document.body.scrollHeight);
+    requestAnimationFrame(() => document.getElementById("output").lastElementChild?.scrollIntoView({ block: "end" }));
   }
 
   // typewriter: reveal text char by char into an existing element
@@ -57,7 +57,7 @@
       row.appendChild(textSpan);
       row.appendChild(statusSpan);
       document.getElementById("output").appendChild(row);
-      window.scrollTo(0, document.body.scrollHeight);
+      requestAnimationFrame(() => document.getElementById("output").lastElementChild?.scrollIntoView({ block: "end" }));
 
       await typewriter(textSpan, line.text, 22);
       await sleep(line.delay);

@@ -29,7 +29,9 @@
   }
 
   function scrollBottom() {
-    window.scrollTo(0, document.body.scrollHeight);
+    requestAnimationFrame(() => {
+      output.lastElementChild?.scrollIntoView({ block: "end" });
+    });
   }
 
   function escapeHtml(s) {
