@@ -251,6 +251,57 @@
     appendOutput,
     execute,
     typeAndExecute,
+    runTour: async () => {
+      tourAborted = false;
+      inputEl.value = "";
+      displayEl.textContent = "";
+      updateGhost("");
+      
+      // System announce message
+      appendOutput(`
+<div style="border-left: 2px solid var(--acc); padding: 12px 16px; margin: 24px 0; background: rgba(var(--acc-rgb), 0.05); border-radius: 0 6px 6px 0;">
+  <div style="color: var(--acc); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">[ System Notice ]</div>
+  <div style="color: var(--fg); margin-bottom: 4px;">Welcome! You have been selected for the automated profile tour.</div>
+  <div style="color: var(--dim);">Sit back and relax. The tour will begin in <span class="tour-timer" style="color: var(--acc); font-weight: bold;">5</span> seconds...</div>
+  <div style="color: var(--dim); font-size: 11px; margin-top: 8px; opacity: 0.8;">(Press any key to take manual control)</div>
+</div>`);
+
+      // Live countdown timer logic
+      for (let i = 5; i > 0; i--) {
+        const timers = document.querySelectorAll('.tour-timer');
+        const timerEl = timers[timers.length - 1];
+        if (timerEl) timerEl.textContent = i;
+        
+        for (let j = 0; j < 10; j++) {
+          if (tourAborted) break;
+          await sleep(100);
+        }
+        
+        if (tourAborted) {
+          if (timerEl) {
+            timerEl.parentElement.innerHTML = `<span style="color: var(--err);">Tour aborted. Manual control engaged.</span>`;
+          }
+          break;
+        }
+      }
+
+      // Start automated ghost-typing tour (chained to halt if aborted)
+      if (await Terminal.typeAndExecute("clear", 500)) {
+        if (await Terminal.typeAndExecute("whoami", 2000)) {
+          if (await Terminal.typeAndExecute("about", 5000)) {
+            if (await Terminal.typeAndExecute("experience", 5000)) {
+              if (await Terminal.typeAndExecute("projects", 3000)) {
+                if (await Terminal.typeAndExecute("skills", 3000)) {
+                  await Terminal.typeAndExecute("contact", 2000);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      window.Terminal.showQuickActions();
+    },
     isTourAborted: () => tourAborted,
     abortTour: () => {
       tourAborted = true;

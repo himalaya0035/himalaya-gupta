@@ -56,6 +56,8 @@
         ["experience",    "Work history"],
         ["projects",      "Featured work"],
         ["skills",        "Tech stack & tools"],
+        ["education",     "Academic background"],
+        ["tour",          "Start automated guided tour"],
         ["contact",       "All contact links"],
         ["linkedin",      "Open LinkedIn profile"],
         ["github",        "Open GitHub profile"],
@@ -218,6 +220,11 @@ ${bullets}`;
 
     resume() {
       return this["cat resume.pdf"]();
+    },
+
+    async tour() {
+      await window.Terminal.runTour();
+      return "";
     },
 
     neofetch() {
