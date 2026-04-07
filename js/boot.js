@@ -88,22 +88,38 @@
     }
 
     await sleep(300);
-    finishBoot();
-  }
 
-  // ── instant boot (revisit in same session) ────────────────────────────────
-  function runInstantBoot() {
-    finishBoot();
-  }
-
-  // ── shared finish ─────────────────────────────────────────────────────────
-  function finishBoot() {
+    // Initial output for full boot
     appendRaw(`<pre class="banner">${escBanner(BANNER)}</pre>`);
     appendRaw(getLastLoginLine());
     appendRaw(WELCOME);
 
     sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
+
+    // Give user a moment to see the banner before clearing
+    await sleep(2500);
+    await Terminal.typeAndExecute("clear", 500);
+
+    // Start automated ghost-typing tour
+    await Terminal.typeAndExecute("whoami", 2000);
+    await Terminal.typeAndExecute("about", 4000);
+    await Terminal.typeAndExecute("experience", 4000);
+    await Terminal.typeAndExecute("projects", 3000);
+    await Terminal.typeAndExecute("contact", 2000);
+
+    Terminal.showQuickActions();
+  }
+
+  // ── instant boot (revisit in same session) ────────────────────────────────
+  function runInstantBoot() {
+    appendRaw(`<pre class="banner">${escBanner(BANNER)}</pre>`);
+    appendRaw(getLastLoginLine());
+    appendRaw(WELCOME);
+
+    sessionStorage.setItem("booted", "1");
+    Terminal.enablePrompt();
+    Terminal.showQuickActions();
   }
 
   // ── entry point ───────────────────────────────────────────────────────────

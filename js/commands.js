@@ -50,28 +50,44 @@
   window.COMMANDS = {
 
     help() {
-      const rows = [
-        ["whoami",          "Identity summary"],
-        ["about",           "Full bio & background"],
-        ["skills",          "Tech stack & tools"],
-        ["projects",        "Featured work"],
-        ["experience",      "Work history"],
-        ["education",       "Academic profile"],
-        ["achievements",    "Certifications & awards"],
-        ["contact",         "Reach out"],
-        ["neofetch",        "System info summary"],
-        ["theme <name>",    "Change theme"],
-        ["ls",              "List all commands"],
-        ["history",         "Command history"],
-        ["cat resume.pdf",  "Download CV"],
-        ["clear",           "Clear screen"],
+      const main = [
+        ["whoami",        "Identity summary"],
+        ["about",         "Full bio & background"],
+        ["experience",    "Work history"],
+        ["projects",      "Featured work"],
+        ["skills",        "Tech stack & tools"],
+        ["contact",       "All contact links"],
+        ["linkedin",      "Open LinkedIn profile"],
+        ["github",        "Open GitHub profile"],
+        ["email",         "Compose email"],
+        ["resume",        "Download CV (PDF)"],
       ];
-      const lines = rows.map(([c, desc]) => {
-        const paddedCmd = c.padEnd(24);
+      const geeky = [
+        ["neofetch",      "System info summary"],
+        ["theme <name>",  "Change colors"],
+        ["ls",            "List all hidden commands"],
+        ["history",       "Command history"],
+        ["clear",         "Clear screen"],
+      ];
+
+      const renderRows = (rows) => rows.map(([c, desc]) => {
+        const paddedCmd = c.padEnd(20);
         return `  ${cmd(paddedCmd)}${dim(desc)}`;
       }).join("\n");
-      return `\n${bold("AVAILABLE COMMANDS")}\n${dim("─".repeat(55))}\n${lines}\n\n  ${dim("Tip: Click any command above to run it.")}\n`;
+
+      return `
+${bold("MAIN COMMANDS")}
+${dim("─".repeat(50))}
+${renderRows(main)}
+
+${bold("GEEKY")}
+${dim("─".repeat(50))}
+${renderRows(geeky)}
+
+  ${dim("Tip: Click any command above or use 'Tab' to autocomplete.")}
+`;
     },
+
 
     whoami() {
       const loc = C.location ? `  ${dim("location")}  ${C.location}` : "";
@@ -79,8 +95,6 @@
   ${acc(C.name)}
   ${C.title}
 ${loc}
-
-  ${dim("Type")} ${blu("about")} ${dim("for my full bio, or")} ${blu("neofetch")} ${dim("for the quick rundown.")}
 `;
     },
 
@@ -172,20 +186,32 @@ ${bullets}`;
       return `\n${bold("CONTACT")}\n${"─".repeat(55)}\n${lines}\n`;
     },
 
-    github() {
-      if (C.contact.github) {
-        window.open(C.contact.github, "_blank");
-        return ok(`\n  Opening ${C.contact.github} ...\n`);
-      }
-      return err("\n  GitHub URL not configured — edit js/content.js\n");
-    },
-
     linkedin() {
       if (C.contact.linkedin) {
         window.open(C.contact.linkedin, "_blank");
-        return ok(`\n  Opening ${C.contact.linkedin} ...\n`);
+        return ok(`\n  Opening LinkedIn ...\n`);
       }
-      return err("\n  LinkedIn URL not configured — edit js/content.js\n");
+      return err("\n  LinkedIn URL not configured\n");
+    },
+
+    github() {
+      if (C.contact.github) {
+        window.open(C.contact.github, "_blank");
+        return ok(`\n  Opening GitHub ...\n`);
+      }
+      return err("\n  GitHub URL not configured\n");
+    },
+
+    email() {
+      if (C.contact.email) {
+        window.open(`mailto:${C.contact.email}`, "_blank");
+        return ok(`\n  Opening mail client ...\n`);
+      }
+      return err("\n  Email not configured\n");
+    },
+
+    resume() {
+      return this["cat resume.pdf"]();
     },
 
     neofetch() {
@@ -237,12 +263,14 @@ ${bullets}`;
     },
 
     history() {
-      const hist = Terminal.getHistory();
-      if (hist.length === 0) return dim("\n  No commands in history yet.\n");
-      const lines = hist.reverse().map((cmd, i) =>
+      const mainCmds = ["whoami", "about", "experience", "projects", "skills", "contact", "linkedin", "github", "email", "resume"];
+      const hist = Terminal.getHistory().filter(c => mainCmds.includes(c.split(' ')[0]));
+      
+      if (hist.length === 0) return dim("\n  No main commands in history yet.\n");
+      const lines = hist.map((cmd, i) =>
         `  ${dim(String(i + 1).padStart(4))}  ${cmd}`
       ).join("\n");
-      return `\n${lines}\n`;
+      return `\n${bold("ESSENTIAL HISTORY")}\n${dim("─".repeat(30))}\n${lines}\n`;
     },
 
     ls() {

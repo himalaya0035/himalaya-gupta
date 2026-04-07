@@ -10,6 +10,18 @@
   let history = [];
   let histIdx  = -1;
   let inputBuf = "";
+  let isTyping = false;
+
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  // Small base64 tick sound
+  const TICK_SND = new Audio("data:audio/wav;base64,UkGRlQAAAFpXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTQAAACAgICAgICAgICAgICAgICAgICAhYeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eH=");
+  TICK_SND.volume = 0.2;
+
+  function playTick() {
+    TICK_SND.currentTime = 0;
+    TICK_SND.play().catch(() => {}); // ignore autoplay blocks
+  }
 
   // ── render helpers ────────────────────────────────────────────────────────
   function appendOutput(html) {
@@ -72,7 +84,7 @@
   }
 
   // ── execute ───────────────────────────────────────────────────────────────
-  function execute(raw) {
+  async function execute(raw) {
     const cmd = raw.trim();
     if (!cmd) return;
 
@@ -85,9 +97,8 @@
 
     let result;
     if (typeof COMMANDS[cmd] === "function") {
-      result = COMMANDS[cmd]();
+      result = await COMMANDS[cmd]();
     } else if (cmd.startsWith("theme")) {
-      // parameterized command: theme <name>
       result = THEME_HANDLER(cmd.slice(5));
     } else {
       result = COMMANDS.__noSuchCommand__(cmd);
@@ -95,8 +106,7 @@
 
     if (result === "__CLEAR__") {
       output.innerHTML = "";
-      scrollBottom();
-    } else {
+    } else if (result) {
       appendOutput(result);
     }
 
@@ -104,6 +114,7 @@
     displayEl.textContent = "";
     updateGhost("");
     positionCursor();
+    scrollBottom();
   }
 
   // ── tab autocomplete ──────────────────────────────────────────────────────
@@ -148,10 +159,12 @@
     return prefix;
   }
 
-  // ── keydown handler ───────────────────────────────────────────────────────
-  inputEl.addEventListener("keydown", (e) => {
+  // ── input events ──────────────────────────────────────────────────────────
+  inputEl.addEventListener("keydown", async (e) => {
+    if (isTyping) { e.preventDefault(); return; }
+
     if (e.key === "Enter") {
-      execute(inputEl.value);
+      await execute(inputEl.value);
     } else if (e.key === "Tab") {
       e.preventDefault();
       autocomplete(inputEl.value);
@@ -179,7 +192,7 @@
       }
     } else if (e.key === "l" && e.ctrlKey) {
       e.preventDefault();
-      execute("clear");
+      await execute("clear");
     } else {
       // sync display after next render tick
       requestAnimationFrame(() => {
@@ -195,28 +208,50 @@
     updateGhost(inputEl.value);
   });
 
+  async function typeAndExecute(commandText, viewingDelay) {
+    isTyping = true;
+    for (let c of commandText) {
+      inputEl.value += c;
+      displayEl.textContent += c;
+      updateGhost(inputEl.value);
+      positionCursor();
+      playTick(); // sound effect
+      await sleep(40 + Math.random() * 50); // human typing speed
+    }
+    await sleep(300); // pause before hitting enter
+    await execute(inputEl.value); 
+    await sleep(viewingDelay); // read time
+    isTyping = false;
+  }
+
   // click anywhere → focus input
   document.addEventListener("click", (e) => {
-    // If it's a command link, execute it instead of just focusing
+    if (isTyping) return; // Ignore clicks if auto-typing
+    // If it's a command link or action-chip, execute it
     const cmdLink = e.target.closest(".cmd-link");
-    if (cmdLink) {
-      const command = cmdLink.dataset.cmd;
+    const actionChip = e.target.closest(".action-chip");
+    
+    if (cmdLink || actionChip) {
+      const command = (cmdLink || actionChip).dataset.cmd;
       execute(command);
       return;
     }
     inputEl.focus();
   });
 
-  // ── expose for boot.js ────────────────────────────────────────────────────
   window.Terminal = {
     appendOutput,
     execute,
-    focusInput: () => inputEl.focus(),
+    typeAndExecute,
+    focusInput: () => { if (!isTyping) inputEl.focus(); },
     getHistory: () => [...history],
     enablePrompt() {
       promptRow.classList.remove("hidden");
       inputEl.focus();
       scrollBottom();
+    },
+    showQuickActions() {
+      document.getElementById("quick-actions").classList.remove("hidden");
     }
   };
 })();
