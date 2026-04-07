@@ -96,6 +96,9 @@
     sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
 
+    // Wait 1 second before showing system notice
+    await sleep(1000);
+
     // System announce message
     appendRaw(`
 <div style="border-left: 2px solid var(--acc); padding: 12px 16px; margin: 24px 0; background: rgba(var(--acc-rgb), 0.05); border-radius: 0 6px 6px 0;">

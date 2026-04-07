@@ -37,7 +37,7 @@
     div.className = "output-block echo-line";
     div.innerHTML =
       `<span class="prompt-label"><span class="user">guest</span>` +
-      `<span class="at">@</span><span class="host">himalaya.dev</span>` +
+      `<span class="at">@</span><span class="host">terminal.himalayagupta.com</span>` +
       `<span class="sep">:~$</span></span> <span class="cmd-text">${escapeHtml(cmd)}</span>`;
     output.appendChild(div);
   }
