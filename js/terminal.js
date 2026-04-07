@@ -2,7 +2,6 @@
   const output      = document.getElementById("output");
   const inputEl     = document.getElementById("cmd-input");
   const displayEl   = document.getElementById("cmd-display");
-  const cursorEl    = document.getElementById("cursor");
   const promptRow   = document.getElementById("prompt-row");
   const ghostHint   = document.getElementById("ghost-hint");
   const tabBadge    = document.getElementById("tab-badge");
@@ -11,6 +10,7 @@
   let histIdx  = -1;
   let inputBuf = "";
   let isTyping = false;
+  let tourAborted = false;
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -63,7 +63,6 @@
     if (!val) {
       ghostHint.textContent = "";
       tabBadge.classList.add("hidden");
-      positionCursor();
       return;
     }
     const match = getAllCmds().find(c => c.startsWith(val) && c !== val);
@@ -74,13 +73,6 @@
       ghostHint.textContent = "";
       tabBadge.classList.add("hidden");
     }
-    positionCursor();
-  }
-
-  function positionCursor() {
-    // Place cursor right after the typed text (overlapping first ghost char)
-    const left = displayEl.offsetLeft + displayEl.offsetWidth;
-    cursorEl.style.left = left + "px";
   }
 
   // ── execute ───────────────────────────────────────────────────────────────
@@ -113,7 +105,6 @@
     inputEl.value = "";
     displayEl.textContent = "";
     updateGhost("");
-    positionCursor();
     scrollBottom();
   }
 
@@ -161,7 +152,11 @@
 
   // ── input events ──────────────────────────────────────────────────────────
   inputEl.addEventListener("keydown", async (e) => {
-    if (isTyping) { e.preventDefault(); return; }
+    if (isTyping) { 
+      e.preventDefault(); 
+      Terminal.abortTour();
+      return; 
+    }
 
     if (e.key === "Enter") {
       await execute(inputEl.value);
@@ -209,24 +204,37 @@
   });
 
   async function typeAndExecute(commandText, viewingDelay) {
+    if (tourAborted) return false;
     isTyping = true;
     for (let c of commandText) {
+      if (tourAborted) { Terminal.abortTour(); return false; }
       inputEl.value += c;
       displayEl.textContent += c;
       updateGhost(inputEl.value);
-      positionCursor();
-      playTick(); // sound effect
-      await sleep(40 + Math.random() * 50); // human typing speed
+      playTick(); 
+      await sleep(40 + Math.random() * 50); 
     }
-    await sleep(300); // pause before hitting enter
+    if (tourAborted) { Terminal.abortTour(); return false; }
+    await sleep(300); 
+    if (tourAborted) { Terminal.abortTour(); return false; }
     await execute(inputEl.value); 
-    await sleep(viewingDelay); // read time
+    
     isTyping = false;
+    
+    let elapsed = 0;
+    while (elapsed < viewingDelay) {
+      if (tourAborted) return false;
+      await sleep(100);
+      elapsed += 100;
+    }
+    return true;
   }
 
   // click anywhere → focus input
   document.addEventListener("click", (e) => {
-    if (isTyping) return; // Ignore clicks if auto-typing
+    if (isTyping) { 
+      return; // Do not abort on click, just ignore (so user can scroll/copy)
+    }
     // If it's a command link or action-chip, execute it
     const cmdLink = e.target.closest(".cmd-link");
     const actionChip = e.target.closest(".action-chip");
@@ -243,6 +251,14 @@
     appendOutput,
     execute,
     typeAndExecute,
+    isTourAborted: () => tourAborted,
+    abortTour: () => {
+      tourAborted = true;
+      isTyping = false;
+      inputEl.value = "";
+      displayEl.textContent = "";
+      updateGhost("");
+    },
     focusInput: () => { if (!isTyping) inputEl.focus(); },
     getHistory: () => [...history],
     enablePrompt() {

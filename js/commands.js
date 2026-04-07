@@ -11,7 +11,7 @@
   const link = (href, label) =>
     `<a href="${href}" target="_blank" rel="noopener">${label || href}</a>`;
   const esc  = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const cmd  = (text) => `<span class="cmd-link" data-cmd="${text.split(' ')[0]}">${esc(text)}</span>`;
+  const cmd  = (text, execCmd) => `<span class="cmd-link" data-cmd="${esc(execCmd !== undefined ? execCmd : text.split(' ')[0])}">${esc(text)}</span>`;
 
   // ── theme definitions ────────────────────────────────────────────────────
   const THEMES = {
@@ -183,7 +183,13 @@ ${bullets}`;
       if (ct.twitter)  rows.push([dim("twitter"),  link(ct.twitter, ct.twitter.replace("https://", ""))]);
 
       const lines = rows.map(([label, val]) => `  ${label.padEnd(20)}${val}`).join("\n");
-      return `\n${bold("CONTACT")}\n${"─".repeat(55)}\n${lines}\n`;
+      
+      const cta = `
+  ${dim("───────────────────────────────────────────────────────")}
+  ${bold(acc("Ready to build something great?"))}
+  Try running ${cmd("sudo hire me", "sudo hire me")} to initiate the hiring protocol.`;
+
+      return `\n${bold("CONTACT")}\n${"─".repeat(55)}\n${lines}\n${cta}\n`;
     },
 
     linkedin() {
@@ -277,7 +283,7 @@ ${bullets}`;
       const cmds = Object.keys(window.COMMANDS).filter(
         k => !k.startsWith("__") && !k.startsWith("rm ") && k !== "exit" && k !== "man himalaya" && k !== "sudo hire me"
       );
-      return "\n  " + cmds.map(c => cmd(c)).join("  ") + "\n";
+      return "\n  " + cmds.map(c => cmd(c, c)).join("  ") + "\n";
     },
 
     "cat resume.pdf"() {
@@ -292,18 +298,31 @@ ${bullets}`;
 
     // ── hidden / easter egg commands ──────────────────────────────────────
 
-    "sudo hire me"() {
-      return `
+    async "sudo hire me"() {
+      window.Terminal.appendOutput(`
   ${acc("[ sudo ] password for recruiter:")} ${dim("••••••••••••")}
 
   ${ok("Access granted.")}
 
-  Deploying ${blu("Himalaya Gupta")} to your engineering team...
-  ${dim("████████████████████")} ${acc("100%")} ${ok("[DONE]")}
+  Deploying ${blu("Himalaya Gupta")} to your engineering team...`);
 
-  Congratulations. You have excellent taste.
-  Reach me at: ${link("mailto:" + C.contact.email, C.contact.email)}
-`;
+      const pBarId = "pbar-" + Math.random().toString(36).substr(2, 9);
+      window.Terminal.appendOutput(`  <span id="${pBarId}"></span>`);
+
+      const pBarContainer = document.getElementById(pBarId);
+      for (let i = 0; i <= 20; i++) {
+        if (pBarContainer) {
+          pBarContainer.innerHTML = `${dim("█".repeat(i) + "▒".repeat(20 - i))} ${acc((i * 5) + "%")}`;
+        }
+        await new Promise(r => setTimeout(r, 100)); // 20 steps * 100ms = 2 seconds
+      }
+
+      if (pBarContainer) {
+        pBarContainer.innerHTML += ` ${ok("[DONE]")}`;
+      }
+
+      return `\n  Congratulations. You have excellent taste.
+  Reach me at: ${link("mailto:" + C.contact.email, C.contact.email)}\n`;
     },
 
     "rm -rf /"() {

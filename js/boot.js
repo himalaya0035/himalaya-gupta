@@ -9,12 +9,11 @@
 
 
   const BOOT_LINES = [
-    { text: "Initializing system",               delay: 60  },
-    { text: `Loading profile: ${CONTENT.name}`,  delay: 80  },
-    { text: "Mounting file system",              delay: 70  },
-    { text: "Establishing secure connection",    delay: 100 },
-    { text: "Compiling experience",              delay: 90  },
-    { text: "Running diagnostics",               delay: 110 },
+    { text: "Initializing system",               delay: 30  },
+    { text: `Loading profile: ${CONTENT.name}`,  delay: 40  },
+    { text: "Mounting file system",              delay: 35  },
+    { text: "Establishing secure connection",    delay: 50  },
+    { text: "Running diagnostics",               delay: 55  },
   ];
 
   const WELCOME = `
@@ -39,7 +38,7 @@
         weekday: "short", month: "short", day: "numeric",
         hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
       });
-      return `<span class="dim">Last login: ${formatted} on ttys001</span>`;
+      return `<span class="dim">Last login: ${formatted}</span>`;
     }
     return `<span class="dim">Welcome! First time here? Type</span> <span class="blu">help</span> <span class="dim">to get started.</span>`;
   }
@@ -67,7 +66,7 @@
 
   // ── full boot (first visit in session) ────────────────────────────────────
   async function runFullBoot() {
-    await sleep(200);
+    await sleep(100);
 
     for (const line of BOOT_LINES) {
       const row = document.createElement("div");
@@ -81,13 +80,13 @@
       output.appendChild(row);
       requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
 
-      await typewriter(textSpan, line.text, 22);
+      await typewriter(textSpan, line.text, 10);
       await sleep(line.delay);
       statusSpan.innerHTML = `<span class="ok">[  OK  ]</span>`;
-      await sleep(60);
+      await sleep(30);
     }
 
-    await sleep(300);
+    await sleep(150);
 
     // Initial output for full boot
     appendRaw(`<pre class="banner">${escBanner(BANNER)}</pre>`);
@@ -97,16 +96,49 @@
     sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
 
-    // Give user a moment to see the banner before clearing
-    await sleep(2500);
-    await Terminal.typeAndExecute("clear", 500);
+    // System announce message
+    appendRaw(`
+<div style="border-left: 2px solid var(--acc); padding: 12px 16px; margin: 24px 0; background: rgba(var(--acc-rgb), 0.05); border-radius: 0 6px 6px 0;">
+  <div style="color: var(--acc); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">[ System Notice ]</div>
+  <div style="color: var(--fg); margin-bottom: 4px;">Welcome! You have been selected for the automated profile tour.</div>
+  <div style="color: var(--dim);">Sit back and relax. The tour will begin in <span class="tour-timer" style="color: var(--acc); font-weight: bold;">5</span> seconds...</div>
+  <div style="color: var(--dim); font-size: 11px; margin-top: 8px; opacity: 0.8;">(Press any key to take manual control)</div>
+</div>`);
 
-    // Start automated ghost-typing tour
-    await Terminal.typeAndExecute("whoami", 2000);
-    await Terminal.typeAndExecute("about", 4000);
-    await Terminal.typeAndExecute("experience", 4000);
-    await Terminal.typeAndExecute("projects", 3000);
-    await Terminal.typeAndExecute("contact", 2000);
+    // Live countdown timer logic
+    for (let i = 5; i > 0; i--) {
+      const timers = document.querySelectorAll('.tour-timer');
+      const timerEl = timers[timers.length - 1];
+      if (timerEl) timerEl.textContent = i;
+      
+      // Wait 1 second, checking for aborts frequently
+      for (let j = 0; j < 10; j++) {
+        if (Terminal.isTourAborted()) break;
+        await sleep(100);
+      }
+      
+      if (Terminal.isTourAborted()) {
+        if (timerEl) {
+          timerEl.parentElement.innerHTML = `<span style="color: var(--err);">Tour aborted. Manual control engaged.</span>`;
+        }
+        break;
+      }
+    }
+
+    // Start automated ghost-typing tour (chained to halt if aborted)
+    if (await Terminal.typeAndExecute("clear", 500)) {
+      if (await Terminal.typeAndExecute("whoami", 2000)) {
+        if (await Terminal.typeAndExecute("about", 5000)) {
+          if (await Terminal.typeAndExecute("experience", 5000)) {
+            if (await Terminal.typeAndExecute("projects", 3000)) {
+              if (await Terminal.typeAndExecute("skills", 3000)) {
+                await Terminal.typeAndExecute("contact", 2000);
+              }
+            }
+          }
+        }
+      }
+    }
 
     Terminal.showQuickActions();
   }
