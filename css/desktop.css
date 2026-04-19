@@ -466,116 +466,113 @@ body.desktop-mode {
 }
 
 /* ── Dock ────────────────────────────────────────────── */
-#mac-dock {
+/* ── Overhauled Dock ────────────────────────────────────────── */
+.dock {
+  display: flex;
+  align-items: center;
   position: fixed;
+  padding: 0.25rem 0.5rem;
   bottom: 12px;
   left: 50%;
-  transform: translateX(-50%);
   height: 64px;
+  transform: translateX(-50%);
   background: rgba(30, 30, 35, 0.5);
   backdrop-filter: blur(25px) saturate(200%);
   -webkit-backdrop-filter: blur(25px) saturate(200%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
-  padding: 6px 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 10000;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  z-index: 10000;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.dock-item {
+.icon {
   position: relative;
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  outline: none;
   cursor: pointer;
-  transition: width 0.15s, height 0.15s, margin 0.15s;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  /* Smoother, standard cubic-bezier for magnification */
+  transition: transform 0.3s cubic-bezier(0, 0.55, 0.45, 1), margin 0.3s cubic-bezier(0, 0.55, 0.45, 1);
   transform-origin: bottom center;
 }
 
-.dock-icon {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+.icon:hover {
+  transform: scale(2.0) translateY(2px);
+  margin: 0 24px;
 }
 
-.dock-item:hover .dock-icon {
-  transform: scale(1.3) translateY(-10px);
+/* More subtle magnification for neighbors to keep it smooth */
+.icon:hover + .icon, 
+.icon:has(+ .icon:hover) {
+  transform: scale(1.2) translateY(2px);
+  /* margin: 0 12px; */
 }
 
-/* Replicate Mac style magnify behavior partially via CSS */
-.dock-item:hover {
-  margin: 0 15px;
-}
-
-.icon-safari {
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1), inset 0 -1px 0 rgba(0,0,0,0.1);
-}
-
-.icon-terminal {
-  background: linear-gradient(135deg, #2b2b2b, #111111);
-  color: var(--acc);
-  font-family: monospace;
-  font-size: 20px;
-  font-weight: bold;
-  border: 1px solid #444;
-}
-
-.icon-safari svg {
-  width: 80%; 
-  height: 80%; 
-  margin: 10%;
-}
-
-.dock-dot {
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.7);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.dock-item.active .dock-dot {
-  opacity: 1;
-}
-
-/* Tooltips */
-.dock-item::before {
+/* Tooltip / App Name */
+.icon::after {
   content: attr(data-title);
   position: absolute;
-  top: -35px;
+  top: -42px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(20, 20, 20, 0.8);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
   font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, top 0.2s;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 
-.dock-item:hover::before {
+.icon:hover::after {
   opacity: 1;
+  top: -30px;
 }
+
+/* Active Indicators */
+.point {
+  position: absolute;
+  bottom: -6px;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  margin: 0;
+  box-shadow: 0 0 4px rgba(255,255,255,0.4);
+}
+
+.point.hidden {
+  display: none !important;
+}
+
+/* Specialized Icons styles */
+.icon-terminal-div {
+  width: 36px;
+  height: 36px;
+  background: #222;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00ff9d;
+  font-family: monospace;
+  font-weight: bold;
+  border: 1px solid #444;
+}
+

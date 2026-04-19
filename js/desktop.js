@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
   
   const windows = document.querySelectorAll('.os-window');
-  const dockItems = document.querySelectorAll('.dock-item');
+  const dockItems = document.querySelectorAll('.dock button.icon');
   const timeDisplay = document.getElementById('topbar-time');
   const appNameDisplay = document.getElementById('topbar-app-name');
   
@@ -62,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     dockItems.forEach(item => {
       if (item.dataset.target === appId) {
         item.classList.add('active');
+        const point = item.querySelector('.point');
+        if (point) point.classList.remove('hidden');
       }
     });
   }
@@ -83,9 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
       win.classList.add('hidden');
       win.classList.remove('active');
       
-      // Remove dot from dock
-      const dockItem = document.querySelector(`.dock-item[data-target="${win.id}"]`);
-      if (dockItem) dockItem.classList.remove('active');
+      // Remove indicator from dock
+      const dockItem = document.querySelector(`.dock button.icon[data-target="${win.id}"]`);
+      if (dockItem) {
+        dockItem.classList.remove('active');
+        const point = dockItem.querySelector('.point');
+        if (point) point.classList.add('hidden');
+      }
     });
     
     if (btnMin) btnMin.addEventListener('click', (e) => {
