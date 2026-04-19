@@ -77,10 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
     navForward.style.opacity = historyIndex < history.length - 1 ? "1" : "0.3";
   }
 
+  /* Manual navigation disabled as per user request (Locked URL bar) */
   urlInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      navigate(urlInput.value);
-      urlInput.blur();
+      e.preventDefault();
+      // Manual navigation blocked
     }
   });
 
