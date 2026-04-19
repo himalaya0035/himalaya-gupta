@@ -88,7 +88,7 @@
   </div>
 
   <!-- Terminal Window -->
-  <div id="terminal-window" class="os-window active" data-app-title="Terminal">
+  <div id="terminal-window" class="os-window hidden" data-app-title="Terminal">
     <div class="os-title-bar">
       <div class="traffic-lights">
         <span class="dot-red"></span>
@@ -165,10 +165,47 @@
     <div class="dock-item" data-target="portfolio-window" data-title="Portfolio">
       <div class="dock-icon icon-safari">
         <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#1e90ff" />
-          <path d="M50 5 L50 95 M5 50 L95 50 M25 25 Q50 50 75 75 M25 75 Q50 50 75 25" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
-          <polygon points="50,15 65,35 50,85 35,65" fill="#ff4500" />
-          <polygon points="50,85 35,65 50,15 65,35" fill="#ffffff" />
+          <defs>
+            <linearGradient id="discGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#48d1ff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#007aff;stop-opacity:1" />
+            </linearGradient>
+            <filter id="needleShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+              <feOffset dx="0" dy="1" result="offsetblur" />
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3" />
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <!-- Outer Dial -->
+          <circle cx="50" cy="50" r="40" fill="url(#discGrad)" />
+          <!-- Ticks -->
+          <g stroke="#ffffff" stroke-width="0.7" opacity="0.6">
+            <line x1="50" y1="14" x2="50" y2="17" transform="rotate(0 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(30 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(60 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="17" transform="rotate(90 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(120 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(150 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="17" transform="rotate(180 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(210 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(240 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="17" transform="rotate(270 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(300 50 50)" />
+            <line x1="50" y1="14" x2="50" y2="16" transform="rotate(330 50 50)" />
+          </g>
+          <!-- Needle -->
+          <g filter="url(#needleShadow)" transform="rotate(45 50 50)">
+            <polygon points="50,18 60,50 50,50 40,50" fill="#ff3b30" />
+            <polygon points="50,82 60,50 50,50 40,50" fill="#f2f2f7" />
+            <polygon points="50,18 50,50 40,50" fill="#cc3300" />
+            <polygon points="50,82 50,50 40,50" fill="#d1d1d6" />
+          </g>
         </svg>
       </div>
       <div class="dock-dot"></div>

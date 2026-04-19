@@ -239,10 +239,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start with Terminal active and Safari active
-  const startTerminal = document.getElementById('terminal-window');
-  if (startTerminal) bringToFront(startTerminal);
-  
   // We can position the portfolio window slightly offset
   const guiWin = document.getElementById('portfolio-window');
   if (guiWin) {
