@@ -24,9 +24,29 @@ html {
   font-family: 'Inter', -apple-system, sans-serif;
   line-height: 1.6;
   position: relative;
+  min-height: 100%;
   /* Cursor Glow base background will be injected via JS style var */
   background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.04), transparent 40%);
   transition: background 0.1s ease;
+}
+
+/* ── Subtle name watermark ────────────────────────────────────────── */
+.gui-wrapper::before {
+  content: 'HIMALAYA GUPTA';
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 800;
+  font-size: 2.6rem;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.22em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
 }
 
 /* Removed mesh-bg and ambient-light from gui.css since OS desktop has its own background */
@@ -128,6 +148,8 @@ section {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 0.8s ease forwards;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes fadeUp {

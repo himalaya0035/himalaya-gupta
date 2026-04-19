@@ -9,6 +9,27 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   let highestZ = 100;
+
+  // ── Star field for wallpaper text ────────────────────────────────────────
+  (function buildStarField() {
+    const W = 400, H = 400;
+    const count = 50; // Balanced density for full background
+    let circles = '';
+    for (let i = 0; i < count; i++) {
+      const x       = (Math.random() * W).toFixed(1);
+      const y       = (Math.random() * H).toFixed(1);
+      const r       = (Math.random() * 0.9 + 0.3).toFixed(2);
+      const opacity = (Math.random() * 0.4 + 0.1).toFixed(2);
+      circles += `<circle cx="${x}" cy="${y}" r="${r}" fill="white" opacity="${opacity}"/>`;
+    }
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}'>`
+              + `<rect width='${W}' height='${H}' fill='transparent'/>`
+              + circles
+              + `</svg>`;
+    const encoded = svg.replace(/#/g, '%23').replace(/"/g, "'");
+    const url = `url("data:image/svg+xml,${encoded}")`;
+    document.documentElement.style.setProperty('--star-field-url', url);
+  })();
   
   const windows = document.querySelectorAll('.os-window');
   const dockItems = document.querySelectorAll('.dock-item');
