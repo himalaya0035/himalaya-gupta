@@ -6,6 +6,52 @@ body.desktop-mode {
   overflow: hidden; /* Desktop shouldn't scroll */
 }
 
+/* ── Graphical Boot Screen ─────────────────────────────────── */
+#boot-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: #000;
+  z-index: 100000; /* Above everything */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#boot-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.boot-content {
+  text-align: center;
+  width: 200px;
+}
+
+.boot-logo {
+  color: #fff;
+  font-size: 64px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  letter-spacing: -2px;
+}
+
+.boot-progress-container {
+  width: 100%;
+  height: 4px;
+  background: #424242;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+#boot-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #fff;
+  transition: width 0.1s linear;
+}
+
 /* ── Desktop Wallpaper ────────────────────────────────────────── */
 #desktop-wallpaper {
   position: fixed;
@@ -298,7 +344,8 @@ body.desktop-mode {
   gap: 16px;
 }
 
-.apple-logo {
+.topbar-logo {
+  font-weight: 800;
   font-size: 14px;
 }
 
@@ -559,3 +606,52 @@ body.desktop-mode {
   border: 1px solid #444;
 }
 
+
+/* ── Responsive Mobile Fixes ────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Header Fixes */
+  .topbar-left span:not(.topbar-logo):not(#topbar-app-name) {
+    display: none;
+  }
+  
+  .topbar-right span:first-child {
+    display: none; /* Hide 100% percentage */
+  }
+
+  .topbar-left, .topbar-right {
+    gap: 12px;
+  }
+
+  #top-menu-bar {
+    padding: 0 12px;
+  }
+
+  /* Window Fixes */
+  .os-window {
+    left: 2.5% !important;
+    width: 95vw !important;
+    height: 70vh !important;
+    top: 40px !important;
+  }
+
+  #portfolio-window {
+    width: 95vw !important;
+  }
+
+  /* Dock Fixes */
+  .dock {
+    height: 56px;
+    padding: 0 10px;
+    gap: 4px;
+  }
+
+  .icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .icon:hover {
+    transform: scale(1.4) translateY(2px);
+    margin: 0 12px;
+  }
+}

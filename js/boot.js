@@ -109,8 +109,50 @@
     Terminal.showQuickActions();
   }
 
+  // ── graphical boot screen ────────────────────────────────────────────────
+  async function runGraphicalBoot() {
+    const bootScreen = document.getElementById("boot-screen");
+    const progressBar = document.getElementById("boot-progress-bar");
+    if (!bootScreen || !progressBar) return;
+
+    const duration = 1500; // Total duration in ms
+    const startTime = performance.now();
+    
+    return new Promise((resolve) => {
+      function update() {
+        const elapsed = performance.now() - startTime;
+        let progress = Math.min(1, elapsed / duration);
+        
+        // Brief macOS-style stall for realism
+        if (progress > 0.6 && progress < 0.65) progress = 0.6; 
+        
+        progressBar.style.width = `${progress * 100}%`;
+
+        if (elapsed < duration) {
+          requestAnimationFrame(update);
+        } else {
+          finish();
+        }
+      }
+
+      async function finish() {
+        progressBar.style.width = "100%";
+        await sleep(300); // Hold at 100%
+        bootScreen.classList.add("fade-out");
+        await sleep(800); // Wait for transition
+        bootScreen.style.display = "none";
+        resolve();
+      }
+
+      requestAnimationFrame(update);
+    });
+  }
+
   // ── entry point ───────────────────────────────────────────────────────────
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Run graphical boot every time as requested
+    await runGraphicalBoot();
+    
     if (sessionStorage.getItem("booted")) {
       runInstantBoot();
     } else {
