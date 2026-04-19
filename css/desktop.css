@@ -486,7 +486,12 @@ body.desktop-mode {
 .os-content {
   flex: 1;
   position: relative;
+  padding: 16px;
   overflow: auto; /* Sub-scrollable */
+}
+
+#terminal {
+  padding-bottom: 60px; /* Extra space for prompt visibility */
 }
 
 /* Frame specific sizing */

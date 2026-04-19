@@ -16,11 +16,7 @@
     { text: "Running diagnostics",               delay: 55  },
   ];
 
-  const WELCOME = `
-  <span class="acc">${CONTENT.title}</span>
-  <span class="dim">──────────────────────────────────────────────</span>
-  Type <span class="blu">help</span> to see available commands.
-`;
+  const WELCOME = `Type <span class="blu">help</span> to see available commands.`;
 
   const output = document.getElementById("output");
   const sleep  = (ms) => new Promise(r => setTimeout(r, ms));
@@ -89,24 +85,19 @@
 
     // Initial output for full boot
     appendRaw(`<pre class="banner">${escBanner(BANNER)}</pre>`);
-    appendRaw(getLastLoginLine());
     appendRaw(WELCOME);
-
+    
     sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
-
-    Terminal.showQuickActions();
   }
 
   // ── instant boot (revisit in same session) ────────────────────────────────
   function runInstantBoot() {
     appendRaw(`<pre class="banner">${escBanner(BANNER)}</pre>`);
-    appendRaw(getLastLoginLine());
     appendRaw(WELCOME);
-
+ 
     sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
-    Terminal.showQuickActions();
   }
 
   // ── graphical boot screen ────────────────────────────────────────────────

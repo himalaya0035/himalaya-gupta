@@ -1,5 +1,6 @@
 (() => {
   const output      = document.getElementById("output");
+  const terminalEl  = document.getElementById("terminal");
   const inputEl     = document.getElementById("cmd-input");
   const displayEl   = document.getElementById("cmd-display");
   const promptRow   = document.getElementById("prompt-row");
@@ -43,7 +44,10 @@
 
   function scrollBottom() {
     requestAnimationFrame(() => {
-      window.scrollTo(0, document.documentElement.scrollHeight);
+      terminalEl.scrollTo({
+        top: terminalEl.scrollHeight,
+        behavior: 'smooth'
+      });
     });
   }
 
@@ -228,12 +232,11 @@
     if (isTyping) { 
       return; // Do not abort on click, just ignore (so user can scroll/copy)
     }
-    // If it's a command link or action-chip, execute it
+    // If it's a command link, execute it
     const cmdLink = e.target.closest(".cmd-link");
-    const actionChip = e.target.closest(".action-chip");
     
-    if (cmdLink || actionChip) {
-      const command = (cmdLink || actionChip).dataset.cmd;
+    if (cmdLink) {
+      const command = cmdLink.dataset.cmd;
       execute(command);
       return;
     }
@@ -250,9 +253,6 @@
       promptRow.classList.remove("hidden");
       inputEl.focus();
       scrollBottom();
-    },
-    showQuickActions() {
-      document.getElementById("quick-actions").classList.remove("hidden");
     }
   };
 })();
