@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>terminal.himalayagupta.com</title>
+  <title>Himalaya Gupta — Desktop OS</title>
   <meta name="description" content="Himalaya Gupta — Senior Full-Stack Engineer" />
 
   <!-- Favicon: simple > in a box -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230d1117'/%3E%3Ctext x='4' y='24' font-family='monospace' font-size='22' fill='%2300ff9d'%3E%3E_%3C/text%3E%3C/svg%3E" />
 
-  <!-- Monospace font -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/gui.css" />
+  <link rel="stylesheet" href="css/desktop.css" />
 
   <!-- Apply saved theme before first paint -->
   <script>
@@ -31,56 +33,112 @@
     })();
   </script>
 </head>
-<body>
+<body class="desktop-mode">
   <canvas id="bg-canvas"></canvas>
 
-  <!-- terminal window with macOS-style chrome -->
-  <div id="terminal-window">
-    <div id="title-bar">
+  <!-- Top Menu Bar -->
+  <div id="top-menu-bar">
+    <div class="topbar-left">
+      <span class="apple-logo"></span>
+      <span id="topbar-app-name">Terminal</span>
+      <span>File</span>
+      <span>Edit</span>
+      <span>View</span>
+      <span>Window</span>
+      <span>Help</span>
+    </div>
+    <div class="topbar-right">
+      <span>100%</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+      <span id="topbar-time"></span>
+    </div>
+  </div>
+
+  <!-- Terminal Window -->
+  <div id="terminal-window" class="os-window active" data-app-title="Terminal">
+    <div class="os-title-bar">
       <div class="traffic-lights">
         <span class="dot-red"></span>
         <span class="dot-yellow"></span>
         <span class="dot-green"></span>
       </div>
-      <span class="title-text">guest@terminal.himalayagupta.com:~</span>
+      <span class="os-title-text">guest@terminal.himalayagupta.com:~</span>
     </div>
-
-    <div id="terminal">
+    
+    <div id="terminal" class="os-content">
       <div id="output"></div>
 
       <!-- inline prompt — lives inside the terminal flow -->
       <div id="prompt-row" class="hidden">
         <span class="prompt-label">
-          <span class="user">guest</span><span class="at">@</span><span
-            class="host">terminal.himalayagupta.com</span><span class="sep">:~$</span>
+          <span class="user">guest</span><span class="at">@</span><span class="host">terminal.himalayagupta.com</span><span class="sep">:~$</span>
         </span>
 
         <div id="prompt-visible">
           <span id="cmd-display"></span><span id="cursor"></span><span id="ghost-hint"></span><span id="tab-badge" class="hidden">TAB</span>
         </div>
 
-        <input
-          id="cmd-input"
-          type="text"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          aria-label="terminal input"
-        />
-    </div>
+        <input id="cmd-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" />
+      </div>
 
-    <!-- Quick Actions Bar — docked at the bottom of the window -->
-    <div id="quick-actions" class="hidden">
-      <span class="quick-actions-label">Quick Commands:</span>
-      <button class="action-chip" data-cmd="whoami">whoami</button>
-      <button class="action-chip" data-cmd="experience">experience</button>
-      <button class="action-chip" data-cmd="projects">projects</button>
-      <button class="action-chip" data-cmd="skills">skills</button>
-      <button class="action-chip" data-cmd="resume">resume</button>
-      <button class="action-chip" data-cmd="linkedin">linkedin</button>
-      <button class="action-chip" data-cmd="github">github</button>
-      <button class="action-chip" data-cmd="contact">contact</button>
+      <!-- Quick Actions Bar — docked at the bottom of the window -->
+      <div id="quick-actions" class="hidden">
+        <span class="quick-actions-label">Quick Commands:</span>
+        <button class="action-chip" data-cmd="whoami">whoami</button>
+        <button class="action-chip" data-cmd="experience">experience</button>
+        <button class="action-chip" data-cmd="projects">projects</button>
+        <button class="action-chip" data-cmd="skills">skills</button>
+        <button class="action-chip" data-cmd="resume">resume</button>
+        <button class="action-chip" data-cmd="linkedin">linkedin</button>
+        <button class="action-chip" data-cmd="github">github</button>
+        <button class="action-chip" data-cmd="contact">contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Window -->
+  <div id="portfolio-window" class="os-window hidden" data-app-title="Safari">
+    <div class="os-title-bar">
+      <div class="traffic-lights">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span class="os-title-text">Himalaya Gupta — Safari</span>
+    </div>
+    <div class="os-content" style="background-color: #09090b;">
+      <nav class="navbar" style="position: sticky;">
+        <div class="nav-container">
+          <div class="logo">HG.</div>
+          <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+          </div>
+        </div>
+      </nav>
+      <div id="gui-root">
+         <!-- Pulled from gui-app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div id="mac-dock">
+    <div class="dock-item active" data-target="terminal-window" data-title="Terminal">
+      <div class="dock-icon icon-terminal">>_</div>
+      <div class="dock-dot"></div>
+    </div>
+    <div class="dock-item" data-target="portfolio-window" data-title="Portfolio">
+      <div class="dock-icon icon-safari">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" fill="#1e90ff" />
+          <path d="M50 5 L50 95 M5 50 L95 50 M25 25 Q50 50 75 75 M25 75 Q50 50 75 25" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.5"/>
+          <polygon points="50,15 65,35 50,85 35,65" fill="#ff4500" />
+          <polygon points="50,85 35,65 50,15 65,35" fill="#ffffff" />
+        </svg>
+      </div>
+      <div class="dock-dot"></div>
     </div>
   </div>
 
@@ -89,6 +147,8 @@
   <script src="js/commands.js"></script>
   <script src="js/terminal.js"></script>
   <script src="js/boot.js"></script>
+  <script src="js/gui-app.js"></script>
+  <script src="js/desktop.js"></script>
   <script src="js/background.js"></script>
 </body>
 </html>
