@@ -191,18 +191,18 @@
       e.preventDefault();
       await execute("clear");
     } else {
-      // sync display after next render tick
-      requestAnimationFrame(() => {
-        displayEl.textContent = inputEl.value;
-        updateGhost(inputEl.value);
-      });
+      // For standard characters, we rely solely on the "input" event listener 
+      // below to keep displayEl in sync. This prevents "backwards typing" 
+      // issues on mobile keyboards (Gboard/iOS).
     }
   });
 
-  // keep display in sync for paste events too
+  // ── Mirror input to display ──────────────────────────────────────────────
   inputEl.addEventListener("input", () => {
-    displayEl.textContent = inputEl.value;
-    updateGhost(inputEl.value);
+    if (!isTyping) {
+      displayEl.textContent = inputEl.value;
+      updateGhost(inputEl.value);
+    }
   });
 
   async function typeAndExecute(commandText, viewingDelay) {

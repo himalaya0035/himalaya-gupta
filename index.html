@@ -34,6 +34,16 @@
   </script>
 </head>
 <body class="desktop-mode">
+    <div id="mobile-fullscreen-prompt" class="hidden">
+      <div class="fs-content">
+        <h2>Enter Fullscreen</h2>
+        <p>For the most immersive experience of this desktop OS, I recommend viewing in full screen.</p>
+      </div>
+      <div class="fs-button-group">
+        <button id="go-fullscreen-btn">Go Full Screen</button>
+        <button id="close-fullscreen-prompt">Dismiss</button>
+      </div>
+    </div>
   <canvas id="bg-canvas"></canvas>
   
   <!-- Graphical Boot Screen -->
@@ -73,27 +83,7 @@
 
   <!-- Desktop Folders Layout -->
   <div id="desktop-grid">
-    <div class="desktop-folder" data-target="portfolio-window" data-target-section="projects">
-      <svg class="folder-svg" viewBox="0 0 100 100">
-        <path d="M10,25 L35,25 L45,35 L90,35 C95.5,35 100,39.5 100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,35 C0,29.5 4.5,25 10,25 Z" fill="#60a5fa" />
-        <path d="M0,45 L100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,45 Z" fill="#3b82f6" />
-      </svg>
-      <span>Projects</span>
-    </div>
-    <div class="desktop-folder" data-target="portfolio-window" data-target-section="experience">
-      <svg class="folder-svg" viewBox="0 0 100 100">
-        <path d="M10,25 L35,25 L45,35 L90,35 C95.5,35 100,39.5 100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,35 C0,29.5 4.5,25 10,25 Z" fill="#60a5fa" />
-        <path d="M0,45 L100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,45 Z" fill="#3b82f6" />
-      </svg>
-      <span>Experience</span>
-    </div>
-    <div class="desktop-folder" data-target="portfolio-window" data-target-section="skills">
-      <svg class="folder-svg" viewBox="0 0 100 100">
-        <path d="M10,25 L35,25 L45,35 L90,35 C95.5,35 100,39.5 100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,35 C0,29.5 4.5,25 10,25 Z" fill="#60a5fa" />
-        <path d="M0,45 L100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,45 Z" fill="#3b82f6" />
-      </svg>
-      <span>Skills</span>
-    </div>
+
     <div class="desktop-file" data-target="resume-window">
       <div class="file-icon white">
         <svg viewBox="0 0 24 24" width="40" height="40" fill="#fff" stroke="rgba(0,0,0,0.1)" stroke-width="0.5">
@@ -129,10 +119,9 @@
         </span>
 
         <div id="prompt-visible">
+          <input type="text" id="cmd-input" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" />
           <span id="cmd-display"></span><span id="cursor"></span><span id="ghost-hint"></span><span id="tab-badge" class="hidden">TAB</span>
         </div>
-
-        <input id="cmd-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" />
       </div>
 
 
@@ -279,6 +268,38 @@
   <script src="js/commands.js"></script>
   <script src="js/terminal.js"></script>
   <script src="js/boot.js"></script>
+  <script>
+    // Fullscreen Prompt Logic (Desktop & Mobile)
+    const fsPrompt = document.getElementById('mobile-fullscreen-prompt');
+    const fsBtn = document.getElementById('go-fullscreen-btn');
+    const fsClose = document.getElementById('close-fullscreen-prompt');
+
+    if (fsPrompt) {
+      setTimeout(() => {
+        if (!document.fullscreenElement) {
+          fsPrompt.classList.remove('hidden');
+        }
+      }, 1000);
+    }
+
+    if (fsBtn) {
+      fsBtn.addEventListener('click', () => {
+        const doc = document.documentElement;
+        if (doc.requestFullscreen) doc.requestFullscreen();
+        else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+        else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
+        if (fsPrompt) fsPrompt.classList.add('hidden');
+        localStorage.setItem('fullscreen-prompt-dismissed', 'true');
+      });
+    }
+
+    if (fsClose) {
+      fsClose.addEventListener('click', () => {
+        if (fsPrompt) fsPrompt.classList.add('hidden');
+        localStorage.setItem('fullscreen-prompt-dismissed', 'true');
+      });
+    }
+  </script>
   <script src="js/gui-app.js"></script>
   <script src="js/desktop.js"></script>
   <script src="js/safari.js"></script>
