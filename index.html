@@ -228,7 +228,12 @@
       </div>
     </div>
     <div class="os-content preview-content">
-      <embed src="assets/resume.pdf" type="application/pdf" width="100%" height="100%">
+      <div id="pdf-viewer-container">
+        <div id="pdf-loader">
+          <div class="spinner"></div>
+          <p>Loading Resume...</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -265,6 +270,11 @@
   </div>
 
   <!-- load order: content → commands → terminal → boot -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <script src="js/pdf-viewer.js"></script>
   <script src="js/content.js"></script>
   <script src="js/commands.js"></script>
   <script src="js/terminal.js"></script>

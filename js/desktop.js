@@ -203,33 +203,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  function openIcon(icon) {
+    const targetId = icon.dataset.target;
+    const win = document.getElementById(targetId);
+    if (!win) return;
+    
+    win.classList.remove('hidden');
+    win.classList.remove('minimized');
+    bringToFront(win);
+    
+    // If it's a folder targeting a section in Safari (the portfolio window)
+    if (icon.classList.contains('desktop-folder') && targetId === 'portfolio-window') {
+      const targetSection = icon.dataset.targetSection;
+      setTimeout(() => {
+        const osContent = win.querySelector('.os-content');
+        const sectionEl = win.querySelector(`#${targetSection}`);
+        if (sectionEl && osContent) {
+           osContent.scrollTo({
+             top: sectionEl.offsetTop - 60, // offset for navbar
+             behavior: 'smooth'
+           });
+        }
+      }, 100);
+    }
+  }
+
   // 5. Desktop Icons (Folders & Files)
   const desktopIcons = document.querySelectorAll('.desktop-folder, .desktop-file');
   desktopIcons.forEach(icon => {
-    icon.addEventListener('dblclick', () => {
-      const targetId = icon.dataset.target;
-      const win = document.getElementById(targetId);
-      if (!win) return;
-      
-      win.classList.remove('hidden');
-      win.classList.remove('minimized');
-      bringToFront(win);
-      
-      // If it's a folder targeting a section in Safari (the portfolio window)
-      if (icon.classList.contains('desktop-folder') && targetId === 'portfolio-window') {
-        const targetSection = icon.dataset.targetSection;
-        setTimeout(() => {
-          const osContent = win.querySelector('.os-content');
-          const sectionEl = win.querySelector(`#${targetSection}`);
-          if (sectionEl && osContent) {
-             osContent.scrollTo({
-               top: sectionEl.offsetTop - 60, // offset for navbar
-               behavior: 'smooth'
-             });
-          }
-        }, 100);
-      }
+    // Desktop: Double Click
+    icon.addEventListener('dblclick', () => openIcon(icon));
+
+    // Mobile/Touch: Single tap support
+    icon.addEventListener('click', (e) => {
+      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      if (isTouch) enableIconTap(icon);
     });
+
+    function enableIconTap(icon) {
+      openIcon(icon);
+    }
 
     icon.addEventListener('mousedown', (e) => {
       e.preventDefault(); // Prevents text selection
@@ -241,15 +254,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 6. Resume Download Logic
   const downloadBtn = document.getElementById('download-resume-btn');
+  const mobileOpenBtn = document.getElementById('mobile-open-resume');
+  
+  function downloadResume() {
+    const link = document.createElement('a');
+    link.href = 'assets/resume.pdf';
+    link.download = 'Himalaya_Gupta_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   if (downloadBtn) {
     downloadBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const link = document.createElement('a');
-      link.href = 'assets/resume.pdf';
-      link.download = 'Himalaya_Gupta_Resume.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      downloadResume();
+    });
+  }
+
+  if (mobileOpenBtn) {
+    mobileOpenBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.open('assets/resume.pdf', '_blank');
     });
   }
 

@@ -661,31 +661,6 @@ body.desktop-mode {
   }
 }
 
-/* ── PDF Preview Window ────────────────────────────────────── */
-#resume-window {
-  width: 800px;
-  height: 90vh;
-  left: 15%;
-  top: 52px; /* Just below top bar */
-}
-
-.preview-toolbar {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.preview-content {
-  background: #525659; /* Standard PDF viewer dark background */
-  padding: 0 !important;
-  overflow: hidden !important;
-}
-
-.preview-content embed {
-  border: none;
-}
-
 /* ── Desktop Files ─────────────────────────────────────────── */
 .desktop-file {
   display: flex;
@@ -731,4 +706,73 @@ body.desktop-mode {
 
 .desktop-file:focus span, .desktop-file:active span {
   background: var(--acc, #3b82f6);
+}
+
+/* ── PDF Preview Window ────────────────────────────────────── */
+#resume-window {
+  width: 800px;
+  height: 90vh;
+  left: 15%;
+  top: 52px; /* Just below top bar */
+}
+
+.preview-toolbar {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-content {
+  background: #323639 !important; /* Mac Preview dark theme */
+  padding: 0 !important;
+  overflow-y: auto !important;
+  display: block !important;
+}
+
+#pdf-viewer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  gap: 24px;
+  width: 100%;
+}
+
+.pdf-page {
+  box-shadow: 0 15px 45px rgba(0,0,0,0.4);
+  max-width: 100%;
+  height: auto !important;
+  background: white;
+}
+
+#pdf-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: white;
+  width: 100%;
+}
+
+.spinner {
+  width: 24px; height: 24px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  #resume-window {
+    width: 94vw !important;
+    height: 75vh !important;
+    left: 3vw !important;
+    top: 60px !important;
+  }
 }
