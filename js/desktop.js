@@ -176,6 +176,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // 5. Desktop Folders
+  const folders = document.querySelectorAll('.desktop-folder');
+  folders.forEach(folder => {
+    folder.addEventListener('dblclick', () => {
+      const targetSection = folder.dataset.target;
+      const guiWin = document.getElementById('portfolio-window');
+      if (!guiWin) return;
+      
+      // Make sure GUI is not hidden or minimized
+      guiWin.classList.remove('hidden');
+      guiWin.classList.remove('minimized');
+      bringToFront(guiWin);
+      
+      // Attempt to scroll GUI to the correct section (delaying slightly if it just rendered)
+      setTimeout(() => {
+        const osContent = guiWin.querySelector('.os-content');
+        const sectionEl = guiWin.querySelector(`#${targetSection}`);
+        if (sectionEl && osContent) {
+           // We scroll the .os-content container
+           osContent.scrollTo({
+             top: sectionEl.offsetTop - 60, // offset for navbar
+             behavior: 'smooth'
+           });
+        }
+      }, 100);
+    });
+
+    folder.addEventListener('mousedown', (e) => {
+      e.preventDefault(); // Prevents text selection
+      folders.forEach(f => f.classList.remove('selected'));
+      folder.style.background = 'rgba(255, 255, 255, 0.2)';
+      e.stopPropagation();
+    });
+  });
+
+  // Click desktop to deselect folders
+  document.body.addEventListener('mousedown', (e) => {
+    if (!e.target.closest('.desktop-folder')) {
+      folders.forEach(f => f.style.background = '');
+    }
+  });
+
   // Start with Terminal active and Safari active
   const startTerminal = document.getElementById('terminal-window');
   if (startTerminal) bringToFront(startTerminal);

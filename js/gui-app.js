@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const root = document.getElementById("gui-root");
+  const wrapper = root?.parentElement; // .os-content
   if (!root || !window.CONTENT) return;
 
   const data = window.CONTENT;
@@ -84,9 +85,84 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
 
   // Mount to DOM
-  root.innerHTML = heroHtml + experienceHtml + projectsHtml + skillsHtml;
+  root.innerHTML = `<div class="gui-wrapper">${heroHtml + experienceHtml + projectsHtml + skillsHtml}</div>`;
 
-  // Fade-in observer
+  // ── Interactivity ──
+
+  // 1. Cursor Glow Tracking
+  const guiWrapper = document.querySelector('.gui-wrapper');
+  if (wrapper && guiWrapper) {
+    wrapper.addEventListener("mousemove", (e) => {
+      const rect = wrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      guiWrapper.style.setProperty('--mouse-x', `${x}px`);
+      guiWrapper.style.setProperty('--mouse-y', `${y}px`);
+    });
+  }
+
+  // 2. 3D Tilt Cards
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      // Mouse position within card
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Calculate rotation (-10deg to 10deg)
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+      
+      // Update glare target
+      card.style.setProperty('--tgt-x', `${x}px`);
+      card.style.setProperty('--tgt-y', `${y}px`);
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+      card.style.setProperty('--tgt-x', `-100px`);
+      card.style.setProperty('--tgt-y', `-100px`);
+    });
+  });
+
+  // 3. Navbar Scroll effects
+  const navbar = document.querySelector('.navbar');
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  if (wrapper && navbar) {
+    wrapper.addEventListener('scroll', () => {
+      // Shrink header
+      if (wrapper.scrollTop > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      // Active link highlighting
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (wrapper.scrollTop >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  }
+
+  // 4. Fade-in observer
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -96,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('section').forEach(sec => {
+  sections.forEach(sec => {
     observer.observe(sec);
   });
 });

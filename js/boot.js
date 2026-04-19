@@ -20,7 +20,6 @@
   <span class="acc">${CONTENT.title}</span>
   <span class="dim">──────────────────────────────────────────────</span>
   Type <span class="blu">help</span> to see available commands.
-  Type <span class="blu">tour</span> to start the automated profile tour.
 `;
 
   const output = document.getElementById("output");
@@ -96,14 +95,7 @@
     sessionStorage.setItem("booted", "1");
     Terminal.enablePrompt();
 
-    // Wait 1 second before showing system notice
-    await sleep(1000);
-
-    // Wait 1 second before showing system notice
-    await sleep(500);
-
-    // Call the centralized tour runner
-    await Terminal.runTour();
+    Terminal.showQuickActions();
   }
 
   // ── instant boot (revisit in same session) ────────────────────────────────
