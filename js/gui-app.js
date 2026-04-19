@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <div class="card-links">
               ${proj.links.github ? `<a href="${proj.links.github}" target="_blank">GitHub →</a>` : ''}
-              ${proj.links.live ? `<a href="${proj.links.live}" target="_blank">Live App →</a>` : ''}
+              ${proj.links.live ? `<a href="${proj.links.live}" onclick="window.safariNavigate('${proj.links.live}'); return false;">Live App →</a>` : ''}
+              ${proj.links.view ? `<a href="${proj.links.view}" onclick="window.safariNavigate('${proj.links.view}'); return false;">View →</a>` : ''}
+              ${proj.links.playground ? `<a href="${proj.links.playground}" onclick="window.safariNavigate('${proj.links.playground}'); return false;">Playground →</a>` : ''}
             </div>
           </div>
         `).join('')}

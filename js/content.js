@@ -51,22 +51,22 @@ AWS Certified Developer – Associate.`,
 
   projects: [
     {
-      name:        "ApplyPilot",
-      description: "Production-grade AI job application platform that automates job discovery and applications across Naukri, LinkedIn, and Instahyre with intelligent filtering, deduplication, and real-time tracking.",
-      tech:        ["Node.js", "React.js", "Playwright", "Mistral", "MongoDB", "OAuth"],
-      links:       { github: "https://github.com/himalaya0035/ApplyPilot", live: "" }
-    },
-    {
       name:        "GitPilot",
       description: "Visual Git workflow automation platform — design and execute complex Git pipelines through drag-and-drop with real-time WebSocket execution tracking.",
       tech:        ["Node.js", "Express", "Socket.IO", "React.js", "React Flow"],
-      links:       { github: "", live: "https://gitpilot.online" }
+      links:       { view: "https://himalaya0035.github.io/gitpilot-landing/", playground: "https://himalaya0035.github.io/GitPilot/" }
     },
     {
       name:        "React JSON Editor",
       description: "Modular JSON editor library with inline editing, dynamic type-based rendering, and JSON path validations. 1.5K+ npm downloads.",
       tech:        ["React.js", "TypeScript", "Tailwind CSS"],
-      links:       { github: "https://github.com/himalaya0035/react-json-editor", live: "" }
+      links:       { github: "https://github.com/himalaya0035/react-json-editor", live: "https://himalaya0035.github.io/react-json-editor-alt/" }
+    },
+    {
+      name:        "ApplyPilot",
+      description: "Production-grade AI job application platform that automates job discovery and applications across Naukri, LinkedIn, and Instahyre with intelligent filtering, deduplication, and real-time tracking.",
+      tech:        ["Node.js", "React.js", "Playwright", "Mistral", "MongoDB", "OAuth"],
+      links:       { github: "https://github.com/himalaya0035/ApplyPilot", live: "https://himalaya0035.github.io/ApplyAI-LandingPage/" }
     }
   ],
 

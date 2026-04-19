@@ -15,12 +15,12 @@ body.desktop-mode {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #080d14;
-  /* Apply star field to the entire wallpaper */
-  background-image: var(--star-field-url);
-  background-size: 300px 300px;
-  background-repeat: repeat;
-  animation: animateBg 60s linear infinite;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url('../assets/background.webp');
+  background-size: cover;
+  background-position: center;
+  /* animation removed to keep the static wallpaper clean */
 }
 
 @keyframes animateBg {
@@ -69,23 +69,6 @@ body.desktop-mode {
 .shooting-star-layer span:nth-child(4) { top: 0; right: 30%; left: initial; animation-delay: 8s; animation-duration: 7s; }
 .shooting-star-layer span:nth-child(5) { top: 300px; right: 10%; left: initial; animation-delay: 11s; animation-duration: 6s; }
 
-.wallpaper-text {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 15vw;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  
-  /* Glassy floating style on top of stars */
-  color: rgba(255, 255, 255, 0.05); /* Very subtle transparent fill */
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15); /* Sleek outline */
-  text-shadow: 0 0 40px rgba(88, 166, 255, 0.1); 
-  
-  user-select: none;
-  z-index: 1;
-  opacity: 0.8;
-}
 
 .os-content {
   flex: 1;
@@ -511,7 +494,7 @@ body.desktop-mode {
 /* More subtle magnification for neighbors to keep it smooth */
 .icon:hover + .icon, 
 .icon:has(+ .icon:hover) {
-  transform: scale(1.2) translateY(2px);
+  transform: scale(1.5) translateY(2px);
   /* margin: 0 12px; */
 }
 

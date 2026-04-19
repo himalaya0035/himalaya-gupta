@@ -114,5 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     urlInput.select();
   });
 
+  window.safariNavigate = navigate;
   updateNavButtons();
 });
