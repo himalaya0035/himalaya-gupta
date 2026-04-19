@@ -73,26 +73,38 @@
 
   <!-- Desktop Folders Layout -->
   <div id="desktop-grid">
-    <div class="desktop-folder" data-target="projects">
+    <div class="desktop-folder" data-target="portfolio-window" data-target-section="projects">
       <svg class="folder-svg" viewBox="0 0 100 100">
         <path d="M10,25 L35,25 L45,35 L90,35 C95.5,35 100,39.5 100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,35 C0,29.5 4.5,25 10,25 Z" fill="#60a5fa" />
         <path d="M0,45 L100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,45 Z" fill="#3b82f6" />
       </svg>
       <span>Projects</span>
     </div>
-    <div class="desktop-folder" data-target="experience">
+    <div class="desktop-folder" data-target="portfolio-window" data-target-section="experience">
       <svg class="folder-svg" viewBox="0 0 100 100">
         <path d="M10,25 L35,25 L45,35 L90,35 C95.5,35 100,39.5 100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,35 C0,29.5 4.5,25 10,25 Z" fill="#60a5fa" />
         <path d="M0,45 L100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,45 Z" fill="#3b82f6" />
       </svg>
       <span>Experience</span>
     </div>
-    <div class="desktop-folder" data-target="skills">
+    <div class="desktop-folder" data-target="portfolio-window" data-target-section="skills">
       <svg class="folder-svg" viewBox="0 0 100 100">
         <path d="M10,25 L35,25 L45,35 L90,35 C95.5,35 100,39.5 100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,35 C0,29.5 4.5,25 10,25 Z" fill="#60a5fa" />
         <path d="M0,45 L100,45 L100,90 C100,95.5 95.5,100 90,100 L10,100 C4.5,100 0,95.5 0,90 L0,45 Z" fill="#3b82f6" />
       </svg>
       <span>Skills</span>
+    </div>
+    <div class="desktop-file" data-target="resume-window">
+      <div class="file-icon white">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="#fff" stroke="rgba(0,0,0,0.1)" stroke-width="0.5">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </div>
+      <span>Resume.pdf</span>
     </div>
   </div>
 
@@ -197,6 +209,26 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- PDF Preview Window -->
+  <div id="resume-window" class="os-window hidden" data-app-title="Preview">
+    <div class="os-title-bar">
+      <div class="traffic-lights">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span class="os-title-text">resume.pdf</span>
+      <div class="preview-toolbar">
+        <button id="download-resume-btn" class="safari-btn" title="Download Resume">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+      </div>
+    </div>
+    <div class="os-content preview-content">
+      <embed src="assets/resume.pdf" type="application/pdf" width="100%" height="100%">
     </div>
   </div>
 

@@ -203,45 +203,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 5. Desktop Folders
-  const folders = document.querySelectorAll('.desktop-folder');
-  folders.forEach(folder => {
-    folder.addEventListener('dblclick', () => {
-      const targetSection = folder.dataset.target;
-      const guiWin = document.getElementById('portfolio-window');
-      if (!guiWin) return;
+  // 5. Desktop Icons (Folders & Files)
+  const desktopIcons = document.querySelectorAll('.desktop-folder, .desktop-file');
+  desktopIcons.forEach(icon => {
+    icon.addEventListener('dblclick', () => {
+      const targetId = icon.dataset.target;
+      const win = document.getElementById(targetId);
+      if (!win) return;
       
-      // Make sure GUI is not hidden or minimized
-      guiWin.classList.remove('hidden');
-      guiWin.classList.remove('minimized');
-      bringToFront(guiWin);
+      win.classList.remove('hidden');
+      win.classList.remove('minimized');
+      bringToFront(win);
       
-      // Attempt to scroll GUI to the correct section (delaying slightly if it just rendered)
-      setTimeout(() => {
-        const osContent = guiWin.querySelector('.os-content');
-        const sectionEl = guiWin.querySelector(`#${targetSection}`);
-        if (sectionEl && osContent) {
-           // We scroll the .os-content container
-           osContent.scrollTo({
-             top: sectionEl.offsetTop - 60, // offset for navbar
-             behavior: 'smooth'
-           });
-        }
-      }, 100);
+      // If it's a folder targeting a section in Safari (the portfolio window)
+      if (icon.classList.contains('desktop-folder') && targetId === 'portfolio-window') {
+        const targetSection = icon.dataset.targetSection;
+        setTimeout(() => {
+          const osContent = win.querySelector('.os-content');
+          const sectionEl = win.querySelector(`#${targetSection}`);
+          if (sectionEl && osContent) {
+             osContent.scrollTo({
+               top: sectionEl.offsetTop - 60, // offset for navbar
+               behavior: 'smooth'
+             });
+          }
+        }, 100);
+      }
     });
 
-    folder.addEventListener('mousedown', (e) => {
+    icon.addEventListener('mousedown', (e) => {
       e.preventDefault(); // Prevents text selection
-      folders.forEach(f => f.classList.remove('selected'));
-      folder.style.background = 'rgba(255, 255, 255, 0.2)';
+      desktopIcons.forEach(f => f.style.background = '');
+      icon.style.background = 'rgba(255, 255, 255, 0.2)';
       e.stopPropagation();
     });
   });
 
-  // Click desktop to deselect folders
+  // 6. Resume Download Logic
+  const downloadBtn = document.getElementById('download-resume-btn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const link = document.createElement('a');
+      link.href = 'assets/resume.pdf';
+      link.download = 'Himalaya_Gupta_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
+  // Click desktop to deselect icons
   document.body.addEventListener('mousedown', (e) => {
-    if (!e.target.closest('.desktop-folder')) {
-      folders.forEach(f => f.style.background = '');
+    if (!e.target.closest('.desktop-folder') && !e.target.closest('.desktop-file')) {
+      desktopIcons.forEach(f => f.style.background = '');
     }
   });
 
