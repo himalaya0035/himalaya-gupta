@@ -6,6 +6,27 @@ body.desktop-mode {
   overflow: hidden; /* Desktop shouldn't scroll */
 }
 
+/* ── Skip Link (Accessibility) ─────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  background: var(--acc, #00ff9d);
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 999999;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 40px;
+}
+
 /* ── Graphical Boot Screen ─────────────────────────────────── */
 #boot-screen {
   position: fixed;

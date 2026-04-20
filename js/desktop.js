@@ -170,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         win.classList.remove('hidden');
         win.classList.remove('minimized');
         bringToFront(win);
+        lazyLoadIframe(win);
       } else {
         // If it's already active and in front, minimize it
         if (win.classList.contains('active')) {
@@ -202,6 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     win.classList.remove('hidden');
     win.classList.remove('minimized');
     bringToFront(win);
+    lazyLoadIframe(win);
     
     // If it's a folder targeting a section in Safari (the portfolio window)
     if (icon.classList.contains('desktop-folder') && targetId === 'portfolio-window') {
@@ -246,8 +248,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // Listen for apps opened via Spotlight
   document.addEventListener('open-app', (e) => {
     const win = document.getElementById(e.detail.id);
-    if (win) bringToFront(win);
+    if (win) {
+      bringToFront(win);
+      lazyLoadIframe(win);
+    }
   });
+
+  // Lazy-load iframes on first window open
+  function lazyLoadIframe(win) {
+    const iframe = win.querySelector('.lazy-iframe');
+    if (iframe && !iframe.src && iframe.dataset.src) {
+      iframe.src = iframe.dataset.src;
+      iframe.classList.remove('lazy-iframe');
+    }
+  }
 
   // 6. Resume Download Logic
   const downloadBtn = document.getElementById('download-resume-btn');

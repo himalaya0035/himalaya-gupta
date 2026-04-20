@@ -4,7 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Himalaya Gupta — Desktop OS</title>
-  <meta name="description" content="Himalaya Gupta — Senior Full-Stack Engineer" />
+  <meta name="description" content="Himalaya Gupta — Senior Full-Stack Engineer. Interactive macOS-inspired desktop OS portfolio built with vanilla JavaScript." />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Himalaya Gupta — Desktop OS Portfolio" />
+  <meta property="og:description" content="Senior Full-Stack Engineer. Explore my interactive macOS-inspired portfolio — complete with a terminal, apps, and more." />
+  <meta property="og:image" content="assets/background.webp" />
+  <meta property="og:url" content="https://himalayagupta.com" />
+  <meta property="og:site_name" content="Himalaya Gupta" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Himalaya Gupta — Desktop OS Portfolio" />
+  <meta name="twitter:description" content="Senior Full-Stack Engineer. Interactive macOS-inspired portfolio built with vanilla JS." />
+  <meta name="twitter:image" content="assets/background.webp" />
+
+  <!-- Additional SEO -->
+  <meta name="author" content="Himalaya Gupta" />
+  <meta name="keywords" content="Himalaya Gupta, Senior Software Engineer, Node.js, React, Full-Stack Developer, Portfolio" />
+  <meta name="theme-color" content="#0d1117" />
 
   <!-- Favicon: simple > in a box -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230d1117'/%3E%3Ctext x='4' y='24' font-family='monospace' font-size='22' fill='%2300ff9d'%3E%3E_%3C/text%3E%3C/svg%3E" />
@@ -36,6 +55,9 @@
   </script>
 </head>
 <body class="desktop-mode">
+  <!-- Skip to content for accessibility -->
+  <a href="#terminal" class="skip-link">Skip to Terminal</a>
+
   <div id="mobile-fullscreen-prompt" class="hidden">
     <div class="fs-content">
       <h2>Enter Fullscreen</h2>
@@ -253,7 +275,7 @@
       <span class="os-title-text">GitPilot</span>
     </div>
     <div class="os-content app-iframe-container">
-      <iframe src="https://himalaya0035.github.io/GitPilot/" class="app-iframe" title="GitPilot App"></iframe>
+      <iframe data-src="https://himalaya0035.github.io/GitPilot/" class="app-iframe lazy-iframe" title="GitPilot App"></iframe>
     </div>
   </div>
 
@@ -268,7 +290,7 @@
       <span class="os-title-text">JSON Editor</span>
     </div>
     <div class="os-content app-iframe-container">
-      <iframe src="https://himalaya0035.github.io/react-json-editor-alt/" class="app-iframe" title="JSON Editor App"></iframe>
+      <iframe data-src="https://himalaya0035.github.io/react-json-editor-alt/" class="app-iframe lazy-iframe" title="JSON Editor App"></iframe>
     </div>
   </div>
 
@@ -398,13 +420,13 @@
 
   <div class="dock">
     <!-- Terminal -->
-    <button class="icon active" data-title="Terminal" data-target="terminal-window" style="cursor: pointer;">
+    <button class="icon active" data-title="Terminal" data-target="terminal-window" style="cursor: pointer;" aria-label="Open Terminal">
       <div style="width: 36px; height: 36px; background: #222; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #00ff9d; font-family: monospace; font-weight: bold; border: 1px solid #444;">>_</div>
       <hr class="point" id="point-terminal">
     </button>
 
     <!-- Safari / Portfolio -->
-    <button class="icon" data-title="Safari" data-target="portfolio-window" style="cursor: pointer;">
+    <button class="icon" data-title="Safari" data-target="portfolio-window" style="cursor: pointer;" aria-label="Open Safari">
        <svg viewBox="0 0 100 100" width="40" height="40">
           <defs>
             <linearGradient id="discGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -428,7 +450,7 @@
     </button>
 
     <!-- GitPilot -->
-    <button class="icon" data-title="GitPilot" data-target="gitpilot-window" style="cursor: pointer;">
+    <button class="icon" data-title="GitPilot" data-target="gitpilot-window" style="cursor: pointer;" aria-label="Open GitPilot">
       <div style="width: 36px; height: 36px; background: #6e5494; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid rgba(255,255,255,0.2);">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg>
       </div>
@@ -436,7 +458,7 @@
     </button>
 
     <!-- JSON Editor -->
-    <button class="icon" data-title="JSON Editor" data-target="json-editor-window" style="cursor: pointer;">
+    <button class="icon" data-title="JSON Editor" data-target="json-editor-window" style="cursor: pointer;" aria-label="Open JSON Editor">
       <div style="width: 36px; height: 36px; background: #61dafb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #282c34; border: 1px solid rgba(255,255,255,0.2);">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1"></path><path d="M16 21h1a2 2 0 0 0 2-2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"></path></svg>
       </div>
@@ -444,7 +466,7 @@
     </button>
 
     <!-- Wallpaper -->
-    <button class="icon" data-title="Wallpaper" data-target="wallpaper-window" style="cursor: pointer;">
+    <button class="icon" data-title="Wallpaper" data-target="wallpaper-window" style="cursor: pointer;" aria-label="Open Wallpaper Settings">
       <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #FF9500, #FF5E00); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid rgba(255,255,255,0.2);">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
       </div>
@@ -452,13 +474,13 @@
     </button>
 
     <!-- Calculator -->
-    <button class="icon" data-title="Calculator" data-target="calculator-window" style="cursor: pointer;">
+    <button class="icon" data-title="Calculator" data-target="calculator-window" style="cursor: pointer;" aria-label="Open Calculator">
       <img src="assets/calculator.webp" alt="Calculator" style="width: 36px; height: 36px; border-radius: 8px;">
       <hr class="point hidden" id="point-calculator">
     </button>
 
     <!-- Messages -->
-    <button class="icon" data-title="Messages" data-target="imessage-window" style="cursor: pointer;">
+    <button class="icon" data-title="Messages" data-target="imessage-window" style="cursor: pointer;" aria-label="Open Messages">
       <img src="assets/imessage.png" alt="Messages" style="width: 36px; height: 36px; border-radius: 8px;">
       <hr class="point hidden" id="point-imessage">
     </button>
