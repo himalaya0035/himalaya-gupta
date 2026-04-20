@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { label: 'Zoom', action: maximizeActiveWindow }
       ],
       help: [
-        { label: 'View on GitHub', action: () => window.open('https://github.com/himalaya0035/react-json-editor', '_blank') }
+        { label: 'View on GitHub', action: () => window.open('https://github.com/himalaya0035/react-json-editor-alt', '_blank') }
       ]
     },
     'Wallpapers': {

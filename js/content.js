@@ -60,13 +60,13 @@ AWS Certified Developer – Associate.`,
       name:        "React JSON Editor",
       description: "Modular JSON editor library with inline editing, dynamic type-based rendering, and JSON path validations. 1.5K+ npm downloads.",
       tech:        ["React.js", "TypeScript", "Tailwind CSS"],
-      links:       { github: "https://github.com/himalaya0035/react-json-editor", live: "https://himalaya0035.github.io/react-json-editor-alt/" }
+      links:       { github: "https://github.com/himalaya0035/react-json-editor-alt", live: "https://himalaya0035.github.io/react-json-editor-alt/" }
     },
     {
       name:        "ApplyPilot",
       description: "Production-grade AI job application platform that automates job discovery and applications across Naukri, LinkedIn, and Instahyre with intelligent filtering, deduplication, and real-time tracking.",
       tech:        ["Node.js", "React.js", "Playwright", "Mistral", "MongoDB", "OAuth"],
-      links:       { github: "https://github.com/himalaya0035/ApplyPilot", live: "https://himalaya0035.github.io/ApplyAI-LandingPage/" }
+      links:       { live: "https://himalaya0035.github.io/ApplyAI-LandingPage/" }
     }
   ],
 
