@@ -70,10 +70,66 @@
   </div>
   
   
+  <!-- Lock Screen -->
+  <div id="lock-screen" class="hidden">
+    <div class="lock-wallpaper"></div>
+    <div class="lock-content">
+      <div class="lock-time-display">
+        <div id="lock-time">10:30 AM</div>
+        <div id="lock-date">Tuesday, April 21</div>
+      </div>
+      <div class="lock-user">
+        <div class="lock-avatar">HG</div>
+        <div class="lock-name">Himalaya Gupta</div>
+        <form id="lock-form" autocomplete="off">
+          <input type="password" id="lock-password" placeholder="Enter Password" autocomplete="off" spellcheck="false" />
+        </form>
+        <div class="lock-hint">Type anything and press Enter</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About the Developer Window -->
+  <div id="about-window" class="os-window hidden" data-app-title="About the Developer">
+    <div class="os-title-bar">
+      <div class="traffic-lights">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span class="os-title-text">About the Developer</span>
+    </div>
+    <div class="os-content about-content">
+      <div class="about-sidebar">
+        <a href="https://github.com/himalaya0035" target="_blank" class="about-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/himalayagupta03" target="_blank" class="about-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:guptahimalaya2@gmail.com" class="about-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </a>
+      </div>
+      <div class="about-main">
+        <div class="about-avatar"><img src="assets/profilepic.jpg" alt="Himalaya Gupta" class="about-avatar-img" /></div>
+        <h1 class="about-name">Hi, I'm Himalaya</h1>
+        <p class="about-tagline">I'm the creator of this Desktop OS you're on right now 😉</p>
+        <p class="about-bio">I'm a Senior Software Engineer with 3+ years of experience. I work primarily with Node.js, React, and cloud-native architecture, building systems that serve hundreds of thousands of users reliably.</p>
+        <p class="about-bio">Backend engineering is where I'm most at home. Event-driven services, API design, authentication, real-time systems with WebSockets and Kafka. I've led small engineering teams, shipped 20+ features end-to-end, and built open-source tools that developers actually use.</p>
+        <p class="about-bio">AWS Certified Developer. Hackathon winner. 300+ LeetCode problems solved. And this desktop OS you're browsing right now? Vanilla JavaScript, no frameworks.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Graphical Boot Screen -->
   <div id="boot-screen">
     <div class="boot-content">
       <div class="boot-logo">HG</div>
+      <div class="boot-tagline">Himalaya Gupta</div>
       <div class="boot-progress-container">
         <div id="boot-progress-bar"></div>
       </div>
@@ -465,12 +521,10 @@
       <hr class="point hidden" id="point-json-editor">
     </button>
 
-    <!-- Wallpaper -->
-    <button class="icon" data-title="Wallpaper" data-target="wallpaper-window" style="cursor: pointer;" aria-label="Open Wallpaper Settings">
-      <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #FF9500, #FF5E00); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; border: 1px solid rgba(255,255,255,0.2);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-      </div>
-      <hr class="point hidden" id="point-wallpaper">
+    <!-- About the Developer -->
+    <button class="icon" data-title="About Me" data-target="about-window" style="cursor: pointer;" aria-label="About the Developer">
+      <div style="width: 36px; height: 36px; background: linear-gradient(135deg, var(--acc, #00ff9d), #58a6ff); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #000; font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; border: 1px solid rgba(255,255,255,0.2);">HG</div>
+      <hr class="point hidden" id="point-about">
     </button>
 
     <!-- Calculator -->
@@ -495,38 +549,46 @@
   <script src="js/content.js"></script>
   <script src="js/commands.js"></script>
   <script src="js/terminal.js"></script>
+  <script src="js/lockscreen.js"></script>
   <script src="js/boot.js"></script>
   <script>
-    // Fullscreen Prompt Logic (Desktop & Mobile)
-    const fsPrompt = document.getElementById('mobile-fullscreen-prompt');
-    const fsBtn = document.getElementById('go-fullscreen-btn');
-    const fsClose = document.getElementById('close-fullscreen-prompt');
+    // Fullscreen: show prompt only on first-ever visit
+    (function() {
+      const fsPrompt = document.getElementById('mobile-fullscreen-prompt');
+      const fsBtn = document.getElementById('go-fullscreen-btn');
+      const fsClose = document.getElementById('close-fullscreen-prompt');
 
-    if (fsPrompt) {
-      setTimeout(() => {
-        if (!document.fullscreenElement) {
-          fsPrompt.classList.remove('hidden');
+      // Global toggle for menu bar
+      window.toggleFullScreen = function() {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          document.documentElement.requestFullscreen().catch(() => {});
         }
-      }, 1000);
-    }
+      };
 
-    if (fsBtn) {
-      fsBtn.addEventListener('click', () => {
-        const doc = document.documentElement;
-        if (doc.requestFullscreen) doc.requestFullscreen();
-        else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
-        else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
-        if (fsPrompt) fsPrompt.classList.add('hidden');
-        localStorage.setItem('fullscreen-prompt-dismissed', 'true');
-      });
-    }
+      // Only show prompt if never dismissed before
+      if (fsPrompt && !localStorage.getItem('fullscreen-prompt-dismissed')) {
+        setTimeout(() => {
+          if (!document.fullscreenElement) fsPrompt.classList.remove('hidden');
+        }, 1500);
+      }
 
-    if (fsClose) {
-      fsClose.addEventListener('click', () => {
-        if (fsPrompt) fsPrompt.classList.add('hidden');
-        localStorage.setItem('fullscreen-prompt-dismissed', 'true');
-      });
-    }
+      if (fsBtn) {
+        fsBtn.addEventListener('click', () => {
+          document.documentElement.requestFullscreen().catch(() => {});
+          if (fsPrompt) fsPrompt.classList.add('hidden');
+          localStorage.setItem('fullscreen-prompt-dismissed', 'true');
+        });
+      }
+
+      if (fsClose) {
+        fsClose.addEventListener('click', () => {
+          if (fsPrompt) fsPrompt.classList.add('hidden');
+          localStorage.setItem('fullscreen-prompt-dismissed', 'true');
+        });
+      }
+    })();
   </script>
   <script src="js/gui-app.js"></script>
   <script src="js/desktop.js"></script>

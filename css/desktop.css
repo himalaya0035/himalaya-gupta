@@ -53,8 +53,17 @@ body.desktop-mode {
   color: #fff;
   font-size: 64px;
   font-weight: 800;
-  margin-bottom: 40px;
+  margin-bottom: 12px;
   letter-spacing: -2px;
+}
+
+.boot-tagline {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  margin-bottom: 32px;
 }
 
 .boot-progress-container {
@@ -406,6 +415,16 @@ body.desktop-mode {
 .menu-item:hover {
   background: #0061d5;
   color: white;
+}
+
+.menu-item.disabled {
+  color: rgba(255, 255, 255, 0.25);
+  cursor: default;
+}
+
+.menu-item.disabled:hover {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.25);
 }
 
 .menu-item.divider {
@@ -2302,4 +2321,262 @@ body.desktop-mode {
   white-space: nowrap;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   pointer-events: none;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   LOCK SCREEN
+   ══════════════════════════════════════════════════════════════════════ */
+
+#lock-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 500000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#lock-screen.hidden { display: none !important; }
+
+#lock-screen.unlock-animation {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.lock-wallpaper {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('../assets/background.webp');
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) brightness(0.5) saturate(1.5);
+  transform: scale(1.1);
+}
+
+.lock-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  animation: lockFadeIn 0.8s ease;
+}
+
+@keyframes lockFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lock-time-display { text-align: center; }
+
+#lock-time {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: 96px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -3px;
+  line-height: 1;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+}
+
+#lock-date {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  margin-top: 8px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.lock-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.lock-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.lock-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+#lock-form { margin: 0; }
+
+#lock-password {
+  width: 220px; height: 36px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 18px;
+  padding: 0 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#lock-password::placeholder { color: rgba(255,255,255,0.4); }
+#lock-password:focus { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.18); }
+
+#lock-password.shake { animation: lockShake 0.5s ease; }
+
+@keyframes lockShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-12px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(6px); }
+}
+
+.lock-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+}
+
+@media (max-width: 768px) {
+  #lock-time { font-size: 56px; }
+  #lock-date { font-size: 16px; }
+  .lock-content { gap: 40px; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   ABOUT THE DEVELOPER WINDOW
+   ══════════════════════════════════════════════════════════════════════ */
+
+#about-window {
+  width: 900px;
+  height: 620px;
+  max-width: 95vw;
+  max-height: 85vh;
+  top: 10%;
+  left: 15%;
+}
+
+#about-window .os-content { padding: 0 !important; }
+
+.about-content {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.about-sidebar {
+  width: 160px;
+  background: rgba(30, 30, 35, 0.6);
+  border-right: 0.5px solid rgba(255,255,255,0.08);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.about-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.about-link:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.about-link svg {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.about-main {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  text-align: center;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.about-avatar {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.about-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.about-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.about-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.about-bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 15.5px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.75;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.about-version {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 0.5px solid rgba(255,255,255,0.06);
 }

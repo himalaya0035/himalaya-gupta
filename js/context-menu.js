@@ -75,7 +75,8 @@
         label: 'Get Info',
         shortcut: '⌘I',
         action: () => {
-          alert('Himalaya Gupta — Desktop OS\nVersion 2.0.4\nVanilla JS • CSS3 • HTML5');
+          const win = document.getElementById('about-window');
+          if (win) { win.classList.remove('hidden'); win.classList.remove('minimized'); document.dispatchEvent(new CustomEvent('open-app', { detail: { id: 'about-window' } })); }
         }
       },
       {
@@ -121,8 +122,10 @@
       },
       {
         label: 'Lock Screen',
-        shortcut: '⌃⌘Q',
-        disabled: true
+        shortcut: '⌃⌥Q',
+        action: () => {
+          if (window.LockScreen) window.LockScreen.show();
+        }
       }
     ];
   }
@@ -149,7 +152,7 @@
         label: 'Get Info',
         shortcut: '⌘I',
         action: () => {
-          alert(`${fileName}\nType: PDF Document\nSize: 142 KB`);
+          // No-op — just a visual info display
         }
       },
       {

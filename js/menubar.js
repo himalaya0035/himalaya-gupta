@@ -13,154 +13,200 @@ document.addEventListener("DOMContentLoaded", () => {
   const spotlightResults = document.getElementById('spotlight-results');
   const appNameDisplay = document.querySelector('.active-app-name');
   
+  // ── Helper: get active window ────────────────────────────────────────
+  function getActiveWindow() {
+    const name = appNameDisplay?.textContent;
+    if (!name) return null;
+    return document.querySelector('.os-window.active') || 
+           document.querySelector(`.os-window[data-app-title="${name}"]`);
+  }
+
+  function closeActiveWindow() {
+    const win = getActiveWindow();
+    if (!win) return;
+    win.classList.add('hidden');
+    win.classList.remove('active');
+    const dockItem = document.querySelector(`.dock button.icon[data-target="${win.id}"]`);
+    if (dockItem) {
+      dockItem.classList.remove('active');
+      const point = dockItem.querySelector('.point');
+      if (point) point.classList.add('hidden');
+    }
+  }
+
+  function minimizeActiveWindow() {
+    const win = getActiveWindow();
+    if (!win) return;
+    win.classList.add('minimized');
+    win.classList.remove('active');
+  }
+
+  function maximizeActiveWindow() {
+    const win = getActiveWindow();
+    if (!win) return;
+    win.classList.toggle('maximized');
+  }
+
+  function clearTerminal() {
+    const output = document.getElementById('output');
+    if (output) output.innerHTML = '';
+  }
+
   // ── Menu Data Definitions ──────────────────────────────────────────────
   const appMenus = {
     'Terminal': {
       file: [
-        { label: 'New Window', shortcut: '⌘N' },
-        { label: 'New Tab', shortcut: '⌘T' },
-        { label: 'Open...', shortcut: '⌘O' },
-        { type: 'divider' },
-        { label: 'Save Output...', shortcut: '⌘S' },
-        { type: 'divider' },
-        { label: 'Close Window', shortcut: '⌘W' }
-      ],
-      edit: [
-        { label: 'Copy', shortcut: '⌘C' },
-        { label: 'Paste', shortcut: '⌘V' },
-        { label: 'Clear Scrollback', shortcut: '⌘K' },
-        { type: 'divider' },
-        { label: 'Find...', shortcut: '⌘F' }
-      ],
-      view: [
-        { label: 'Show Inspector', shortcut: '⌥⌘I' },
-        { label: 'Enter Full Screen', shortcut: '⌃⌘F' }
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
       ],
       window: [
-        { label: 'Minimize', shortcut: '⌘M' },
-        { label: 'Zoom' },
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow },
         { type: 'divider' },
-        { label: 'Bring All to Front' }
+        { label: 'Clear Terminal', shortcut: '⌘K', action: clearTerminal }
       ],
       help: [
-        { label: 'Terminal Help' },
-        { label: 'About Shell' }
+        { label: 'Type "help" in Terminal', action: () => {
+          const input = document.getElementById('cmd-input');
+          if (input) { input.value = 'help'; input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' })); }
+        }}
       ]
     },
     'Safari': {
       file: [
-        { label: 'New Window', shortcut: '⌘N' },
-        { label: 'New Private Window', shortcut: '⇧⌘N' },
-        { label: 'Open Location...', shortcut: '⌘L' },
-        { type: 'divider' },
-        { label: 'Close Tab', shortcut: '⌘W' }
-      ],
-      edit: [
-        { label: 'Undo', shortcut: '⌘Z' },
-        { label: 'Redo', shortcut: '⇧⌘Z' },
-        { type: 'divider' },
-        { label: 'Cut', shortcut: '⌘X' },
-        { label: 'Copy', shortcut: '⌘C' },
-        { label: 'Paste', shortcut: '⌘V' }
-      ],
-      view: [
-        { label: 'Reload Page', shortcut: '⌘R' },
-        { label: 'Stop', shortcut: '⌘.' },
-        { type: 'divider' },
-        { label: 'Enter Full Screen', shortcut: '⌃⌘F' }
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
       ],
       window: [
-        { label: 'Minimize', shortcut: '⌘M' },
-        { label: 'Zoom' }
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
       ],
       help: [
-        { label: 'Safari Help' }
+        { label: 'About Safari', action: () => {
+          const win = document.getElementById('about-window');
+          if (win) { win.classList.remove('hidden'); win.classList.remove('minimized'); document.dispatchEvent(new CustomEvent('open-app', { detail: { id: 'about-window' } })); }
+        }}
       ]
     },
     'Preview': {
       file: [
-        { label: 'Open...', shortcut: '⌘O' },
-        { label: 'Export as PDF...' },
+        { label: 'Download PDF', action: () => {
+          const link = document.createElement('a');
+          link.href = 'assets/resume.pdf';
+          link.download = 'Himalaya_Gupta_Resume.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }},
         { type: 'divider' },
-        { label: 'Print...', shortcut: '⌘P' }
-      ],
-      edit: [
-        { label: 'Copy', shortcut: '⌘C' }
-      ],
-      view: [
-        { label: 'Zoom In', shortcut: '⌘+' },
-        { label: 'Zoom Out', shortcut: '⌘-' },
-        { label: 'Actual Size', shortcut: '⌘0' }
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
       ],
       window: [
-        { label: 'Minimize', shortcut: '⌘M' }
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
       ],
       help: [
-        { label: 'Preview Help' }
+        { label: 'Preview Help', disabled: true }
       ]
     },
     'GitPilot': {
-      file: [{ label: 'New Repository' }, { label: 'Clone...' }],
-      edit: [{ label: 'Copy Commit SHA' }],
-      view: [{ label: 'Refresh' }],
-      window: [{ label: 'Minimize' }],
-      help: [{ label: 'Git Documentation' }]
+      file: [
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
+      ],
+      help: [
+        { label: 'View on GitHub', action: () => window.open('https://github.com/himalaya0035/GitPilot', '_blank') }
+      ]
     },
     'JSON Editor': {
-      file: [{ label: 'Import JSON' }, { label: 'Export JSON' }],
-      edit: [{ label: 'Format' }, { label: 'Minify' }],
-      view: [{ label: 'Tree View' }, { label: 'Code View' }],
-      window: [{ label: 'Minimize' }],
-      help: [{ label: 'JSON Schema Help' }]
+      file: [
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
+      ],
+      help: [
+        { label: 'View on GitHub', action: () => window.open('https://github.com/himalaya0035/react-json-editor', '_blank') }
+      ]
     },
     'Wallpapers': {
       file: [
-        { label: 'Import Wallpapers...', shortcut: '⌘I' },
-        { label: 'Export Wallpaper Library...', shortcut: '⌘E' }
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
       ],
       window: [
-        { label: 'Minimize', shortcut: '⌘M' },
-        { label: 'Zoom' }
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
       ],
       help: [
-        { label: 'Wallpapers Help' }
+        { label: 'Wallpapers Help', disabled: true }
       ]
     },
     'Calculator': {
-      file: [{ label: 'Close Window', shortcut: '⌘W' }],
-      edit: [{ label: 'Copy Result', shortcut: '⌘C' }],
-      view: [{ label: 'Basic', shortcut: '⌘1' }, { label: 'Scientific', shortcut: '⌘2', disabled: true }],
-      window: [{ label: 'Minimize', shortcut: '⌘M' }],
-      help: [{ label: 'Calculator Help' }]
+      file: [
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow }
+      ],
+      help: [
+        { label: 'Keyboard shortcuts: 0-9, +, -, *, /, Enter, Esc', disabled: true }
+      ]
     },
     'Messages': {
-      file: [{ label: 'New Message', shortcut: '⌘N' }, { type: 'divider' }, { label: 'Close Window', shortcut: '⌘W' }],
-      edit: [{ label: 'Copy', shortcut: '⌘C' }, { label: 'Paste', shortcut: '⌘V' }],
-      view: [{ label: 'Enter Full Screen', shortcut: '⌃⌘F' }],
-      window: [{ label: 'Minimize', shortcut: '⌘M' }],
-      help: [{ label: 'Messages Help' }]
+      file: [
+        { label: 'Clear Chat History', action: () => {
+          localStorage.removeItem('imessage-history');
+          window.location.reload();
+        }},
+        { type: 'divider' },
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
+      ],
+      help: [
+        { label: 'Messages Help', disabled: true }
+      ]
     }
   };
 
-  const hgMenu = [
-    { label: 'About This Portfolio', action: () => alert('Himalaya Gupta — Senior Full-Stack Engineer\nVersion 2.0.4\nMacOS Inspired OS') },
-    { label: 'System Settings...', shortcut: '⌘,' },
-    { label: 'Wallpaper...', action: () => {
-      const win = document.getElementById('wallpaper-window');
-      if (win) {
-         win.classList.remove('hidden');
-         win.classList.remove('minimized');
-         const event = new CustomEvent('open-app', { detail: { id: 'wallpaper-window' } });
-         document.dispatchEvent(event);
-      }
-    }},
-    { type: 'divider' },
-    { label: 'Sleep' },
-    { label: 'Restart...', action: () => window.location.reload() },
-    { label: 'Shut Down...' },
-    { type: 'divider' },
-    { label: 'Lock Screen', shortcut: '⌃⌘Q' }
-  ];
+  function getHgMenu() {
+    return [
+      { label: 'About the Developer', action: () => {
+        const win = document.getElementById('about-window');
+        if (win) {
+          win.classList.remove('hidden');
+          win.classList.remove('minimized');
+          const event = new CustomEvent('open-app', { detail: { id: 'about-window' } });
+          document.dispatchEvent(event);
+        }
+      }},
+      { type: 'divider' },
+      { label: 'Wallpaper…', action: () => {
+        const win = document.getElementById('wallpaper-window');
+        if (win) {
+           win.classList.remove('hidden');
+           win.classList.remove('minimized');
+           const event = new CustomEvent('open-app', { detail: { id: 'wallpaper-window' } });
+           document.dispatchEvent(event);
+        }
+      }},
+      { label: 'Mission Control', shortcut: '⌃↑', action: () => {
+        if (window.MissionControl) window.MissionControl.toggle();
+      }},
+      { type: 'divider' },
+      { label: document.fullscreenElement ? 'Exit Full Screen' : 'Enter Full Screen', shortcut: '⌃⌘F', action: () => {
+        if (window.toggleFullScreen) window.toggleFullScreen();
+      }},
+      { label: 'Lock Screen', shortcut: '⌃⌥Q', action: () => {
+        if (window.LockScreen) window.LockScreen.show();
+      }},
+      { label: 'Restart…', action: () => window.location.reload() }
+    ];
+  }
 
   // ── Menu Logic ──────────────────────────────────────────────────────────
   let activeMenuTrigger = null;
@@ -272,15 +318,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (item.type === 'divider') {
         el.className = 'menu-item divider';
       } else {
-        el.className = 'menu-item';
+        el.className = 'menu-item' + (item.disabled ? ' disabled' : '');
         el.innerHTML = `<span>${item.label}</span>${item.shortcut ? `<span class="shortcut">${item.shortcut}</span>` : ''}`;
-        if (item.action) {
+        if (item.action && !item.disabled) {
           el.addEventListener('click', (e) => {
             e.stopPropagation();
             item.action();
             closeDropdown();
           });
-        } else {
+        } else if (!item.disabled) {
           el.addEventListener('click', (e) => {
             e.stopPropagation();
             closeDropdown();
@@ -312,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ── Event Observers ───────────────────────────────────────────────────
   document.getElementById('hg-menu-trigger').addEventListener('click', (e) => {
     e.stopPropagation();
-    toggleDropdown(e.currentTarget, hgMenu);
+    toggleDropdown(e.currentTarget, getHgMenu());
   });
 
   document.getElementById('appearance-trigger').addEventListener('click', (e) => {
@@ -343,10 +389,14 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: 'GitPilot', type: 'Application', id: 'gitpilot-window', icon: 'GP' },
     { name: 'JSON Editor', type: 'Application', id: 'json-editor-window', icon: '{ }' },
     { name: 'Wallpapers', type: 'Application', id: 'wallpaper-window', icon: '📷' },
+    { name: 'About Me', type: 'Application', id: 'about-window', icon: 'HG' },
     { name: 'Calculator', type: 'Application', id: 'calculator-window', icon: '÷' },
     { name: 'Messages', type: 'Application', id: 'imessage-window', icon: '💬' },
     { name: 'Resume', type: 'File', id: 'resume-window', icon: 'PDF' },
-    { name: 'Help', type: 'Action', action: () => alert('Showing help...'), icon: '?' },
+    { name: 'Help', type: 'Action', action: () => {
+      const win = document.getElementById('terminal-window');
+      if (win) { win.classList.remove('hidden'); win.classList.remove('minimized'); document.dispatchEvent(new CustomEvent('open-app', { detail: { id: 'terminal-window' } })); }
+    }, icon: '?' },
     { name: 'Restart', type: 'Action', action: () => window.location.reload(), icon: 'R' }
   ];
 
