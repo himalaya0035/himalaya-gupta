@@ -134,6 +134,10 @@
   function openPopover() {
     if (isPopoverOpen) return;
     isPopoverOpen = true;
+
+    // Dismiss all other menubar popovers
+    document.dispatchEvent(new CustomEvent('menubar-dismiss', { detail: { source: 'battery' } }));
+
     updatePopoverContent();
     popover.classList.remove('hidden');
 
@@ -166,6 +170,11 @@
   batteryIcon.addEventListener('click', (e) => {
     e.stopPropagation();
     togglePopover();
+  });
+
+  // Listen for dismiss from other popovers
+  document.addEventListener('menubar-dismiss', (e) => {
+    if (e.detail?.source !== 'battery') closePopover();
   });
 
   window.addEventListener('click', (e) => {

@@ -222,6 +222,10 @@
   function openPanel() {
     if (isOpen) return;
     isOpen = true;
+
+    // Dismiss all other menubar popovers
+    document.dispatchEvent(new CustomEvent('menubar-dismiss', { detail: { source: 'notifications' } }));
+
     buildWidgets();
     panel.classList.remove('hidden');
     panel.classList.add('open');
@@ -253,6 +257,11 @@
   trigger.addEventListener('click', (e) => {
     e.stopPropagation();
     togglePanel();
+  });
+
+  // Listen for dismiss from other popovers
+  document.addEventListener('menubar-dismiss', (e) => {
+    if (e.detail?.source !== 'notifications') closePanel();
   });
 
   if (overlay) {

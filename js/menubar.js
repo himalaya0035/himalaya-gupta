@@ -238,6 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Dismiss all other menubar popovers
+    document.dispatchEvent(new CustomEvent('menubar-dismiss', { detail: { source: 'dropdown' } }));
+
     activeMenuTrigger = trigger;
     document.querySelectorAll('.topbar-item').forEach(el => el.classList.remove('active'));
     trigger.classList.add('active');
@@ -287,6 +290,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.topbar-item').forEach(el => el.classList.remove('active'));
   }
 
+  // Listen for dismiss from other popovers
+  document.addEventListener('menubar-dismiss', (e) => {
+    if (e.detail?.source !== 'dropdown') closeDropdown();
+  });
+
   // ── Event Observers ───────────────────────────────────────────────────
   document.getElementById('hg-menu-trigger').addEventListener('click', (e) => {
     e.stopPropagation();
@@ -327,6 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   function openSpotlight() {
+    document.dispatchEvent(new CustomEvent('menubar-dismiss', { detail: { source: 'spotlight' } }));
     spotlightOverlay.classList.remove('hidden');
     spotlightInput.value = '';
     spotlightInput.focus();

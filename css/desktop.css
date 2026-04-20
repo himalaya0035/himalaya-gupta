@@ -1656,6 +1656,183 @@ body.desktop-mode {
   line-height: 1.5;
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   CLOCK POPOVER
+   ══════════════════════════════════════════════════════════════════════ */
+
+#clock-popover {
+  position: fixed;
+  z-index: 100001;
+  width: 300px;
+  background: rgba(25, 25, 30, 0.55);
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  animation: menuIn 0.15s cubic-bezier(0, 0, 0.2, 1);
+  max-height: calc(100vh - 50px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+#clock-popover.hidden {
+  display: none !important;
+}
+
+/* ── Clock Section ────────────────────────────────────────── */
+.cp-clock-section {
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.cp-analog-clock {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.cp-digital-time {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.cp-digital-date {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+
+.cp-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 14px 0;
+}
+
+/* ── Calendar Section ─────────────────────────────────────── */
+.cp-cal-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cp-cal-month {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cp-cal-arrow {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cp-cal-arrow:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.cp-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.cp-cal-head {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 4px 0;
+}
+
+.cp-cal-day {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto;
+  transition: background 0.15s;
+}
+
+.cp-cal-day:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cp-cal-day.today {
+  background: var(--acc, #00ff9d);
+  color: #000;
+  font-weight: 700;
+}
+
+.cp-cal-empty {
+  padding: 4px 0;
+}
+
+/* ── World Clock Section ──────────────────────────────────── */
+.cp-section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.cp-wc-row {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  gap: 8px;
+}
+
+.cp-wc-city {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  flex: 1;
+}
+
+.cp-wc-offset {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  min-width: 36px;
+  text-align: right;
+}
+
+.cp-wc-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  min-width: 90px;
+  text-align: right;
+}
+
 /* ── Wallpaper Settings Window ────────────────────────────── */
 .wallpaper-settings-layout {
   padding: 0 !important;
