@@ -17,7 +17,9 @@
   const THEMES = {
     green:  { bg:"#0d1117",bg2:"#161b22",fg:"#e6edf3",dim:"#6e7681",acc:"#00ff9d",acc_rgb:"0, 255, 157",blu:"#58a6ff",border:"#30363d",ok:"#3fb950",err:"#f85149" },
     amber:  { bg:"#100c00",bg2:"#1a1400",fg:"#ffe4a0",dim:"#7a6a3a",acc:"#ffd700",acc_rgb:"255, 215, 0",blu:"#ff8c00",border:"#3a2e00",ok:"#ffa500",err:"#ff4040" },
-    purple: { bg:"#0e0e1a",bg2:"#161626",fg:"#e2e0ff",dim:"#6c6a8a",acc:"#bd93f9",acc_rgb:"189, 147, 249",blu:"#ff79c6",border:"#2a2a40",ok:"#50fa7b",err:"#ff5555" }
+    purple: { bg:"#0e0e1a",bg2:"#161626",fg:"#e2e0ff",dim:"#6c6a8a",acc:"#bd93f9",acc_rgb:"189, 147, 249",blu:"#ff79c6",border:"#2a2a40",ok:"#50fa7b",err:"#ff5555" },
+    pure:   { bg:"#000000",bg2:"#0a0a0a",fg:"#ffffff",dim:"#555555",acc:"#ffffff",acc_rgb:"255, 255, 255",blu:"#ffffff",border:"#222222",ok:"#ffffff",err:"#ff0000" },
+    crimson:{ bg:"#1a0505",bg2:"#2d0a0a",fg:"#ffebeb",dim:"#8c5a5a",acc:"#ff3e3e",acc_rgb:"255, 62, 62",blu:"#ff7b72",border:"#4a1a1a",ok:"#ff3e3e",err:"#ffffff" }
   };
 
   function applyTheme(name) {
