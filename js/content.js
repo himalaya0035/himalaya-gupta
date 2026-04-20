@@ -17,12 +17,12 @@ I also open-source developer tools and have been recognized with a Spot Award an
 AWS Certified Developer – Associate.`,
 
   skills: {
-    languages:  ["JavaScript (ES6+)", "TypeScript"],
-    backend:    ["Node.js", "Express.js", "REST APIs", "WebSockets", "Socket.IO", "OAuth 2.0"],
-    frontend:   ["React.js", "Next.js", "Redux", "React Flow", "Tailwind CSS", "Shadcn"],
-    databases:  ["MongoDB", "PostgreSQL", "Redis", "SQL"],
-    "ai/auto":  ["LLM Integration", "Prompt Engineering", "Playwright", "Puppeteer", "Selenium"],
-    devops:     ["Docker", "Kafka", "Git", "CI/CD", "AWS (EC2, S3, CloudWatch, CloudFront)"]
+    "Languages":             ["JavaScript (ES6+)", "TypeScript"],
+    "Backend & APIs":      ["Node.js", "Express.js", "REST APIs", "API Design", "WebSockets", "Socket.IO", "OAuth 2.0"],
+    "Databases & Caching": ["MongoDB", "PostgreSQL", "SQL", "Redis"],
+    "Frontend":           ["React.js", "Next.js", "Redux", "React Flow", "Tailwind CSS", "Shadcn"],
+    "AI & Automation":      ["LLM Integration", "Prompt Engineering", "Playwright", "Puppeteer", "Selenium"],
+    "DevOps & Practices":  ["Docker", "Kafka", "Git", "CI/CD", "AWS (EC2, S3, CloudWatch)"]
   },
 
   experience: [

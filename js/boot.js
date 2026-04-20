@@ -106,7 +106,7 @@
     const progressBar = document.getElementById("boot-progress-bar");
     if (!bootScreen || !progressBar) return;
 
-    const duration = 1500; // Total duration in ms
+    const duration = 1000; // Optimized to exactly 1s
     const startTime = performance.now();
     
     return new Promise((resolve) => {
@@ -130,7 +130,7 @@
         progressBar.style.width = "100%";
         await sleep(300); // Hold at 100%
         bootScreen.classList.add("fade-out");
-        await sleep(800); // Wait for transition
+        await sleep(400); // Super fast fade
         bootScreen.style.display = "none";
         resolve();
       }

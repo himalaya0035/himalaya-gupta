@@ -11,11 +11,11 @@ body.desktop-mode {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
   background: #000;
-  z-index: 100000; /* Above everything */
+  z-index: 999999; /* Way above everything, including menubar */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 #boot-screen.fade-out {

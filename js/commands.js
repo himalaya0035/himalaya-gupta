@@ -107,17 +107,18 @@ ${loc}
       const s = C.skills;
       const row = (label, items) => {
         if (!items || items.length === 0) return "";
-        return `  ${dim(label.padEnd(12))}${items.map(acc).join(dim("  ·  "))}`;
+        return `  ${dim(label.padEnd(20))}${items.map(acc).join(dim("  ·  "))}`;
       };
+      
+      const skillRows = Object.entries(s)
+        .map(([cat, items]) => row(cat, items))
+        .filter(r => r !== "")
+        .join("\n");
+
       return `
 ${bold("SKILLS")}
 ${"─".repeat(55)}
-${row("Languages",  s.languages)}
-${row("Backend",    s.backend)}
-${row("Frontend",   s.frontend)}
-${row("Databases",  s.databases)}
-${row("AI/Auto",    s["ai/auto"])}
-${row("DevOps",     s.devops)}
+${skillRows}
 `;
     },
 
@@ -223,13 +224,8 @@ ${bullets}`;
 
     neofetch() {
       const nf = C.neofetch || {};
-      const allSkills = [
-        ...C.skills.languages || [],
-        ...C.skills.backend?.slice(0, 3) || [],
-        ...C.skills.frontend?.slice(0, 2) || []
-      ].join(" · ");
-
-      const dbLine = (C.skills.databases || []).join(" · ");
+      const allSkills = Object.values(C.skills).flat().join(" · ");
+      const dbLine = (C.skills["Databases & Caching"] || []).join(" · ");
 
       const infoLines = [
         `${acc(C.name.toLowerCase().replace(/\s+/g, ""))}${dim("@")}${blu("dev")}`,
