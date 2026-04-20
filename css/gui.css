@@ -434,3 +434,161 @@ section.visible {
   .hero h1 { font-size: 3rem; }
   .tile-2x2, .tile-2x1 { grid-column: span 1; }
 }
+/* ── Appearance Popover (macOS Style) ────────────────────────────── */
+.appearance-popover {
+  width: 300px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(28, 28, 30, 0.4);
+  backdrop-filter: blur(40px) saturate(200%);
+  border-radius: 18px;
+  color: #fff;
+}
+
+.appearance-row-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.appearance-toggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.appearance-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.appearance-toggle .toggle-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.appearance-toggle.active .toggle-icon {
+  background: #ff9f0a;
+}
+
+.appearance-toggle span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.appearance-section {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.appearance-section.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.appearance-section.clickable:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+.appearance-colors {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.appearance-dot-wrapper {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.appearance-dot-wrapper.active {
+  border-color: #ff9f0a;
+}
+
+.appearance-dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+}
+
+.wallpaper-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.section-subtitle {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+.notch-icon {
+  width: 22px;
+  height: 32px;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 4px;
+  position: relative;
+}
+
+.notch-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 2px;
+  background: white;
+  border-radius: 0 0 2px 2px;
+}
+
+/* ── Overriding Menu Dropdown for Appearance ──────────────────────── */
+#global-menu-dropdown.appearance-mode {
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}

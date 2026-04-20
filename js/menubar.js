@@ -126,21 +126,78 @@ document.addEventListener("DOMContentLoaded", () => {
     { label: 'Lock Screen', shortcut: '⌃⌘Q' }
   ];
 
-  const controlCenterMenu = [
-    { label: 'Dark Mode', shortcut: 'On', action: () => document.body.classList.toggle('light-mode') },
-    { label: 'Bluetooth', shortcut: 'Off' },
-    { label: 'WiFi', shortcut: 'Connected' },
-    { type: 'divider' },
-    { label: 'AirDrop', shortcut: 'Contacts Only' },
-    { type: 'divider' },
-    { label: 'Sound', shortcut: '80%' },
-    { label: 'Display', shortcut: '100%' }
-  ];
-
   // ── Menu Logic ──────────────────────────────────────────────────────────
   let activeMenuTrigger = null;
 
-  function toggleDropdown(trigger, contentItems, align = 'left') {
+  function renderAppearancePopover() {
+    const themes = window.THEMES || {};
+    const cur = window.currentTheme ? window.currentTheme() : 'green';
+    const check = `<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+    const themeDots = Object.keys(themes).map(name => {
+      const isActive = name === cur;
+      return `
+        <div class="appearance-dot-wrapper ${isActive ? 'active' : ''}" data-theme="${name}">
+          <div class="appearance-dot" style="background: ${themes[name].acc}">
+            ${isActive ? check : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="appearance-popover">
+        <div class="appearance-row-top">
+          <div class="appearance-toggle ${!document.body.classList.contains('light-mode') ? 'active' : ''}" id="toggle-dark-mode-btn" style="grid-column: span 2;">
+            <div class="toggle-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </div>
+            <span>Dark mode</span>
+          </div>
+        </div>
+        
+        <div class="appearance-section">
+          <div class="section-label">System Color</div>
+          <div class="appearance-colors">${themeDots}</div>
+        </div>
+
+        <div class="appearance-section clickable">
+          <div style="display:flex; gap:12px; align-items:center;">
+             <div class="wallpaper-thumb"></div>
+             <div>
+                <div class="section-title">Dome</div>
+                <div class="section-subtitle">Dynamic Wallpaper</div>
+             </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function initAppearanceListeners() {
+    document.querySelectorAll('.appearance-dot-wrapper').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const t = el.getAttribute('data-theme');
+        if (window.applyTheme(t)) {
+          dropdown.innerHTML = renderAppearancePopover();
+          initAppearanceListeners();
+        }
+      });
+    });
+
+    const dmBtn = document.getElementById('toggle-dark-mode-btn');
+    if (dmBtn) {
+      dmBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.body.classList.toggle('light-mode');
+        dmBtn.classList.toggle('active');
+      });
+    }
+  }
+
+  function toggleDropdown(trigger, contentItems, align = 'left', isAppearance = false) {
+
     if (activeMenuTrigger === trigger) {
       closeDropdown();
       return;
@@ -152,7 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Populate dropdown
     dropdown.innerHTML = '';
-    contentItems.forEach(item => {
+    if (isAppearance) {
+      dropdown.className = 'menu-dropdown appearance-mode';
+      dropdown.innerHTML = renderAppearancePopover();
+      initAppearanceListeners();
+    } else {
+      dropdown.className = 'menu-dropdown';
+      contentItems.forEach(item => {
       const el = document.createElement('div');
       if (item.type === 'divider') {
         el.className = 'menu-item divider';
@@ -174,8 +237,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       dropdown.appendChild(el);
     });
+  }
 
-    // Position dropdown
+  // Position dropdown
     const rect = trigger.getBoundingClientRect();
     dropdown.style.left = align === 'left' ? `${rect.left}px` : 'auto';
     dropdown.style.right = align === 'right' ? `${window.innerWidth - rect.right}px` : 'auto';
@@ -194,17 +258,20 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleDropdown(e.currentTarget, hgMenu);
   });
 
-  document.getElementById('control-center-trigger').addEventListener('click', (e) => {
+  document.getElementById('appearance-trigger').addEventListener('click', (e) => {
     e.stopPropagation();
-    toggleDropdown(e.currentTarget, controlCenterMenu, 'right');
+    toggleDropdown(e.currentTarget, [], 'right', true);
   });
 
   document.querySelectorAll('.menu-trigger').forEach(trigger => {
     trigger.addEventListener('click', (e) => {
       e.stopPropagation();
-      const appName = appNameDisplay.textContent;
       const menuType = trigger.dataset.menu;
-      const menuContent = (appMenus[appName] && appMenus[appName][menuType]) || [{ label: 'No Options' }];
+      let menuContent;
+      
+      const appName = appNameDisplay.textContent;
+      menuContent = (appMenus[appName] && appMenus[appName][menuType]) || [{ label: 'No Options' }];
+      
       toggleDropdown(trigger, menuContent);
     });
   });

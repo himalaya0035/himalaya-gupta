@@ -14,7 +14,8 @@
   const cmd  = (text, execCmd) => `<span class="cmd-link" data-cmd="${esc(execCmd !== undefined ? execCmd : text.split(' ')[0])}">${esc(text)}</span>`;
 
   // ── theme definitions ────────────────────────────────────────────────────
-  const THEMES = {
+  // ── theme definitions ────────────────────────────────────────────────────
+  window.THEMES = {
     green:  { bg:"#0d1117",bg2:"#161b22",fg:"#e6edf3",dim:"#6e7681",acc:"#00ff9d",acc_rgb:"0, 255, 157",blu:"#58a6ff",border:"#30363d",ok:"#3fb950",err:"#f85149" },
     amber:  { bg:"#100c00",bg2:"#1a1400",fg:"#ffe4a0",dim:"#7a6a3a",acc:"#ffd700",acc_rgb:"255, 215, 0",blu:"#ff8c00",border:"#3a2e00",ok:"#ffa500",err:"#ff4040" },
     purple: { bg:"#0e0e1a",bg2:"#161626",fg:"#e2e0ff",dim:"#6c6a8a",acc:"#bd93f9",acc_rgb:"189, 147, 249",blu:"#ff79c6",border:"#2a2a40",ok:"#50fa7b",err:"#ff5555" },
@@ -22,8 +23,8 @@
     crimson:{ bg:"#1a0505",bg2:"#2d0a0a",fg:"#ffebeb",dim:"#8c5a5a",acc:"#ff3e3e",acc_rgb:"255, 62, 62",blu:"#ff7b72",border:"#4a1a1a",ok:"#ff3e3e",err:"#ffffff" }
   };
 
-  function applyTheme(name) {
-    const t = THEMES[name];
+  window.applyTheme = function(name) {
+    const t = window.THEMES[name];
     if (!t) return false;
     const r = document.documentElement.style;
     Object.entries(t).forEach(([k, v]) => {
@@ -32,11 +33,11 @@
     });
     localStorage.setItem("theme", name);
     return true;
-  }
+  };
 
-  function currentTheme() {
+  window.currentTheme = function() {
     return localStorage.getItem("theme") || "green";
-  }
+  };
 
   // ── neofetch ASCII art (compact "HG" monogram) ───────────────────────────
   const NEOFETCH_ART = [
@@ -395,8 +396,8 @@ ${dim(C.name.padEnd(40))}${dim(new Date().getFullYear().toString())}
     const name = args.trim().toLowerCase();
 
     if (!name) {
-      const cur = currentTheme();
-      const list = Object.keys(THEMES).map(t =>
+      const cur = window.currentTheme();
+      const list = Object.keys(window.THEMES).map(t =>
         t === cur
           ? `  ${acc("● " + t)}  ${dim("(active)")}`
           : `  ${dim("○")} ${blu(t)}`
@@ -404,7 +405,7 @@ ${dim(C.name.padEnd(40))}${dim(new Date().getFullYear().toString())}
       return `\n${bold("THEMES")}\n${"─".repeat(30)}\n${list}\n\n  ${dim("Usage:")} ${blu("theme <name>")}\n`;
     }
 
-    if (applyTheme(name)) {
+    if (window.applyTheme(name)) {
       return ok(`\n  Theme switched to ${name}.\n`);
     }
     return err(`\n  Unknown theme: ${name}\n`) +
