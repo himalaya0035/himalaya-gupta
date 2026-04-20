@@ -33,18 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
   
   const windows = document.querySelectorAll('.os-window');
   const dockItems = document.querySelectorAll('.dock button.icon');
-  const timeDisplay = document.getElementById('topbar-time');
-  const appNameDisplay = document.getElementById('topbar-app-name');
+  const appNameDisplay = document.querySelector('.active-app-name');
   
-  // 1. Clock updates
-  function updateTime() {
-    if (!timeDisplay) return;
-    const now = new Date();
-    const opts = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
-    timeDisplay.textContent = now.toLocaleDateString('en-US', opts).replace(/,/g, '');
-  }
-  setInterval(updateTime, 1000);
-  updateTime();
+  // Clock logic moved to menubar.js
   
   // 2. Bring window to front
   function bringToFront(win) {
@@ -250,6 +241,12 @@ document.addEventListener("DOMContentLoaded", () => {
       icon.style.background = 'rgba(255, 255, 255, 0.2)';
       e.stopPropagation();
     });
+  });
+
+  // Listen for apps opened via Spotlight
+  document.addEventListener('open-app', (e) => {
+    const win = document.getElementById(e.detail.id);
+    if (win) bringToFront(win);
   });
 
   // 6. Resume Download Logic

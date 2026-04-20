@@ -1,5 +1,6 @@
 /* ── reset & base ──────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.hidden { display: none !important; }
 
 :root {
   --bg:       rgba(13, 17, 23, 0.85);
