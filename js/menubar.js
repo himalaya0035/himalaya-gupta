@@ -112,12 +112,34 @@ document.addEventListener("DOMContentLoaded", () => {
       view: [{ label: 'Tree View' }, { label: 'Code View' }],
       window: [{ label: 'Minimize' }],
       help: [{ label: 'JSON Schema Help' }]
+    },
+    'Wallpapers': {
+      file: [
+        { label: 'Import Wallpapers...', shortcut: '⌘I' },
+        { label: 'Export Wallpaper Library...', shortcut: '⌘E' }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M' },
+        { label: 'Zoom' }
+      ],
+      help: [
+        { label: 'Wallpapers Help' }
+      ]
     }
   };
 
   const hgMenu = [
     { label: 'About This Portfolio', action: () => alert('Himalaya Gupta — Senior Full-Stack Engineer\nVersion 2.0.4\nMacOS Inspired OS') },
     { label: 'System Settings...', shortcut: '⌘,' },
+    { label: 'Wallpaper...', action: () => {
+      const win = document.getElementById('wallpaper-window');
+      if (win) {
+         win.classList.remove('hidden');
+         win.classList.remove('minimized');
+         const event = new CustomEvent('open-app', { detail: { id: 'wallpaper-window' } });
+         document.dispatchEvent(event);
+      }
+    }},
     { type: 'divider' },
     { label: 'Sleep' },
     { label: 'Restart...', action: () => window.location.reload() },
@@ -145,28 +167,34 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }).join('');
 
+    // Get the currently selected wallpaper path from localStorage
+    const savedWallpaper = localStorage.getItem('desktopWallpaper') || 'assets/background.webp';
+    // Try to determine the wallpaper name from the path
+    const wallpaperNames = {
+      'assets/background.webp': 'Monterey',
+      'assets/background2.jpg': 'Ventura',
+      'assets/background3.jpg': 'Sonoma',
+      'assets/background4.jpg': 'Big Sur',
+      'assets/background5.jpg': 'Catalina',
+      'assets/background6.jpg': 'Mojave',
+      'assets/background7.jpg': 'High Sierra',
+      'assets/background8.jpeg': 'Sierra'
+    };
+    const wallpaperName = wallpaperNames[savedWallpaper] || 'Custom';
+
     return `
       <div class="appearance-popover">
-        <div class="appearance-row-top">
-          <div class="appearance-toggle ${!document.body.classList.contains('light-mode') ? 'active' : ''}" id="toggle-dark-mode-btn" style="grid-column: span 2;">
-            <div class="toggle-icon">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </div>
-            <span>Dark mode</span>
-          </div>
-        </div>
-        
         <div class="appearance-section">
           <div class="section-label">System Color</div>
           <div class="appearance-colors">${themeDots}</div>
         </div>
 
-        <div class="appearance-section clickable">
-          <div style="display:flex; gap:12px; align-items:center;">
-             <div class="wallpaper-thumb"></div>
+        <div class="appearance-section clickable" id="open-wallpapers-btn">
+          <div style="display:flex; gap:14px; align-items:center;">
+             <div class="appearance-wallpaper-thumb" style="background-image:url('${savedWallpaper}')"></div>
              <div>
-                <div class="section-title">Dome</div>
-                <div class="section-subtitle">Dynamic Wallpaper</div>
+                <div class="section-title" style="font-size:0.95rem; font-weight:600; letter-spacing:-0.01em;">${wallpaperName}</div>
+                <div class="section-subtitle" style="font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:3px;">Dynamic Wallpaper &rsaquo;</div>
              </div>
           </div>
         </div>
@@ -186,12 +214,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    const dmBtn = document.getElementById('toggle-dark-mode-btn');
-    if (dmBtn) {
-      dmBtn.addEventListener('click', (e) => {
+    // Wallpaper card opens the Wallpapers window
+    const wpBtn = document.getElementById('open-wallpapers-btn');
+    if (wpBtn) {
+      wpBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.body.classList.toggle('light-mode');
-        dmBtn.classList.toggle('active');
+        closeDropdown();
+        const win = document.getElementById('wallpaper-window');
+        if (win) {
+          win.classList.remove('hidden');
+          win.classList.remove('minimized');
+          // Re-init wallpaper grid in case it's stale
+          if (typeof initWallpaperApp === 'function') initWallpaperApp();
+        }
       });
     }
   }
@@ -285,6 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: 'Safari', type: 'Application', id: 'portfolio-window', icon: 'S' },
     { name: 'GitPilot', type: 'Application', id: 'gitpilot-window', icon: 'GP' },
     { name: 'JSON Editor', type: 'Application', id: 'json-editor-window', icon: '{ }' },
+    { name: 'Wallpapers', type: 'Application', id: 'wallpaper-window', icon: '📷' },
     { name: 'Resume', type: 'File', id: 'resume-window', icon: 'PDF' },
     { name: 'Help', type: 'Action', action: () => alert('Showing help...'), icon: '?' },
     { name: 'Restart', type: 'Action', action: () => window.location.reload(), icon: 'R' }
