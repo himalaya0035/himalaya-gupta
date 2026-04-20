@@ -735,6 +735,14 @@ body.desktop-mode {
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+.dock-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
 .icon {
   position: relative;
   display: grid;
