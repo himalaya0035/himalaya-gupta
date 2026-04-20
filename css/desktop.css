@@ -1538,6 +1538,124 @@ body.desktop-mode {
   margin: 5px 8px;
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   BATTERY POPOVER
+   ══════════════════════════════════════════════════════════════════════ */
+
+#battery-popover {
+  position: fixed;
+  z-index: 100001;
+  width: 280px;
+  background: rgba(25, 25, 30, 0.55);
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  animation: menuIn 0.15s cubic-bezier(0, 0, 0.2, 1);
+}
+
+#battery-popover.hidden {
+  display: none !important;
+}
+
+.bp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.bp-title {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bp-pct {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.bp-bar-container {
+  margin-bottom: 10px;
+}
+
+.bp-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bp-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease, background 0.3s ease;
+}
+
+.bp-status {
+  margin-bottom: 14px;
+}
+
+.bp-charging {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #30d158;
+  font-weight: 500;
+}
+
+.bp-remaining {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.bp-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 10px 0;
+}
+
+.bp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.bp-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bp-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+}
+
+.bp-footer {
+  text-align: center;
+  padding-top: 4px;
+}
+
+.bp-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  line-height: 1.5;
+}
+
 /* ── Wallpaper Settings Window ────────────────────────────── */
 .wallpaper-settings-layout {
   padding: 0 !important;

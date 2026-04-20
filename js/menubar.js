@@ -452,7 +452,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ── Clock & Status Logic ────────────────────────────────────────────────
   const timeDisplay = document.getElementById('topbar-time');
-  const batteryDisplay = document.getElementById('battery-status');
 
   function updateTime() {
     if (!timeDisplay) return;
@@ -461,17 +460,6 @@ document.addEventListener("DOMContentLoaded", () => {
     timeDisplay.textContent = now.toLocaleDateString('en-US', opts).replace(/,/g, '');
   }
 
-  function updateBattery() {
-    if (!batteryDisplay) return;
-    // Simulate battery percentage
-    const level = 100; 
-    batteryDisplay.innerHTML = `
-      <span style="font-size: 11px; margin-right: 4px;">${level}%</span>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="23" y1="13" x2="23" y2="11"></line><rect x="3" y="8" width="14" height="8" fill="currentColor"></rect></svg>
-    `;
-  }
-
   setInterval(updateTime, 1000);
   updateTime();
-  updateBattery();
 });
