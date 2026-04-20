@@ -71,6 +71,9 @@
       <div class="topbar-item status-icon" id="spotlight-trigger">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       </div>
+      <div class="topbar-item status-icon" id="notification-trigger" title="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      </div>
       <div class="topbar-item status-icon" id="appearance-trigger" title="Appearance">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="5" width="16" height="6" rx="3" stroke-width="1.5"/>
@@ -289,6 +292,18 @@
     </div>
   </div>
 
+  <!-- Notification Center Panel -->
+  <div id="nc-overlay" class="hidden"></div>
+  <div id="notification-center" class="hidden">
+    <div class="nc-header">
+      <span>Notification Center</span>
+    </div>
+    <div class="nc-widgets"></div>
+  </div>
+
+  <!-- Context Menu -->
+  <div id="context-menu" class="hidden"></div>
+
   <div class="dock">
     <!-- Terminal -->
     <button class="icon active" data-title="Terminal" data-target="terminal-window" style="cursor: pointer;">
@@ -392,5 +407,7 @@
   <script src="js/safari.js"></script>
   <script src="js/wallpaper.js"></script>
   <script src="js/menubar.js"></script>
+  <script src="js/context-menu.js"></script>
+  <script src="js/notification-center.js"></script>
 </body>
 </html>

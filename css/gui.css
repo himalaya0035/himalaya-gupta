@@ -502,13 +502,11 @@ section.visible {
 /* ── Appearance Popover (macOS Style) ────────────────────────────── */
 .appearance-popover {
   width: 300px;
-  padding: 12px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: rgba(28, 28, 30, 0.4);
-  backdrop-filter: blur(40px) saturate(200%);
-  border-radius: 18px;
+  background: transparent;
   color: #fff;
 }
 
