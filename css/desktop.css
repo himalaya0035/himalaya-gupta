@@ -1849,3 +1849,436 @@ body.desktop-mode {
   color: #fff;
   margin-bottom: 20px;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   CALCULATOR
+   ══════════════════════════════════════════════════════════════════════ */
+
+#calculator-window {
+  width: 280px;
+  height: 420px;
+  max-width: 90vw;
+  top: 20%;
+  left: 35%;
+}
+
+#calculator-window .os-content {
+  padding: 0 !important;
+}
+
+.calc-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1c1c1e;
+}
+
+.calc-display-area {
+  padding: 16px 20px 12px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.calc-sub-display {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.35);
+  min-height: 20px;
+}
+
+.calc-display {
+  font-family: 'Outfit', sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  flex: 1;
+  padding: 1px;
+}
+
+.calc-btn {
+  background: #333;
+  border: none;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.calc-btn:hover {
+  background: #444;
+}
+
+.calc-btn:active {
+  background: #555;
+}
+
+.calc-btn.calc-fn {
+  background: #a5a5a5;
+  color: #000;
+  font-weight: 500;
+}
+
+.calc-btn.calc-fn:hover {
+  background: #bbb;
+}
+
+.calc-btn.calc-fn:active {
+  background: #ccc;
+}
+
+.calc-btn.calc-op {
+  background: #ff9f0a;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.calc-btn.calc-op:hover {
+  background: #ffb340;
+}
+
+.calc-btn.calc-op:active {
+  background: #ffc566;
+}
+
+.calc-zero {
+  grid-column: span 2;
+  justify-content: flex-start;
+  padding-left: 28px;
+}
+
+@media (max-width: 768px) {
+  #calculator-window {
+    width: 280px !important;
+    height: 420px !important;
+    left: calc(50% - 140px) !important;
+    top: 15% !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   iMESSAGE
+   ══════════════════════════════════════════════════════════════════════ */
+
+#imessage-window {
+  width: 700px;
+  height: 500px;
+  max-width: 95vw;
+  max-height: 80vh;
+  top: 12%;
+  left: 18%;
+}
+
+#imessage-window .os-content {
+  padding: 0 !important;
+}
+
+.imsg-content {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.imsg-sidebar {
+  width: 220px;
+  background: rgba(30, 30, 35, 0.6);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.imsg-sidebar-header {
+  padding: 14px 16px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.imsg-contact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: default;
+  border-radius: 8px;
+  margin: 0 8px;
+  transition: background 0.15s;
+}
+
+.imsg-contact.active {
+  background: rgba(0, 97, 213, 0.6);
+}
+
+.imsg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acc, #00ff9d), #58a6ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.imsg-contact-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.imsg-contact-preview {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* ── Main Chat ────────────────────────────────────────────── */
+.imsg-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.imsg-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.imsg-chat-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--acc, #00ff9d), #58a6ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: #000;
+}
+
+.imsg-chat-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.imsg-chat-status {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.imsg-chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.imsg-time {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.25);
+  margin: 8px 0 4px;
+}
+
+.imsg-bubble {
+  max-width: 75%;
+  padding: 8px 14px;
+  border-radius: 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  word-wrap: break-word;
+}
+
+.imsg-them {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  align-self: flex-start;
+  border-bottom-left-radius: 6px;
+}
+
+.imsg-me {
+  background: #0b84fe;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 6px;
+}
+
+/* Typing indicator */
+.imsg-typing {
+  display: flex;
+  gap: 4px;
+  padding: 12px 18px;
+  align-items: center;
+}
+
+.imsg-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: imsgBounce 1.4s infinite ease-in-out;
+}
+
+.imsg-dot:nth-child(2) { animation-delay: 0.2s; }
+.imsg-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes imsgBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Input Bar ────────────────────────────────────────────── */
+.imsg-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+#imsg-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#imsg-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+#imsg-input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.imsg-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #0b84fe;
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.imsg-send:hover {
+  background: #3a9dff;
+  transform: scale(1.05);
+}
+
+.imsg-send:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  #imessage-window {
+    width: 94vw !important;
+    height: 75vh !important;
+    left: 3vw !important;
+    top: 60px !important;
+  }
+  .imsg-sidebar {
+    display: none;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   MISSION CONTROL
+   ══════════════════════════════════════════════════════════════════════ */
+
+#mission-control-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 500000;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.4s ease;
+  pointer-events: none;
+}
+
+#mission-control-overlay.hidden {
+  display: none !important;
+}
+
+#mission-control-overlay.active {
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: auto;
+}
+
+.os-window.mission-control-item {
+  cursor: default;
+  pointer-events: none;
+}
+
+.mc-window-label {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}

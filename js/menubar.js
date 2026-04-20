@@ -125,6 +125,20 @@ document.addEventListener("DOMContentLoaded", () => {
       help: [
         { label: 'Wallpapers Help' }
       ]
+    },
+    'Calculator': {
+      file: [{ label: 'Close Window', shortcut: '⌘W' }],
+      edit: [{ label: 'Copy Result', shortcut: '⌘C' }],
+      view: [{ label: 'Basic', shortcut: '⌘1' }, { label: 'Scientific', shortcut: '⌘2', disabled: true }],
+      window: [{ label: 'Minimize', shortcut: '⌘M' }],
+      help: [{ label: 'Calculator Help' }]
+    },
+    'Messages': {
+      file: [{ label: 'New Message', shortcut: '⌘N' }, { type: 'divider' }, { label: 'Close Window', shortcut: '⌘W' }],
+      edit: [{ label: 'Copy', shortcut: '⌘C' }, { label: 'Paste', shortcut: '⌘V' }],
+      view: [{ label: 'Enter Full Screen', shortcut: '⌃⌘F' }],
+      window: [{ label: 'Minimize', shortcut: '⌘M' }],
+      help: [{ label: 'Messages Help' }]
     }
   };
 
@@ -329,6 +343,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: 'GitPilot', type: 'Application', id: 'gitpilot-window', icon: 'GP' },
     { name: 'JSON Editor', type: 'Application', id: 'json-editor-window', icon: '{ }' },
     { name: 'Wallpapers', type: 'Application', id: 'wallpaper-window', icon: '📷' },
+    { name: 'Calculator', type: 'Application', id: 'calculator-window', icon: '÷' },
+    { name: 'Messages', type: 'Application', id: 'imessage-window', icon: '💬' },
     { name: 'Resume', type: 'File', id: 'resume-window', icon: 'PDF' },
     { name: 'Help', type: 'Action', action: () => alert('Showing help...'), icon: '?' },
     { name: 'Restart', type: 'Action', action: () => window.location.reload(), icon: 'R' }

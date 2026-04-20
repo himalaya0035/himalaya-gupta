@@ -113,6 +113,13 @@
         }
       },
       {
+        label: 'Mission Control',
+        shortcut: '⌃↑',
+        action: () => {
+          if (window.MissionControl) window.MissionControl.toggle();
+        }
+      },
+      {
         label: 'Lock Screen',
         shortcut: '⌃⌘Q',
         disabled: true
