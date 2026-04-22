@@ -350,31 +350,89 @@ ${bullets}`;
     "man himalaya"() {
       const skillList = Object.entries(C.skills)
         .filter(([, v]) => v && v.length)
-        .map(([cat, items]) => `  ${dim(cat.padEnd(12))}${items.join(", ")}`)
+        .map(([cat, items]) => `         ${acc(cat)}\n                ${dim(items.join(", "))}`)
+        .join("\n\n");
+
+      const achievements = (C.achievements || [])
+        .map(a => `         ${ok("✓")}  ${a}`)
         .join("\n");
 
       return `
-${bold("HIMALAYA(1)")}${" ".repeat(20)}${dim("User Manual")}${" ".repeat(20)}${bold("HIMALAYA(1)")}
+${bold("HIMALAYA(1)")}              ${dim("General Commands Manual")}              ${bold("HIMALAYA(1)")}
 
 ${bold("NAME")}
-  ${C.name} — ${C.title}
+         ${acc("himalaya")} ${dim("--")} Himalaya Gupta, Senior Software Engineer
 
 ${bold("SYNOPSIS")}
-  ${acc("himalaya")} [${dim("--build")}] [${dim("--ship")}] [${dim("--mentor")}] [${dim("--repeat")}]
+         ${acc("himalaya")} [${dim("--build")} <system>] [${dim("--scale")} <users>] [${dim("--ship")} <feature>]
+                  [${dim("--mentor")} <team>] [${dim("--debug")} <production>] [${dim("--repeat")}]
 
 ${bold("DESCRIPTION")}
-  ${C.about.replace(/\n/g, "\n  ")}
+         Himalaya Gupta is a Senior Software Engineer with 3+ years of
+         experience designing and scaling high-traffic production systems.
+
+         Specializes in Node.js backend architecture, event-driven systems,
+         and cloud-native infrastructure. Has a strong bias toward shipping
+         reliable software over perfect software, and believes the best
+         code is the code that doesn't need to be written.
+
+         Currently based in Noida, India. Open to remote and hybrid roles.
 
 ${bold("OPTIONS")}
+         ${dim("--build")} <system>
+                  Designs and implements scalable backend systems. Preferred
+                  stack: Node.js, Express, PostgreSQL/MongoDB, Redis, Kafka.
+
+         ${dim("--scale")} <users>
+                  Has scaled platforms to 200K+ concurrent users. Comfortable
+                  with load balancing, caching strategies, and DB optimization.
+
+         ${dim("--secure")} <surface>
+                  Implements OAuth 2.0 SSO, RSA encryption, JWT, and UIDAI
+                  integrations. Has secured systems serving 400K+ users.
+
+         ${dim("--automate")} <workflow>
+                  Builds automation tools using Playwright, Puppeteer, and
+                  LLM integrations. See: ApplyPilot, GitPilot.
+
+         ${dim("--mentor")} <team>
+                  Has led teams of 4 engineers. Conducts code reviews, drives
+                  architecture decisions, and unblocks junior developers.
+
+         ${dim("--open-source")}
+                  Maintains public projects with 2K+ npm downloads and 20+
+                  GitHub stars. Believes in giving back to the ecosystem.
+
+${bold("TECHNICAL SKILLS")}
 ${skillList}
 
+${bold("ACHIEVEMENTS")}
+${achievements}
+
+${bold("ENVIRONMENT")}
+         ${dim("EDITOR")}          VS Code + Vim keybindings
+         ${dim("SHELL")}           bash / zsh
+         ${dim("COFFEE")}          Required. Non-negotiable.
+         ${dim("DEADLINE")}        Respected. Usually.
+
+${bold("EXIT STATUS")}
+         ${ok("0")}        Successfully shipped feature
+         ${err("1")}        Merge conflict (rare, but happens)
+         ${err("2")}        Production incident (rarer, handled calmly)
+
 ${bold("SEE ALSO")}
-  ${blu("projects")}, ${blu("experience")}, ${blu("contact")}
+         ${link(C.contact.github, "github")}(1), ${link(C.contact.linkedin, "linkedin")}(1), ${blu("projects")}(1), ${blu("experience")}(1)
 
 ${bold("BUGS")}
-  ${dim("Occasional over-engineering. Working on it.")}
+         ${dim("Occasional over-engineering. Actively working on it.")}
+         ${dim("Known to refactor working code at 2am. Handle with care.")}
 
-${dim(C.name.padEnd(40))}${dim(new Date().getFullYear().toString())}
+${bold("AUTHOR")}
+         Written by Himalaya Gupta <${link("mailto:" + C.contact.email, C.contact.email)}>.
+         This portfolio was hand-crafted in vanilla JavaScript. No frameworks
+         were harmed in the making of this OS.
+
+${dim("Himalaya Gupta")}${" ".repeat(24)}${dim(new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }))}
 `;
     },
 

@@ -18,7 +18,6 @@
 
   // ── Cache to avoid re-fetching on every open ──────────────────────────
   let weatherCache = null;
-  let githubCache = null;
   const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
   // ── WMO weather code → description + emoji ────────────────────────────
@@ -55,27 +54,6 @@
         low: Math.round(json.daily.temperature_2m_min[0])
       };
       weatherCache = { data, ts: Date.now() };
-      return data;
-    } catch {
-      return null;
-    }
-  }
-
-  // ── Fetch GitHub stats ────────────────────────────────────────────────
-  async function fetchGitHub() {
-    if (githubCache && (Date.now() - githubCache.ts < CACHE_TTL)) {
-      return githubCache.data;
-    }
-    try {
-      const res = await fetch('https://api.github.com/users/himalaya0035');
-      const json = await res.json();
-      const data = {
-        repos: json.public_repos,
-        followers: json.followers,
-        profileUrl: json.html_url,
-        avatar: json.avatar_url
-      };
-      githubCache = { data, ts: Date.now() };
       return data;
     } catch {
       return null;
@@ -137,31 +115,6 @@
         </div>
       </div>
 
-      <!-- GitHub Widget (loading state) -->
-      <div class="nc-widget nc-github" id="nc-github-widget">
-        <div class="nc-widget-header">
-          <span class="nc-widget-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          </span>
-          <span class="nc-widget-label">GITHUB</span>
-        </div>
-        <div class="nc-github-body">
-          <div class="nc-github-stat">
-            <span class="nc-github-num">···</span>
-            <span class="nc-github-desc">Repositories</span>
-          </div>
-          <div class="nc-github-stat">
-            <span class="nc-github-num">···</span>
-            <span class="nc-github-desc">Followers</span>
-          </div>
-          <div class="nc-github-stat">
-            <span class="nc-github-num">⭐ 50+</span>
-            <span class="nc-github-desc">Stars Earned</span>
-          </div>
-        </div>
-        <a href="${data.contact?.github || '#'}" target="_blank" class="nc-github-link">View Profile →</a>
-      </div>
-
       <!-- Now Playing Widget -->
       <div class="nc-widget nc-nowplaying">
         <div class="nc-widget-header">
@@ -201,20 +154,6 @@
         widget.querySelector('.nc-weather-temp').textContent = '28°';
         widget.querySelector('.nc-weather-desc').textContent = 'Partly Cloudy';
         widget.querySelector('.nc-weather-range').textContent = 'H:34°  L:22°';
-      }
-    });
-
-    fetchGitHub().then(gh => {
-      const widget = document.getElementById('nc-github-widget');
-      if (!widget) return;
-      const stats = widget.querySelectorAll('.nc-github-num');
-      if (gh) {
-        stats[0].textContent = `${gh.repos}`;
-        stats[1].textContent = `${gh.followers}`;
-      } else {
-        // Fallback to static
-        stats[0].textContent = '50+';
-        stats[1].textContent = '200+';
       }
     });
   }

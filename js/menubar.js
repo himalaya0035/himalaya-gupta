@@ -392,6 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: 'About Me', type: 'Application', id: 'about-window', icon: 'HG' },
     { name: 'Calculator', type: 'Application', id: 'calculator-window', icon: '÷' },
     { name: 'Messages', type: 'Application', id: 'imessage-window', icon: '💬' },
+    { name: 'GitHub Stats', type: 'Application', id: 'github-stats-window', icon: '🐙' },
     { name: 'Resume', type: 'File', id: 'resume-window', icon: 'PDF' },
     { name: 'Help', type: 'Action', action: () => {
       const win = document.getElementById('terminal-window');
