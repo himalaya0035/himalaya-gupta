@@ -13,6 +13,11 @@
   const esc  = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const cmd  = (text, execCmd) => `<span class="cmd-link" data-cmd="${esc(execCmd !== undefined ? execCmd : text.split(' ')[0])}">${esc(text)}</span>`;
 
+  // ── responsive helpers ───────────────────────────────────────────────────
+  const isMobile = () => window.innerWidth <= 768;
+  const sep = (n) => "─".repeat(isMobile() ? Math.min(n, 30) : n);
+  const pad = (str, n) => str.padEnd(isMobile() ? Math.min(n, 14) : n);
+
   // ── theme definitions ────────────────────────────────────────────────────
   // ── theme definitions ────────────────────────────────────────────────────
   window.THEMES = {
@@ -75,17 +80,17 @@
       ];
 
       const renderRows = (rows) => rows.map(([c, desc]) => {
-        const paddedCmd = c.padEnd(20);
+        const paddedCmd = pad(c, 20);
         return `  ${cmd(paddedCmd)}${dim(desc)}`;
       }).join("\n");
 
       return `
 ${bold("MAIN COMMANDS")}
-${dim("─".repeat(50))}
+${dim(sep(50))}
 ${renderRows(main)}
 
 ${bold("GEEKY")}
-${dim("─".repeat(50))}
+${dim(sep(50))}
 ${renderRows(geeky)}
 
   ${dim("Tip: Click any command above or use 'Tab' to autocomplete.")}
@@ -103,14 +108,14 @@ ${loc}
     },
 
     about() {
-      return `\n${bold("ABOUT")}\n${"─".repeat(55)}\n  ${C.about.replace(/\n/g, "\n  ")}\n`;
+      return `\n${bold("ABOUT")}\n${sep(55)}\n  ${C.about.replace(/\n/g, "\n  ")}\n`;
     },
 
     skills() {
       const s = C.skills;
       const row = (label, items) => {
         if (!items || items.length === 0) return "";
-        return `  ${dim(label.padEnd(20))}${items.map(acc).join(dim("  ·  "))}`;
+        return `  ${dim(pad(label, 20))}${items.map(acc).join(dim("  ·  "))}`;
       };
       
       const skillRows = Object.entries(s)
@@ -120,7 +125,7 @@ ${loc}
 
       return `
 ${bold("SKILLS")}
-${"─".repeat(55)}
+${sep(55)}
 ${skillRows}
 `;
     },
@@ -145,7 +150,7 @@ ${skillRows}
   ${p.description}${techLine}${linkLine}`;
       });
 
-      return `\n${bold("PROJECTS")}\n${"─".repeat(55)}${blocks.join("\n")}\n`;
+      return `\n${bold("PROJECTS")}\n${sep(55)}${blocks.join("\n")}\n`;
     },
 
     experience() {
@@ -160,7 +165,7 @@ ${skillRows}
 ${bullets}`;
       });
 
-      return `\n${bold("EXPERIENCE")}\n${"─".repeat(55)}${blocks.join("\n")}\n`;
+      return `\n${bold("EXPERIENCE")}\n${sep(55)}${blocks.join("\n")}\n`;
     },
 
     education() {
@@ -169,14 +174,14 @@ ${bullets}`;
       const blocks = C.education.map(e =>
         `\n  ${blu(e.degree)}\n  ${dim(e.institution)}  ${dim(e.year)}`
       );
-      return `\n${bold("EDUCATION")}\n${"─".repeat(55)}${blocks.join("\n")}\n`;
+      return `\n${bold("EDUCATION")}\n${sep(55)}${blocks.join("\n")}\n`;
     },
 
     achievements() {
       if (!C.achievements || C.achievements.length === 0)
         return err("\n  No achievements configured yet — edit js/content.js\n");
       const lines = C.achievements.map(a => `  ${acc("★")} ${a}`).join("\n");
-      return `\n${bold("ACHIEVEMENTS")}\n${"─".repeat(55)}\n${lines}\n`;
+      return `\n${bold("ACHIEVEMENTS")}\n${sep(55)}\n${lines}\n`;
     },
 
     contact() {
@@ -187,14 +192,14 @@ ${bullets}`;
       if (ct.linkedin) rows.push([dim("linkedin"), link(ct.linkedin, ct.linkedin.replace("https://", ""))]);
       if (ct.twitter)  rows.push([dim("twitter"),  link(ct.twitter, ct.twitter.replace("https://", ""))]);
 
-      const lines = rows.map(([label, val]) => `  ${label.padEnd(20)}${val}`).join("\n");
+      const lines = rows.map(([label, val]) => `  ${label.padEnd(isMobile() ? 14 : 20)}${val}`).join("\n");
       
       const cta = `
-  ${dim("───────────────────────────────────────────────────────")}
+  ${dim(sep(55))}
   ${bold(acc("Ready to build something great?"))}
   Try running ${cmd("sudo hire me", "sudo hire me")} to initiate the hiring protocol.`;
 
-      return `\n${bold("CONTACT")}\n${"─".repeat(55)}\n${lines}\n${cta}\n`;
+      return `\n${bold("CONTACT")}\n${sep(55)}\n${lines}\n${cta}\n`;
     },
 
     linkedin() {
@@ -232,15 +237,15 @@ ${bullets}`;
 
       const infoLines = [
         `${acc(C.name.toLowerCase().replace(/\s+/g, ""))}${dim("@")}${blu("dev")}`,
-        dim("─".repeat(20)),
-        `${dim("OS".padEnd(12))}${C.title}`,
-        `${dim("Uptime".padEnd(12))}${nf.uptime || "N/A"}`,
-        `${dim("Packages".padEnd(12))}${allSkills}`,
-        `${dim("Shell".padEnd(12))}${nf.shell || "bash"}`,
-        `${dim("Terminal".padEnd(12))}${nf.terminal || "terminal.himalayagupta.com"}`,
-        `${dim("Editor".padEnd(12))}${nf.editor || "VS Code"}`,
-        `${dim("CPU".padEnd(12))}${nf.cpu || "Fueled by caffeine"}`,
-        `${dim("Memory".padEnd(12))}${dbLine}`,
+        dim(sep(20)),
+        `${dim(pad("OS", 12))}${C.title}`,
+        `${dim(pad("Uptime", 12))}${nf.uptime || "N/A"}`,
+        `${dim(pad("Packages", 12))}${allSkills}`,
+        `${dim(pad("Shell", 12))}${nf.shell || "bash"}`,
+        `${dim(pad("Terminal", 12))}${nf.terminal || "terminal.himalayagupta.com"}`,
+        `${dim(pad("Editor", 12))}${nf.editor || "VS Code"}`,
+        `${dim(pad("CPU", 12))}${nf.cpu || "Fueled by caffeine"}`,
+        `${dim(pad("Memory", 12))}${dbLine}`,
         "",
         `<span class="neofetch-palette">`
           + `<span style="background:#f85149"></span>`
@@ -276,7 +281,7 @@ ${bullets}`;
       const lines = hist.map((cmd, i) =>
         `  ${dim(String(i + 1).padStart(4))}  ${cmd}`
       ).join("\n");
-      return `\n${bold("ESSENTIAL HISTORY")}\n${dim("─".repeat(30))}\n${lines}\n`;
+      return `\n${bold("ESSENTIAL HISTORY")}\n${dim(sep(30))}\n${lines}\n`;
     },
 
     ls() {
@@ -460,7 +465,7 @@ ${dim("Himalaya Gupta")}${" ".repeat(24)}${dim(new Date().toLocaleDateString("en
           ? `  ${acc("● " + t)}  ${dim("(active)")}`
           : `  ${dim("○")} ${blu(t)}`
       ).join("\n");
-      return `\n${bold("THEMES")}\n${"─".repeat(30)}\n${list}\n\n  ${dim("Usage:")} ${blu("theme <name>")}\n`;
+      return `\n${bold("THEMES")}\n${sep(30)}\n${list}\n\n  ${dim("Usage:")} ${blu("theme <name>")}\n`;
     }
 
     if (window.applyTheme(name)) {

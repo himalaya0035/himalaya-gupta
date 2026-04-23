@@ -372,3 +372,74 @@ a:hover { text-decoration: underline; color: var(--acc); }
 .echo-line .prompt-label .at   { color: var(--dim); }
 .echo-line .prompt-label .host { color: var(--blu); }
 .echo-line .prompt-label .sep  { color: var(--dim); }
+
+/* ── Mobile Terminal Fixes ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  #terminal {
+    padding: 12px;
+    font-size: 11px;
+  }
+
+  .output-block {
+    font-size: 11px;
+    overflow-x: auto;
+  }
+
+  /* Neofetch: stack vertically instead of side-by-side */
+  .neofetch-grid {
+    grid-template-columns: 1fr;
+    gap: 8px 0;
+  }
+
+  .neofetch-art {
+    font-size: 8px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .neofetch-info {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* Banner (ASCII name art) */
+  .banner {
+    font-size: 5.5px;
+    line-height: 1.2;
+    overflow-x: auto;
+  }
+
+  /* Quick actions bar */
+  #quick-actions {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .action-chip {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  #terminal {
+    padding: 8px;
+    font-size: 10px;
+  }
+
+  .output-block {
+    font-size: 10px;
+  }
+
+  .neofetch-art {
+    font-size: 6px;
+  }
+
+  .neofetch-info {
+    font-size: 10px;
+  }
+
+  .banner {
+    font-size: 4.5px;
+  }
+}
