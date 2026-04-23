@@ -22,55 +22,415 @@
     { from: 'them', text: "Feel free to drop a message here. I'd love to chat about projects, roles, or just tech in general.", time: '10:01 AM' },
   ];
 
-  const AUTO_REPLIES = [
-    { keywords: ['hi', 'hello', 'hey', 'sup', 'yo', 'hola', 'greetings'], reply: "Hey there! Great to have you here. What brings you to my portfolio?" },
-    { keywords: ['hire', 'job', 'role', 'position', 'opportunity', 'opening', 'vacancy'], reply: "I'm always open to exciting opportunities! Drop me an email at guptahimalaya2@gmail.com and let's talk details 🚀" },
-    { keywords: ['project', 'collaborate', 'build', 'freelance', 'contract', 'gig', 'partnership'], reply: "I love building things! Tell me more about what you have in mind — I'm all ears." },
-    { keywords: ['stack', 'tech', 'node', 'react', 'javascript', 'typescript', 'language'], reply: "My core stack is Node.js + React + PostgreSQL/MongoDB, with AWS for infra. I'm also deep into Kafka, Redis, and event-driven architecture." },
-    { keywords: ['experience', 'background', 'resume', 'cv', 'career', 'history'], reply: "3+ years as a Senior Engineer at Lumiq, scaling platforms to 200K+ users. You can check my resume — it's on the desktop as Resume.pdf!" },
-    { keywords: ['github', 'code', 'repo', 'open source', 'oss'], reply: "Check out github.com/himalaya0035 — I've got GitPilot, a React JSON Editor with 2K+ npm downloads, and more." },
-    { keywords: ['contact', 'email', 'reach', 'connect', 'linkedin', 'socials', 'twitter'], reply: "Best way to reach me: guptahimalaya2@gmail.com or linkedin.com/in/himalayagupta03. I usually respond within a day!" },
-    { keywords: ['portfolio', 'site', 'website', 'cool', 'awesome', 'amazing', 'nice', 'great', 'love', 'impressive', 'wow', 'insane', 'sick', 'dope', 'fire'], reply: "Thanks! I built this entire desktop OS from scratch with vanilla JS — no frameworks. Glad you're enjoying it 😊" },
-    { keywords: ['salary', 'pay', 'compensation', 'ctc', 'package', 'money'], reply: "Happy to discuss compensation details over email — let's first see if there's a good fit! guptahimalaya2@gmail.com" },
-    { keywords: ['available', 'when', 'start', 'notice', 'join', 'timeline'], reply: "I'm open to discussing timelines. Let's connect over email and work out the details — guptahimalaya2@gmail.com" },
-    { keywords: ['aws', 'cloud', 'devops', 'docker', 'kubernetes', 'k8s', 'ci/cd', 'deploy'], reply: "I'm AWS Certified (Developer Associate). I work with EC2, S3, CloudWatch, Docker, and CI/CD pipelines daily. Infrastructure as code is my jam." },
-    { keywords: ['kafka', 'redis', 'queue', 'event', 'microservice', 'pub/sub', 'stream'], reply: "At Lumiq I engineered event-driven services with Kafka and Redis — handling high-throughput data pipelines for insurance platforms." },
-    { keywords: ['database', 'mongo', 'postgres', 'sql', 'db', 'schema', 'migration'], reply: "I work with both MongoDB and PostgreSQL. Schema design, query optimization, migrations — I've handled it all in production at scale." },
-    { keywords: ['api', 'rest', 'graphql', 'endpoint', 'backend', 'server', 'express'], reply: "Backend is my bread and butter — Node.js + Express, RESTful API design, OAuth 2.0, WebSockets. I've built APIs serving 400K+ users." },
-    { keywords: ['frontend', 'ui', 'ux', 'design', 'css', 'tailwind', 'component'], reply: "While I'm backend-focused, I'm solid with React, Next.js, Tailwind, and Shadcn. This portfolio itself is proof I care about UI/UX!" },
-    { keywords: ['ai', 'llm', 'gpt', 'machine learning', 'ml', 'prompt', 'automation', 'mistral'], reply: "I've integrated LLMs into production apps — ApplyPilot uses Mistral AI for intelligent job applications. Prompt engineering is a real skill." },
-    { keywords: ['testing', 'test', 'jest', 'unit', 'integration', 'qa', 'quality'], reply: "I believe in shipping reliable software. Unit tests, integration tests, and SonarQube for code quality — I've resolved 15K+ issues at Lumiq." },
-    { keywords: ['team', 'lead', 'manage', 'mentor', 'leadership'], reply: "I lead a team of 4 engineers at Lumiq, own 20+ features end-to-end, and drive architecture decisions. I enjoy mentoring junior devs too." },
-    { keywords: ['education', 'college', 'degree', 'university', 'btech', 'jiit'], reply: "B.Tech in Computer Science from JIIT Noida (2019-2023). Built a strong foundation in DSA, system design, and software engineering." },
-    { keywords: ['achievement', 'award', 'hackathon', 'leetcode', 'competitive'], reply: "Spot Award at Lumiq, 10+ client appreciations, hackathon wins, and 500+ LeetCode problems solved. I love a good challenge!" },
-    { keywords: ['remote', 'wfh', 'hybrid', 'onsite', 'office', 'location', 'relocate'], reply: "I'm based in Noida, India. Open to remote, hybrid, or relocation depending on the opportunity. Let's discuss!" },
-    { keywords: ['gitpilot', 'git', 'workflow', 'pipeline', 'automation tool'], reply: "GitPilot is my visual Git workflow automation platform — drag-and-drop pipeline design with real-time WebSocket execution. Check it out in the dock!" },
-    { keywords: ['json', 'editor', 'npm', 'library', 'package', 'open source library'], reply: "My React JSON Editor has 2K+ npm downloads — modular, inline editing, dynamic type rendering, and JSON path validations. It's in the dock too!" },
-    { keywords: ['applypilot', 'apply', 'job application', 'naukri', 'instahyre'], reply: "ApplyPilot automates job applications across Naukri, LinkedIn, and Instahyre using Mistral AI. It's a full production-grade platform." },
-    { keywords: ['how', 'built', 'made', 'create', 'develop', 'vanilla'], reply: "This portfolio is 100% vanilla JS, CSS, and HTML — no React, no frameworks. Every window, animation, and interaction is hand-crafted." },
-    { keywords: ['security', 'oauth', 'auth', 'encryption', 'rsa', 'sso'], reply: "I implemented OAuth 2.0 SSO and RSA encryption at Lumiq, securing 400K+ users. Security isn't an afterthought for me." },
-    { keywords: ['bye', 'goodbye', 'later', 'see you', 'thanks', 'thank', 'cheers'], reply: "Thanks for stopping by! Don't hesitate to reach out — guptahimalaya2@gmail.com. Have a great day! 👋" },
-    { keywords: ['what', 'who', 'tell me about', 'about you', 'yourself', 'intro'], reply: "I'm Himalaya Gupta — Senior Software Engineer with 3+ years building high-traffic platforms. Node.js, React, AWS, and a passion for clean architecture." },
-    { keywords: ['fun', 'hobby', 'interest', 'outside work', 'free time'], reply: "Outside of coding, I enjoy competitive programming, exploring new tech, and building side projects like this desktop OS portfolio!" },
-    { keywords: ['startup', 'founder', 'entrepreneur', 'idea', 'mvp'], reply: "I love the startup energy! If you're building an MVP or need a technical co-founder type, let's chat — guptahimalaya2@gmail.com" },
+  // Each intent has:
+  //   phrases:  multi-word triggers — strong signal, score = 100 + length
+  //   keywords: single-word triggers — weak signal, score = length (word-boundary required)
+  // Generic chitchat words (great/nice/ok/etc.) live in low-priority intents at the bottom
+  // and only win when no specific intent scores above them.
+  const INTENTS = [
+    {
+      reply: "Hey there! Great to have you here. What brings you to my portfolio?",
+      phrases: ['hey there', 'sup man', 'hi himalaya', 'hi there'],
+      keywords: ['hi', 'hello', 'hey', 'sup', 'yo', 'hola', 'greetings'],
+    },
+    {
+      reply: "I'm always open to exciting opportunities! Drop me an email at guptahimalaya2@gmail.com and let's talk details.",
+      phrases: ['interested in a new role', 'hiring senior devs', 'looking for a job', 'have a position', 'want to hire', 'are you looking for', 'we have a position', 'open role', 'open position'],
+      keywords: ['hire', 'hiring', 'job', 'role', 'position', 'opportunity', 'opening', 'vacancy', 'recruit', 'recruiter'],
+    },
+    {
+      reply: "I love building things! Tell me more about what you have in mind. I'm all ears.",
+      phrases: ['build something', 'building something', 'project idea', 'have an idea', 'work together', 'collaborate on', 'looking for a freelance', 'freelance developer', 'side project'],
+      keywords: ['project', 'collaborate', 'freelance', 'contract', 'gig', 'partnership'],
+    },
+    {
+      reply: "My core stack is Node.js + React + PostgreSQL/MongoDB, with AWS for infrastructure. I'm also deep into Kafka, Redis, and event-driven architecture.",
+      phrases: ['tech stack', 'your stack', 'favorite programming language', 'favorite language', 'languages do you use', 'know node', 'good with react', 'work with typescript'],
+      keywords: ['stack', 'node', 'nodejs', 'react', 'reactjs', 'javascript', 'js', 'typescript', 'ts'],
+    },
+    {
+      reply: "I have 3+ years of experience as a Senior Software Engineer, building high-traffic platforms and scalable Node.js systems. You can check Resume.pdf on the desktop.",
+      phrases: ['years of experience', 'your experience', 'about your experience', 'your background', 'your resume', 'your cv', 'send me your', 'how many years', 'work history', 'professional summary', 'how long have you', 'work experience'],
+      keywords: ['experience', 'background', 'resume', 'cv', 'career', 'history'],
+    },
+    {
+      reply: "Check out github.com/himalaya0035. I've shipped projects like GitPilot, ApplyPilot, and my React JSON Editor library.",
+      phrases: ['your github', 'show me your code', 'open source repos', 'contribute to open source', 'your repos', 'github profile'],
+      keywords: ['github', 'repo', 'repos', 'oss'],
+    },
+    {
+      reply: "Best way to reach me: guptahimalaya2@gmail.com or linkedin.com/in/himalayagupta03. I usually respond within a day.",
+      phrases: ['how can i contact', 'how to reach', 'your email', 'best way to', 'get in touch', 'connect on linkedin', 'phone number', 'contact you', 'email you'],
+      keywords: ['contact', 'email', 'reach', 'linkedin', 'twitter', 'phone', 'whatsapp', 'telegram', 'discord', 'slack', 'socials'],
+    },
+    {
+      reply: "Thanks! I built this entire desktop OS portfolio from scratch with vanilla JS, HTML, and CSS.",
+      phrases: ['this portfolio is', 'cool website', 'cool site', 'awesome work on', 'love this portfolio', 'love your portfolio', 'this is impressive', 'this is amazing', 'looks great', 'looks awesome'],
+      keywords: ['portfolio', 'awesome', 'amazing', 'impressive', 'wow', 'insane', 'sick', 'dope', 'fire'],
+    },
+    {
+      reply: "Happy to discuss compensation details over email. Let's first see if there's a good fit: guptahimalaya2@gmail.com",
+      phrases: ['expected salary', 'hourly rate', 'how much do you charge', 'your rate', 'looking for', 'what package', 'package are you', 'compensation expectation', 'salary expectation', 'pay range'],
+      keywords: ['salary', 'compensation', 'ctc', 'package', 'pay', 'charge', 'pricing', 'budget'],
+    },
+    {
+      reply: "I'm open to discussing timelines. Let's connect over email and work out the details: guptahimalaya2@gmail.com",
+      phrases: ['contract work available', 'available for a call', 'schedule a call', 'book a meeting', 'calendar link', 'when can you start', 'notice period', 'join immediately', 'when are you free', 'are you free', 'are you available', 'free for a', 'quick call', 'zoom meeting', 'this week', 'next week'],
+      keywords: ['available', 'availability', 'notice', 'timeline', 'schedule', 'calendar', 'meeting', 'zoom'],
+    },
+    {
+      reply: "I'm AWS Certified (Developer Associate) and work with EC2, S3, CloudWatch, CloudFront, Docker, Kafka, and CI/CD in production.",
+      phrases: ['know aws', 'experience with docker', 'kubernetes experience', 'ci cd pipeline', 'devops background', 'serverless experience', 'lambda functions', 'aws certified', 'aws certification', 'cloud experience'],
+      keywords: ['aws', 'cloud', 'devops', 'docker', 'kubernetes', 'k8s', 'serverless', 'lambda', 'certified', 'certifications', 'certification', 'ec2'],
+    },
+    {
+      reply: "I've engineered event-driven services with Kafka and Redis, plus real-time systems with WebSockets and Socket.IO.",
+      phrases: ['experience with kafka', 'use redis', 'websocket experience', 'real time application', 'real time system', 'webhook handling', 'microservices experience', 'event driven', 'pub sub', 'message queue'],
+      keywords: ['kafka', 'redis', 'queue', 'microservice', 'microservices', 'stream', 'socket', 'websocket', 'webhook', 'webhooks'],
+    },
+    {
+      reply: "I work with both MongoDB and PostgreSQL. I handle schema design, query optimization, migrations, and production data workflows at scale.",
+      phrases: ['mongodb or postgresql', 'database experience', 'sql skills', 'schema design', 'know sql', 'with databases'],
+      keywords: ['database', 'databases', 'mongo', 'mongodb', 'postgres', 'postgresql', 'sql', 'schema', 'migration', 'migrations'],
+    },
+    {
+      reply: "Backend is my bread and butter: Node.js + Express, RESTful API design, OAuth 2.0, WebSockets, and secure production systems.",
+      phrases: ['backend development', 'rest api', 'do you build apis', 'graphql experience', 'express experience', 'build apis', 'api design'],
+      keywords: ['api', 'apis', 'rest', 'graphql', 'endpoint', 'backend', 'express'],
+    },
+    {
+      reply: "I'm backend-focused but strong on frontend too: React.js, Next.js, Tailwind, SCSS, and component-driven UI engineering.",
+      phrases: ['ui ux experience', 'frontend skills', 'css expertise', 'tailwind css', 'react component', 'responsive design', 'frontend experience', 'mobile development'],
+      keywords: ['frontend', 'ui', 'ux', 'css', 'tailwind', 'scss', 'responsive', 'accessibility'],
+    },
+    {
+      reply: "I've integrated LLMs into production apps. ApplyPilot uses Mistral-powered workflows for intelligent job matching and automation.",
+      phrases: ['llm integration', 'gpt experience', 'ai experience', 'machine learning skill', 'prompt engineering', 'chatbot development', 'work with ai', 'use llms'],
+      keywords: ['llm', 'llms', 'gpt', 'ml', 'mistral', 'chatbot', 'nlp'],
+    },
+    {
+      reply: "I focus on reliability with unit/integration testing, logging/monitoring, and large-scale SonarQube cleanup in production codebases.",
+      phrases: ['testing experience', 'do you write tests', 'jest experience', 'unit testing', 'code quality', 'debugging skill', 'logging and monitoring', 'integration tests'],
+      keywords: ['testing', 'jest', 'qa', 'debug', 'debugging', 'logging', 'monitoring', 'sonarqube'],
+    },
+    {
+      reply: "I lead a team of 4 engineers, own 20+ features end-to-end, and drive architecture decisions in Agile/Scrum workflows.",
+      phrases: ['team lead', 'lead a team', 'manage people', 'mentoring experience', 'leadership skill', 'agile experience', 'scrum methodology', 'sprint planning', 'manage a team'],
+      keywords: ['leadership', 'agile', 'scrum', 'sprint'],
+    },
+    {
+      reply: "B.Tech in Computer Science from Jaypee Institute of Information Technology (JIIT), Noida (2019-2023).",
+      phrases: ['where did you study', 'your college', 'your degree', 'your education', 'your university', 'jiit noida', 'where you studied'],
+      keywords: ['college', 'degree', 'university', 'btech', 'jiit', 'education'],
+    },
+    {
+      reply: "Key achievements: AWS Certified Developer Associate, Spot Award, 10+ client appreciations, hackathon runner-up finishes, and 300+ LeetCode problems solved.",
+      phrases: ['hackathon experience', 'leetcode profile', 'competitive programming', 'dsa preparation', 'interview tips', 'any awards', 'your achievement'],
+      keywords: ['hackathon', 'leetcode', 'achievement', 'achievements', 'award', 'awards', 'dsa'],
+    },
+    {
+      reply: "I'm based in Noida, India, and open to remote, hybrid, or relocation depending on the role.",
+      phrases: ['wfh preference', 'work remotely', 'work from home', 'hybrid work', 'open to relocation', 'your location', 'where are you based', 'where do you live', 'relocate to'],
+      keywords: ['remote', 'wfh', 'hybrid', 'onsite', 'location', 'relocate', 'noida'],
+    },
+    {
+      reply: "GitPilot is my visual Git workflow automation platform with drag-and-drop pipeline design and real-time execution tracking via Socket.IO.",
+      phrases: ['tell me about gitpilot', 'what is gitpilot', 'git workflow tool'],
+      keywords: ['gitpilot'],
+    },
+    {
+      reply: "My React JSON Editor library is published on npm with 1.5K+ downloads, supporting inline edits, dynamic rendering, and JSON path validation.",
+      phrases: ['react json editor', 'your npm package', 'open source library', 'json editor', 'npm library'],
+      keywords: ['npm'],
+    },
+    {
+      reply: "ApplyPilot is my production-grade AI job application platform automating discovery and applications across Naukri, LinkedIn, and Instahyre.",
+      phrases: ['what is applypilot', 'job application automation', 'naukri automation'],
+      keywords: ['applypilot', 'naukri', 'instahyre'],
+    },
+    {
+      reply: "This portfolio is 100% vanilla JS, CSS, and HTML. No React, no framework.",
+      phrases: ['how did you build this', 'how you built this', 'is this made with react', 'made with react', 'what framework', 'vanilla js really', 'built this with', 'made this with', 'is this react'],
+      keywords: ['vanilla', 'framework'],
+    },
+    {
+      reply: "I implemented OAuth 2.0 SSO, RSA encryption, and security hardening that protected sensitive data for 400K+ users.",
+      phrases: ['security experience', 'oauth implementation', 'authentication skill', 'sso implementation', 'how do you handle auth'],
+      keywords: ['security', 'oauth', 'auth', 'authentication', 'encryption', 'rsa', 'sso'],
+    },
+    {
+      reply: "Thanks for stopping by. Don't hesitate to reach out: guptahimalaya2@gmail.com",
+      phrases: ['see you later', 'thank you', 'thanks for', 'take care', 'talk later'],
+      keywords: ['bye', 'goodbye', 'thanks', 'cheers'],
+    },
+    {
+      reply: "I'm Himalaya Gupta, a Senior Software Engineer with 3+ years of experience building scalable Node.js systems, APIs, and cloud-native products.",
+      phrases: ['who are you', 'who r you', 'what are you', 'tell me about yourself', 'introduce yourself', 'what do you do', 'about you', 'what makes you different', 'what are your strengths', 'what are you good at', 'why should i hire you', 'a bit about you'],
+      keywords: ['yourself', 'intro', 'strengths'],
+    },
+    {
+      reply: "Outside of coding, I enjoy competitive programming, exploring new tech, gaming, and building side projects.",
+      phrases: ['for fun', 'outside work', 'outside of work', 'free time', 'interests outside', 'in your spare time'],
+      keywords: ['hobbies', 'hobby', 'gaming', 'sports', 'travel', 'movies', 'cooking', 'fitness', 'photography'],
+    },
+    {
+      reply: "I love startup energy. If you're building an MVP or need a strong technical partner, let's connect: guptahimalaya2@gmail.com",
+      phrases: ['building a startup', 'need a co founder', 'mvp development', 'technical co founder'],
+      keywords: ['startup', 'founder', 'entrepreneur', 'mvp'],
+    },
+    {
+      reply: "Happy to help with mentoring or consulting. Reach out at guptahimalaya2@gmail.com and we can discuss specifics.",
+      phrases: ['can you mentor', 'mentor me', 'tips for junior', 'career advice', 'do you do consulting', 'free consultation'],
+      keywords: ['consulting', 'consult', 'advice', 'guidance', 'mentor', 'mentoring', 'tutor', 'workshop', 'training'],
+    },
+    {
+      reply: "Yes, references can be shared on request. Please email me at guptahimalaya2@gmail.com.",
+      phrases: ['have references', 'any references'],
+      keywords: ['references', 'reference'],
+    },
+    {
+      reply: "You can explore my projects right here: GitPilot and JSON Editor are in the dock, and Resume.pdf is on the desktop.",
+      phrases: ['show me your work', 'any demos', 'live projects', 'previous clients', 'see your work', 'show your work', 'portfolio projects'],
+      keywords: ['demo', 'demos'],
+    },
+    {
+      reply: "I focus heavily on performance: Redis caching, query optimization, load balancing patterns, and scalable backend design.",
+      phrases: ['performance optimization', 'scalability experience', 'caching strateg', 'load balancing', 'how do you scale'],
+      keywords: ['performance', 'optimization', 'scalability', 'caching', 'cdn'],
+    },
+    {
+      reply: "I think in systems: clean architecture, event-driven design, strong documentation, and pragmatic engineering tradeoffs.",
+      phrases: ['system design', 'architecture decisions', 'best practices you', 'code documentation', 'clean code', 'design pattern'],
+      keywords: ['architecture', 'monolith'],
+    },
+    {
+      reply: "My primary stack is JavaScript/TypeScript (Node.js + React), but I can adapt quickly across languages and frameworks.",
+      phrases: ['python experience', 'go experience', 'java experience', 'php experience', 'ruby experience'],
+      keywords: ['python', 'django', 'flask', 'java', 'spring', 'kotlin', 'swift', 'ruby', 'php', 'wordpress', 'rust', 'elixir', 'golang'],
+    },
+    {
+      reply: "Those are not my core focus areas right now. My strongest domain is backend engineering and cloud-native architecture.",
+      phrases: ['data science', 'computer vision', 'machine learning research'],
+      keywords: ['blockchain', 'web3', 'solidity', 'nft', 'crypto', 'tensorflow', 'pytorch', 'pandas', 'numpy'],
+    },
+    {
+      reply: "Those are interesting spaces, but my strongest expertise is in web engineering, APIs, and cloud-native systems.",
+      phrases: ['vr ar experience', 'game development', 'iot experience', 'raspberry pi'],
+      keywords: ['vr', 'ar', 'unity', 'unreal', 'iot', 'embedded', 'raspberry', 'arduino'],
+    },
+    {
+      reply: "I mostly share through open-source projects and this portfolio. GitHub is the best place to follow updates: himalaya0035.",
+      phrases: ['blog posts', 'youtube channel', 'speaking engagement', 'do you blog'],
+      keywords: ['blog', 'youtube', 'podcast', 'newsletter', 'speaking'],
+    },
+    {
+      reply: "I stay updated through hands-on building, open-source work, release notes, and regular system design and engineering deep-dives.",
+      phrases: ['stay updated', 'keep up with tech', 'continuous learning', 'how do you learn'],
+      keywords: [],
+    },
+    {
+      reply: "I prefer to keep things professional here. Feel free to ask me anything about my work, projects, or tech stack.",
+      phrases: ['how old are you', 'are you married', 'do you have kids', 'do you have pets', 'your age'],
+      keywords: ['married', 'kids', 'pets'],
+    },
+    {
+      reply: "This chat is automated, but the person behind it is real. For direct conversation, email me at guptahimalaya2@gmail.com.",
+      phrases: ['are you ai', 'are you real', 'is this a bot', 'human or bot', 'are you a bot', 'real person'],
+      keywords: ['bot', 'automated'],
+    },
+    {
+      reply: "You can ask me about my experience, projects, tech stack, availability, or contact details.",
+      phrases: ['help me', 'i need help', 'what can you do', 'how does this work'],
+      keywords: ['help'],
+    },
+    {
+      reply: "I've worked with Next.js, SSR/SSG concepts, Vite, Webpack, and modern frontend tooling.",
+      phrases: ['next js experience', 'webpack experience', 'ssr vs csr', 'next js'],
+      keywords: ['nextjs', 'ssr', 'ssg', 'jamstack', 'vite', 'webpack'],
+    },
+    {
+      reply: "I'm open to full-time senior engineering roles. We can discuss specifics over email: guptahimalaya2@gmail.com",
+      phrases: ['full time or part time', 'full time role', 'part time role'],
+      keywords: ['fulltime', 'parttime', 'permanent', 'internship'],
+    },
+    {
+      reply: "I'm always happy to help where possible. Reach out at guptahimalaya2@gmail.com and we can discuss.",
+      phrases: ['student discount', 'pro bono'],
+      keywords: ['discount', 'student'],
+    },
+    {
+      reply: "Work-life balance matters to me. I focus on sustainable productivity, clear boundaries, and consistency.",
+      phrases: ['work life balance', 'burnout prevention', 'imposter syndrome', 'mental health'],
+      keywords: ['burnout', 'imposter', 'wellbeing'],
+    },
+    {
+      reply: "I prefer transparent conversations around compensation and expectations. Happy to discuss details over email.",
+      phrases: ['negotiation tips'],
+      keywords: ['negotiate', 'negotiation', 'offer'],
+    },
+    {
+      reply: "I handle high-pressure deliveries with clear planning and ownership. I prioritize sustainable pace with flexibility when needed.",
+      phrases: ['handle pressure', 'work weekends', 'tight deadline', 'under pressure'],
+      keywords: ['pressure', 'weekends'],
+    },
+    // ── Low-priority chitchat fallbacks (only win when nothing specific matches) ──
+    {
+      reply: "Happy to chat. Ask me about projects, experience, or tech stack.",
+      phrases: [],
+      keywords: ['lol', 'haha', 'lmao', 'rofl', 'bruh', 'hmm', 'ok', 'okay', 'sure', 'yes', 'yep', 'yeah', 'no', 'nope', 'maybe', 'idk', 'meh', 'whatever'],
+      lowPriority: true,
+    },
+    {
+      reply: "Thanks. Anything specific you want to know about my projects or experience?",
+      phrases: [],
+      keywords: ['good', 'bad', 'nice', 'great', 'love', 'cool'],
+      lowPriority: true,
+    },
   ];
 
-  const FALLBACK_REPLIES = [
-    "That's interesting! Want to discuss further over email? guptahimalaya2@gmail.com",
-    "I'd love to chat more about that. Feel free to reach out on LinkedIn — himalayagupta03!",
-    "Thanks for the message! I'll get back to you — drop me a line at guptahimalaya2@gmail.com for a quicker response.",
-    "Good question! Let's take this conversation to email — guptahimalaya2@gmail.com. I can go into more detail there.",
-    "Appreciate you reaching out! For a detailed response, email me at guptahimalaya2@gmail.com 🙌",
+  // ── Profanity filter (English + Hinglish) ────────────────────────────
+  // Word-boundary matched against the normalized message, so "class"
+  // won't trigger "ass" and "assassin" won't trigger anything.
+  const CUSS_WORDS = [
+    // English
+    'fuck', 'fucked', 'fucker', 'fucking', 'fck', 'fuk', 'fuq', 'fkn',
+    'shit', 'shyt', 'sht', 'bullshit',
+    'bitch', 'biatch', 'bish',
+    'bastard', 'asshole', 'arsehole', 'ass', 'arse', 'jackass', 'dumbass',
+    'dick', 'dickhead', 'cock', 'pussy', 'cunt', 'twat',
+    'slut', 'whore', 'hoe',
+    'motherfucker', 'mf', 'mfer', 'wtf', 'stfu', 'gtfo', 'ffs',
+    'retard', 'retarded', 'moron',
+    // Hinglish (Hindi/Punjabi in roman script — widely used by trolls)
+    'bc', 'mc', 'bkl',
+    'bhosdk', 'bhosdike', 'bhosdiwale', 'bsdk',
+    'behenchod', 'behnchod', 'bhenchod', 'bhenchood',
+    'madarchod', 'maderchod', 'madharchod', 'mc',
+    'chutiya', 'chutiye', 'chutiyon', 'chut', 'chutia', "choot",
+    'lund', 'lavda', 'lawda', 'lauda', 'laude', 'launda', "lodu", "lodi",
+    'gaand', 'gand', 'gandu', 'gaandu', 'gandfat',
+    'randi', 'rand', 'raand',
+    'harami', 'haramzada', 'haramkhor', 'kamina', 'kamine',
+    'kutta', 'kutte', 'kuttiya',
+    'jhaant', 'jhant',
+    'saala', 'saale', 'sala', 'sale',
+    'tatti', 'tatte',
+    'chodu', 'chod', 'chodna',
+    'bakchod', 'bakchodi',
+    'najayaz', 'kanjar',
   ];
 
-  function getSmartReply(userMsg) {
-    const lower = userMsg.toLowerCase();
-    for (const entry of AUTO_REPLIES) {
-      if (entry.keywords.some(kw => lower.includes(kw))) {
-        return entry.reply;
+  const TROLL_REPLIES = [
+    "Let's keep it civil — happy to chat about projects, tech, or experience instead.",
+    "Not really the vibe here. Drop a real question and I'll answer.",
+    "I'd rather keep this professional. Ask me about my work, stack, or anything technical.",
+    "Easy there. If there's something genuine you want to know, I'm all ears.",
+    "Trolling isn't my thing. But I'm down to talk code, projects, or careers anytime.",
+  ];
+
+  const CUSS_REGEX = new RegExp(
+    '\\b(' + CUSS_WORDS.map(escapeRegex).join('|') + ')\\b'
+  );
+
+  function isAbusive(normalizedMsg) {
+    return CUSS_REGEX.test(normalizedMsg);
+  }
+
+  const FALLBACK_REPLY = "I got your message. Please reach out at guptahimalaya2@gmail.com and I'll get back to you.";
+
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function normalizeMessage(text) {
+    let normalized = (text || '').toLowerCase();
+    const replacements = [
+      [/\bu\s*r\b/g, 'you are'],
+      [/\bur\b/g, 'your'],
+      [/\bu\b/g, 'you'],
+      [/\br\b/g, 'are'],
+      [/\byeahh+\b/g, 'yeah'],
+      [/\bye\b/g, 'yes'],
+      [/\bpls\b|\bplz\b/g, 'please'],
+      [/\bthx\b|\btx\b|\btnx\b/g, 'thanks'],
+      [/\bim\b/g, 'i am'],
+      [/\bw\/\b/g, 'with'],
+    ];
+
+    for (const [pattern, replacement] of replacements) {
+      normalized = normalized.replace(pattern, replacement);
+    }
+
+    normalized = normalized
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return normalized;
+  }
+
+  // Pre-normalize phrases/keywords once so matching is cheap on every send.
+  const COMPILED = INTENTS.map((intent) => ({
+    reply: intent.reply,
+    lowPriority: !!intent.lowPriority,
+    phrases: (intent.phrases || []).map(normalizeMessage).filter(Boolean),
+    keywords: (intent.keywords || []).map(normalizeMessage).filter(Boolean),
+  }));
+
+  function wordBoundaryHit(msg, kw) {
+    return new RegExp('\\b' + escapeRegex(kw) + '\\b').test(msg);
+  }
+
+  function scoreIntent(msg, intent) {
+    let score = 0;
+    let hits = 0;
+    // Phrase matches dominate — each contributes 100 + length.
+    for (const p of intent.phrases) {
+      if (msg.includes(p)) {
+        score += 100 + p.length;
+        hits++;
       }
     }
-    return FALLBACK_REPLIES[Math.floor(Math.random() * FALLBACK_REPLIES.length)];
+    // Keyword matches are smaller signals, summed. Word-boundary required.
+    for (const kw of intent.keywords) {
+      if (wordBoundaryHit(msg, kw)) {
+        score += 5 + kw.length;
+        hits++;
+      }
+    }
+    // Bonus for stacking multiple distinct hits (e.g. "kafka and redis").
+    if (hits > 1) score += (hits - 1) * 8;
+    return score;
+  }
+
+  function getSmartReply(userMsg) {
+    const msg = normalizeMessage(userMsg);
+    if (!msg) return FALLBACK_REPLY;
+
+    // Short-circuit on profanity — don't try to intent-match abusive input.
+    if (isAbusive(msg)) {
+      return TROLL_REPLIES[Math.floor(Math.random() * TROLL_REPLIES.length)];
+    }
+
+    let bestSpecific = null;
+    let bestSpecificScore = 0;
+    let bestLow = null;
+    let bestLowScore = 0;
+
+    for (const intent of COMPILED) {
+      const s = scoreIntent(msg, intent);
+      if (s <= 0) continue;
+      if (intent.lowPriority) {
+        if (s > bestLowScore) { bestLowScore = s; bestLow = intent; }
+      } else {
+        if (s > bestSpecificScore) { bestSpecificScore = s; bestSpecific = intent; }
+      }
+    }
+
+    // Specific intents always beat low-priority chitchat, even if the
+    // chitchat keyword (great/nice/ok) happens to score higher.
+    if (bestSpecific) return bestSpecific.reply;
+    if (bestLow) return bestLow.reply;
+    return FALLBACK_REPLY;
   }
 
   let messages = [];
