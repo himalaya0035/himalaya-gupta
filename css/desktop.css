@@ -1093,7 +1093,7 @@ body.desktop-mode {
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-  #resume-window {
+  #resume-window:not(.maximized) {
     width: 94vw !important;
     height: 75vh !important;
     left: 3vw !important;
@@ -1223,7 +1223,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #gitpilot-window {
+  #gitpilot-window:not(.maximized) {
     width: 94vw !important;
     height: 75vh !important;
     left: 3vw !important;
@@ -1254,7 +1254,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #gitpilot-window {
+  #gitpilot-window:not(.maximized) {
     width: 94vw !important;
     height: 75vh !important;
     left: 3vw !important;
@@ -1272,7 +1272,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #json-editor-window {
+  #json-editor-window:not(.maximized) {
     width: 94vw !important;
     height: 75vh !important;
     left: 3vw !important;
@@ -2309,7 +2309,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #github-stats-window {
+  #github-stats-window:not(.maximized) {
     width: 94vw !important;
     height: 80vh !important;
     left: 3vw !important;
@@ -2453,7 +2453,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #calculator-window {
+  #calculator-window:not(.maximized) {
     width: 280px !important;
     height: 420px !important;
     left: calc(50% - 140px) !important;
@@ -2716,7 +2716,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #imessage-window {
+  #imessage-window:not(.maximized) {
     width: 94vw !important;
     height: 75vh !important;
     left: 3vw !important;
@@ -3029,7 +3029,7 @@ body.desktop-mode {
 }
 
 @media (max-width: 768px) {
-  #about-window {
+  #about-window:not(.maximized) {
     width: 95vw !important;
     height: 80vh !important;
     left: 2.5vw !important;
