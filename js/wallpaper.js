@@ -30,7 +30,7 @@ function initWallpaperApp() {
   const container = document.getElementById('wallpaper-grid');
   if (!container) return;
 
-  const currentPath = localStorage.getItem('desktopWallpaper') || 'assets/background.webp';
+  const currentPath = localStorage.getItem('desktopWallpaper') || 'assets/background2.jpg';
 
   container.innerHTML = WALLPAPERS.map(wp => `
     <div class="wallpaper-item ${wp.path === currentPath ? 'active' : ''}" data-path="${wp.path}">

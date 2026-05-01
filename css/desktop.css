@@ -93,7 +93,7 @@ body.desktop-mode {
   overflow: hidden;
   background: 
     linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url('../assets/background.webp');
+    url('../assets/background2.jpg');
   background-size: cover;
   background-position: center;
   /* animation removed to keep the static wallpaper clean */
@@ -607,6 +607,66 @@ body.desktop-mode {
   opacity: 0;
   pointer-events: none;
   transform: translateY(100px) scale(0.5);
+}
+
+/* ── Window Snapping States ───────────────────────────────── */
+.os-window.snapped-left {
+  top: 32px !important;
+  left: 0 !important;
+  width: 50vw !important;
+  max-width: none !important;
+  height: calc(100vh - 32px - 80px) !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  transition: top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+}
+
+.os-window.snapped-right {
+  top: 32px !important;
+  left: 50vw !important;
+  width: 50vw !important;
+  max-width: none !important;
+  height: calc(100vh - 32px - 80px) !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  transition: top 0.3s ease, left 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+}
+
+/* ── Snap Preview Indicator ───────────────────────────────── */
+#snap-preview {
+  position: fixed;
+  z-index: 99990;
+  background: rgba(0, 97, 213, 0.15);
+  border: 2px solid rgba(0, 97, 213, 0.5);
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, top 0.15s ease, left 0.15s ease, width 0.15s ease, height 0.15s ease;
+}
+
+#snap-preview.visible {
+  opacity: 1;
+}
+
+#snap-preview.snap-left {
+  top: 32px;
+  left: 0;
+  width: 50vw;
+  height: calc(100vh - 32px - 80px);
+}
+
+#snap-preview.snap-right {
+  top: 32px;
+  left: 50vw;
+  width: 50vw;
+  height: calc(100vh - 32px - 80px);
+}
+
+#snap-preview.snap-top {
+  top: 32px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 32px);
 }
 
 /* State: Maximized */
@@ -2797,7 +2857,7 @@ body.desktop-mode {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('../assets/background.webp');
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('../assets/background2.jpg');
   background-size: cover;
   background-position: center;
   filter: blur(30px) brightness(0.5) saturate(1.5);
@@ -3079,4 +3139,169 @@ body.desktop-mode {
   .about-bio {
     font-size: 14px;
   }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   NOTIFICATION TOASTS
+   ══════════════════════════════════════════════════════════════════════ */
+
+#toast-container {
+  position: fixed;
+  top: 40px;
+  right: 12px;
+  z-index: 400000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  max-width: 360px;
+  width: 100%;
+}
+
+.toast {
+  background: rgba(30, 30, 35, 0.7);
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.05);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.dismissing {
+  animation: toastSlideOut 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastSlideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(120%); opacity: 0; }
+}
+
+.toast-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-app {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.toast-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.toast-message {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.4;
+}
+
+.toast-time {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  #toast-container {
+    right: 8px;
+    left: 8px;
+    max-width: none;
+    width: auto;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   ENHANCED SPOTLIGHT SEARCH
+   ══════════════════════════════════════════════════════════════════════ */
+
+.spotlight-category-header {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 20px 4px;
+}
+
+.spotlight-result-item .result-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
+.spotlight-result-item:hover .result-subtitle,
+.spotlight-result-item.selected .result-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.spotlight-result-item .result-icon.icon-app {
+  background: linear-gradient(135deg, rgba(0, 97, 213, 0.4), rgba(0, 97, 213, 0.2));
+}
+
+.spotlight-result-item .result-icon.icon-command {
+  background: linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(0, 255, 157, 0.1));
+}
+
+.spotlight-result-item .result-icon.icon-skill {
+  background: linear-gradient(135deg, rgba(189, 147, 249, 0.3), rgba(189, 147, 249, 0.1));
+}
+
+.spotlight-result-item .result-icon.icon-project {
+  background: linear-gradient(135deg, rgba(255, 159, 10, 0.3), rgba(255, 159, 10, 0.1));
+}
+
+.spotlight-result-item .result-icon.icon-contact {
+  background: linear-gradient(135deg, rgba(88, 166, 255, 0.3), rgba(88, 166, 255, 0.1));
+}
+
+.spotlight-result-item .result-icon.icon-info {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
 }

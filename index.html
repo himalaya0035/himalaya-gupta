@@ -10,7 +10,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Himalaya Gupta — Desktop OS Portfolio" />
   <meta property="og:description" content="Senior Full-Stack Engineer. Explore my interactive macOS-inspired portfolio — complete with a terminal, apps, and more." />
-  <meta property="og:image" content="assets/background.webp" />
+  <meta property="og:image" content="assets/background2.jpg" />
   <meta property="og:url" content="https://himalayagupta.com" />
   <meta property="og:site_name" content="Himalaya Gupta" />
 
@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Himalaya Gupta — Desktop OS Portfolio" />
   <meta name="twitter:description" content="Senior Full-Stack Engineer. Interactive macOS-inspired portfolio built with vanilla JS." />
-  <meta name="twitter:image" content="assets/background.webp" />
+  <meta name="twitter:image" content="assets/background2.jpg" />
 
   <!-- Additional SEO -->
   <meta name="author" content="Himalaya Gupta" />
@@ -70,6 +70,12 @@
   </div>
   
   
+  <!-- Snap Preview Indicator -->
+  <div id="snap-preview"></div>
+
+  <!-- Notification Toasts -->
+  <div id="toast-container"></div>
+
   <!-- Lock Screen -->
   <div id="lock-screen" class="hidden">
     <div class="lock-wallpaper"></div>
@@ -176,7 +182,7 @@
       <div class="spotlight-search-box">
         <svg class="spotlight-search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="spotlight-input" placeholder="Spotlight-Search" spellcheck="false" autocomplete="off">
-        <div class="spotlight-hint">Search for apps or commands</div>
+        <div class="spotlight-hint">⌃Space or ⌘K</div>
       </div>
       <div id="spotlight-results" class="hidden" style="display: none;"></div>
     </div>
@@ -636,6 +642,7 @@
   <script src="js/notification-center.js"></script>
   <script src="js/calculator.js"></script>
   <script src="js/imessage.js"></script>
+  <script src="js/toasts.js"></script>
   <script src="js/mission-control.js"></script>
   <script src="js/github-stats.js"></script>
 </body>

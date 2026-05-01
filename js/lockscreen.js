@@ -28,7 +28,7 @@
     clockInterval = setInterval(updateClock, 1000);
 
     // Sync wallpaper
-    const saved = localStorage.getItem('desktopWallpaper') || 'assets/background.webp';
+    const saved = localStorage.getItem('desktopWallpaper') || 'assets/background2.jpg';
     const wp = lockScreen.querySelector('.lock-wallpaper');
     if (wp) wp.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${saved}')`;
 

@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }).join('');
 
     // Get the currently selected wallpaper path from localStorage
-    const savedWallpaper = localStorage.getItem('desktopWallpaper') || 'assets/background.webp';
+    const savedWallpaper = localStorage.getItem('desktopWallpaper') || 'assets/background2.jpg';
     // Try to determine the wallpaper name from the path
     const wallpaperNames = {
       'assets/background.webp': 'Monterey',
@@ -382,24 +382,165 @@ document.addEventListener("DOMContentLoaded", () => {
   // Close menus on outside click
   window.addEventListener('click', closeDropdown);
 
-  // ── Spotlight Logic ───────────────────────────────────────────────────
-  const searchableItems = [
-    { name: 'Terminal', type: 'Application', id: 'terminal-window', icon: '>_' },
-    { name: 'Safari', type: 'Application', id: 'portfolio-window', icon: 'S' },
-    { name: 'GitPilot', type: 'Application', id: 'gitpilot-window', icon: 'GP' },
-    { name: 'JSON Editor', type: 'Application', id: 'json-editor-window', icon: '{ }' },
-    { name: 'Wallpapers', type: 'Application', id: 'wallpaper-window', icon: '📷' },
-    { name: 'About Me', type: 'Application', id: 'about-window', icon: 'HG' },
-    { name: 'Calculator', type: 'Application', id: 'calculator-window', icon: '÷' },
-    { name: 'Messages', type: 'Application', id: 'imessage-window', icon: '💬' },
-    { name: 'GitHub Stats', type: 'Application', id: 'github-stats-window', icon: '🐙' },
-    { name: 'Resume', type: 'File', id: 'resume-window', icon: 'PDF' },
-    { name: 'Help', type: 'Action', action: () => {
-      const win = document.getElementById('terminal-window');
-      if (win) { win.classList.remove('hidden'); win.classList.remove('minimized'); document.dispatchEvent(new CustomEvent('open-app', { detail: { id: 'terminal-window' } })); }
-    }, icon: '?' },
-    { name: 'Restart', type: 'Action', action: () => window.location.reload(), icon: 'R' }
-  ];
+  // ── Spotlight Logic (Enhanced Universal Search) ─────────────────────────
+  function buildSearchIndex() {
+    const C = window.CONTENT || {};
+    const items = [];
+
+    // Applications
+    const apps = [
+      { name: 'Terminal', type: 'Application', id: 'terminal-window', icon: '>_', iconClass: 'icon-app' },
+      { name: 'Safari', type: 'Application', id: 'portfolio-window', icon: '🧭', iconClass: 'icon-app' },
+      { name: 'GitPilot', type: 'Application', id: 'gitpilot-window', icon: 'GP', iconClass: 'icon-app' },
+      { name: 'JSON Editor', type: 'Application', id: 'json-editor-window', icon: '{ }', iconClass: 'icon-app' },
+      { name: 'Wallpapers', type: 'Application', id: 'wallpaper-window', icon: '📷', iconClass: 'icon-app' },
+      { name: 'About Me', type: 'Application', id: 'about-window', icon: '👤', iconClass: 'icon-app' },
+      { name: 'Calculator', type: 'Application', id: 'calculator-window', icon: '🧮', iconClass: 'icon-app' },
+      { name: 'Messages', type: 'Application', id: 'imessage-window', icon: '💬', iconClass: 'icon-app' },
+      { name: 'GitHub Stats', type: 'Application', id: 'github-stats-window', icon: '🐙', iconClass: 'icon-app' },
+      { name: 'Resume', type: 'File', id: 'resume-window', icon: '📄', iconClass: 'icon-app' },
+    ];
+    items.push(...apps);
+
+    // Terminal commands
+    const commands = window.COMMANDS || {};
+    Object.keys(commands).forEach(cmd => {
+      items.push({
+        name: cmd,
+        type: 'Terminal Command',
+        subtitle: `Run "${cmd}" in terminal`,
+        icon: '>_',
+        iconClass: 'icon-command',
+        action: () => {
+          const win = document.getElementById('terminal-window');
+          if (win) {
+            win.classList.remove('hidden', 'minimized');
+            document.dispatchEvent(new CustomEvent('open-app', { detail: { id: 'terminal-window' } }));
+          }
+          // Execute the command
+          setTimeout(() => {
+            const input = document.getElementById('cmd-input');
+            if (input && window.Terminal) {
+              input.value = cmd;
+              input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+            }
+          }, 200);
+        }
+      });
+    });
+
+    // Skills
+    if (C.skills) {
+      Object.entries(C.skills).forEach(([category, skillList]) => {
+        skillList.forEach(skill => {
+          items.push({
+            name: skill,
+            type: 'Skill',
+            subtitle: category,
+            icon: '⚡',
+            iconClass: 'icon-skill',
+            id: 'about-window'
+          });
+        });
+      });
+    }
+
+    // Projects
+    if (C.projects) {
+      C.projects.forEach(proj => {
+        items.push({
+          name: proj.name,
+          type: 'Project',
+          subtitle: proj.tech ? proj.tech.join(', ') : proj.description,
+          icon: '🚀',
+          iconClass: 'icon-project',
+          action: () => {
+            // Open the first available link
+            const link = proj.links?.live || proj.links?.view || proj.links?.playground || proj.links?.github;
+            if (link) window.open(link, '_blank');
+          }
+        });
+      });
+    }
+
+    // Experience
+    if (C.experience) {
+      C.experience.forEach(exp => {
+        items.push({
+          name: `${exp.role} at ${exp.company}`,
+          type: 'Experience',
+          subtitle: exp.period,
+          icon: '💼',
+          iconClass: 'icon-info',
+          id: 'about-window'
+        });
+      });
+    }
+
+    // Contact
+    if (C.contact) {
+      if (C.contact.email) {
+        items.push({
+          name: C.contact.email,
+          type: 'Contact',
+          subtitle: 'Email',
+          icon: '✉️',
+          iconClass: 'icon-contact',
+          action: () => window.open(`mailto:${C.contact.email}`)
+        });
+      }
+      if (C.contact.github) {
+        items.push({
+          name: 'GitHub Profile',
+          type: 'Contact',
+          subtitle: C.contact.github,
+          icon: '🐙',
+          iconClass: 'icon-contact',
+          action: () => window.open(C.contact.github, '_blank')
+        });
+      }
+      if (C.contact.linkedin) {
+        items.push({
+          name: 'LinkedIn Profile',
+          type: 'Contact',
+          subtitle: C.contact.linkedin,
+          icon: '🔗',
+          iconClass: 'icon-contact',
+          action: () => window.open(C.contact.linkedin, '_blank')
+        });
+      }
+    }
+
+    // Achievements
+    if (C.achievements) {
+      C.achievements.forEach(ach => {
+        items.push({
+          name: ach,
+          type: 'Achievement',
+          subtitle: '',
+          icon: '🏆',
+          iconClass: 'icon-info',
+          id: 'about-window'
+        });
+      });
+    }
+
+    // System actions
+    items.push(
+      { name: 'Help', type: 'Action', icon: '❓', iconClass: 'icon-command', action: () => {
+        const win = document.getElementById('terminal-window');
+        if (win) { win.classList.remove('hidden', 'minimized'); document.dispatchEvent(new CustomEvent('open-app', { detail: { id: 'terminal-window' } })); }
+      }},
+      { name: 'Restart', type: 'Action', icon: '🔄', iconClass: 'icon-command', action: () => window.location.reload() },
+      { name: 'Lock Screen', type: 'Action', icon: '🔒', iconClass: 'icon-command', action: () => { if (window.LockScreen) window.LockScreen.show(); } },
+      { name: 'Mission Control', type: 'Action', icon: '🪟', iconClass: 'icon-command', action: () => { if (window.MissionControl) window.MissionControl.toggle(); } },
+      { name: 'Toggle Full Screen', type: 'Action', icon: '⛶', iconClass: 'icon-command', action: () => { if (window.toggleFullScreen) window.toggleFullScreen(); } }
+    );
+
+    return items;
+  }
+
+  const searchableItems = buildSearchIndex();
 
   function openSpotlight() {
     document.dispatchEvent(new CustomEvent('menubar-dismiss', { detail: { source: 'spotlight' } }));
@@ -412,6 +553,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeSpotlight() {
     spotlightOverlay.classList.add('hidden');
     spotlightResults.style.display = 'none';
+  }
+
+  function toggleSpotlight() {
+    if (spotlightOverlay.classList.contains('hidden')) {
+      openSpotlight();
+    } else {
+      closeSpotlight();
+    }
   }
 
   function renderSpotlightResults(results) {
@@ -430,21 +579,52 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    results.forEach((item, index) => {
-      const el = document.createElement('div');
-      el.className = `spotlight-result-item ${index === 0 ? 'selected' : ''}`;
-      el.innerHTML = `
-        <div class="result-icon">${item.icon}</div>
-        <div class="result-info">
-          <span class="result-name">${item.name}</span>
-          <span class="result-type">${item.type}</span>
-        </div>
-      `;
-      el.addEventListener('click', () => {
-        handleSpotlightSelect(item);
-      });
-      spotlightResults.appendChild(el);
+    // Group results by type
+    const groups = {};
+    results.forEach(item => {
+      const type = item.type || 'Other';
+      if (!groups[type]) groups[type] = [];
+      groups[type].push(item);
     });
+
+    // Priority order for categories
+    const order = ['Application', 'Terminal Command', 'Project', 'Skill', 'Experience', 'Contact', 'Achievement', 'Action', 'File'];
+    const sortedTypes = Object.keys(groups).sort((a, b) => {
+      const ai = order.indexOf(a);
+      const bi = order.indexOf(b);
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+
+    let globalIndex = 0;
+    sortedTypes.forEach(type => {
+      // Category header
+      const header = document.createElement('div');
+      header.className = 'spotlight-category-header';
+      header.textContent = type;
+      spotlightResults.appendChild(header);
+
+      groups[type].forEach(item => {
+        const el = document.createElement('div');
+        el.className = `spotlight-result-item ${globalIndex === 0 ? 'selected' : ''}`;
+        el.dataset.index = globalIndex;
+        el._spotlightItem = item; // Store reference for keyboard selection
+        el.innerHTML = `
+          <div class="result-icon ${item.iconClass || ''}">${item.icon || '•'}</div>
+          <div class="result-info">
+            <span class="result-name">${escHtml(item.name)}</span>
+            ${item.subtitle ? `<span class="result-subtitle">${escHtml(item.subtitle)}</span>` : `<span class="result-type">${escHtml(item.type)}</span>`}
+          </div>
+        `;
+        el.addEventListener('click', () => handleSpotlightSelect(item));
+        spotlightResults.appendChild(el);
+        globalIndex++;
+      });
+    });
+  }
+
+  function escHtml(s) {
+    if (!s) return '';
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function handleSpotlightSelect(item) {
@@ -456,8 +636,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (win) {
         win.classList.remove('hidden');
         win.classList.remove('minimized');
-        // We'll rely on desktop.js to handle bringToFront if needed
-        // or trigger a custom event
         const event = new CustomEvent('open-app', { detail: { id: item.id } });
         document.dispatchEvent(event);
       }
@@ -466,17 +644,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById('spotlight-trigger').addEventListener('click', (e) => {
     e.stopPropagation();
-    openSpotlight();
+    toggleSpotlight();
   });
 
   spotlightInput.addEventListener('input', (e) => {
-    const val = e.target.value.toLowerCase();
+    const val = e.target.value.toLowerCase().trim();
     if (!val) {
       renderSpotlightResults([]);
       return;
     }
-    const filtered = searchableItems.filter(i => i.name.toLowerCase().includes(val));
-    renderSpotlightResults(filtered);
+    // Fuzzy match: search name, subtitle, and type
+    const filtered = searchableItems.filter(i => {
+      const haystack = [i.name, i.subtitle || '', i.type].join(' ').toLowerCase();
+      // Support multi-word queries: all words must match
+      const words = val.split(/\s+/);
+      return words.every(w => haystack.includes(w));
+    });
+    // Limit to 15 results to keep it snappy
+    renderSpotlightResults(filtered.slice(0, 15));
   });
 
   spotlightOverlay.addEventListener('click', (e) => {
@@ -488,7 +673,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Cmd/Ctrl + Space for Spotlight
     if ((e.metaKey || e.ctrlKey) && e.code === 'Space') {
       e.preventDefault();
-      openSpotlight();
+      toggleSpotlight();
+    }
+
+    // Cmd/Ctrl + K for Spotlight (alternative)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      toggleSpotlight();
     }
 
     // Esc to close anything
@@ -518,9 +709,15 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (selected) {
-          const itemName = selected.querySelector('.result-name').textContent;
-          const item = searchableItems.find(i => i.name === itemName);
-          if (item) handleSpotlightSelect(item);
+          const item = selected._spotlightItem;
+          if (item) {
+            handleSpotlightSelect(item);
+          } else {
+            // Fallback: find by name
+            const itemName = selected.querySelector('.result-name').textContent;
+            const found = searchableItems.find(i => i.name === itemName);
+            if (found) handleSpotlightSelect(found);
+          }
         }
       }
     }

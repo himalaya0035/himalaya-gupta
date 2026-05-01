@@ -98,10 +98,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
   
-  // 3. Draggable Logic
+  // 3. Draggable Logic with Window Snapping
   let isDragging = false;
   let dragTarget = null;
   let startX, startY, initialLeft, initialTop;
+  const snapPreview = document.getElementById('snap-preview');
+  const SNAP_EDGE = 12; // px from edge to trigger snap
+
+  function getSnapZone(x, y) {
+    const w = window.innerWidth;
+    if (y <= 5) return 'top';           // drag to very top → maximize
+    if (x <= SNAP_EDGE) return 'left';  // drag to left edge → snap left
+    if (x >= w - SNAP_EDGE) return 'right'; // drag to right edge → snap right
+    return null;
+  }
+
+  function showSnapPreview(zone) {
+    if (!snapPreview) return;
+    snapPreview.className = zone ? `visible snap-${zone}` : '';
+  }
+
+  function clearSnap(win) {
+    win.classList.remove('snapped-left', 'snapped-right');
+  }
   
   document.addEventListener('mousedown', (e) => {
     // Only drag by title bar
@@ -112,7 +131,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.closest('.traffic-lights')) return;
     
     dragTarget = titleBar.closest('.os-window');
-    if (!dragTarget || dragTarget.classList.contains('maximized')) return;
+    if (!dragTarget) return;
+
+    // If window is maximized or snapped, un-snap on drag start
+    if (dragTarget.classList.contains('maximized') || dragTarget.classList.contains('snapped-left') || dragTarget.classList.contains('snapped-right')) {
+      dragTarget.classList.remove('maximized', 'snapped-left', 'snapped-right');
+      // Re-center window under cursor
+      const winWidth = 900;
+      const winHeight = Math.round(window.innerHeight * 0.65);
+      dragTarget.style.width = Math.min(winWidth, window.innerWidth * 0.9) + 'px';
+      dragTarget.style.height = winHeight + 'px';
+      dragTarget.style.left = (e.clientX - Math.min(winWidth, window.innerWidth * 0.9) / 2) + 'px';
+      dragTarget.style.top = e.clientY + 'px';
+    }
     
     isDragging = true;
     bringToFront(dragTarget);
@@ -148,9 +179,35 @@ document.addEventListener("DOMContentLoaded", () => {
     
     dragTarget.style.left = newLeft + 'px';
     dragTarget.style.top = newTop + 'px';
+
+    // Show snap preview
+    const zone = getSnapZone(e.clientX, e.clientY);
+    showSnapPreview(zone);
   });
   
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('mouseup', (e) => {
+    if (isDragging && dragTarget) {
+      const zone = getSnapZone(e.clientX, e.clientY);
+      if (zone === 'left') {
+        clearSnap(dragTarget);
+        dragTarget.classList.add('snapped-left');
+        dragTarget.style.left = '';
+        dragTarget.style.top = '';
+        dragTarget.style.width = '';
+        dragTarget.style.height = '';
+      } else if (zone === 'right') {
+        clearSnap(dragTarget);
+        dragTarget.classList.add('snapped-right');
+        dragTarget.style.left = '';
+        dragTarget.style.top = '';
+        dragTarget.style.width = '';
+        dragTarget.style.height = '';
+      } else if (zone === 'top') {
+        clearSnap(dragTarget);
+        dragTarget.classList.add('maximized');
+      }
+    }
+    showSnapPreview(null);
     isDragging = false;
     dragTarget = null;
     document.body.style.userSelect = '';
@@ -181,17 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
           bringToFront(win);
         }
       }
-    });
-
-    // Slight bounce animation on click
-    item.addEventListener('mousedown', () => {
-      item.style.transform = 'scale(0.9)';
-    });
-    item.addEventListener('mouseup', () => {
-      item.style.transform = '';
-    });
-    item.addEventListener('mouseleave', () => {
-      item.style.transform = '';
     });
   });
 
