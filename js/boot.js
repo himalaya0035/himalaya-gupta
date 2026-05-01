@@ -44,7 +44,8 @@
     div.className = "output-block";
     div.innerHTML = html;
     output.appendChild(div);
-    requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    const terminal = output.closest('.os-content');
+    if (terminal) requestAnimationFrame(() => terminal.scrollTop = terminal.scrollHeight);
   }
 
   async function typewriter(el, text, speed = 14) {
@@ -73,7 +74,8 @@
       row.appendChild(textSpan);
       row.appendChild(statusSpan);
       output.appendChild(row);
-      requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      const terminal = output.closest('.os-content');
+      if (terminal) requestAnimationFrame(() => terminal.scrollTop = terminal.scrollHeight);
 
       await typewriter(textSpan, line.text, 10);
       await sleep(line.delay);
