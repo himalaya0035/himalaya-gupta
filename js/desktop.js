@@ -36,6 +36,54 @@ document.addEventListener("DOMContentLoaded", () => {
   const appNameDisplay = document.querySelector('.active-app-name');
   
   // Clock logic moved to menubar.js
+
+  // ── Animated Window Helpers ──────────────────────────────────────────
+  function animateOpen(win) {
+    win.classList.remove('hidden', 'minimized', 'win-closing', 'win-minimizing');
+    win.style.display = '';
+    win.classList.add('win-opening');
+    win.addEventListener('animationend', function handler() {
+      win.classList.remove('win-opening');
+      win.removeEventListener('animationend', handler);
+    });
+  }
+
+  function animateClose(win) {
+    win.classList.remove('active', 'win-opening', 'win-restoring');
+    win.classList.add('win-closing');
+    win.addEventListener('animationend', function handler() {
+      win.classList.remove('win-closing');
+      win.classList.add('hidden');
+      win.removeEventListener('animationend', handler);
+    });
+    // Remove dock indicator
+    const dockItem = document.querySelector(`.dock button.icon[data-target="${win.id}"]`);
+    if (dockItem) {
+      dockItem.classList.remove('active');
+      const point = dockItem.querySelector('.point');
+      if (point) point.classList.add('hidden');
+    }
+  }
+
+  function animateMinimize(win) {
+    win.classList.remove('active', 'win-opening', 'win-restoring');
+    win.classList.add('win-minimizing');
+    win.addEventListener('animationend', function handler() {
+      win.classList.remove('win-minimizing');
+      win.classList.add('minimized');
+      win.removeEventListener('animationend', handler);
+    });
+  }
+
+  function animateRestore(win) {
+    win.classList.remove('hidden', 'minimized', 'win-closing', 'win-minimizing');
+    win.style.display = '';
+    win.classList.add('win-restoring');
+    win.addEventListener('animationend', function handler() {
+      win.classList.remove('win-restoring');
+      win.removeEventListener('animationend', handler);
+    });
+  }
   
   // 2. Bring window to front
   function bringToFront(win) {
@@ -73,22 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (btnClose) btnClose.addEventListener('click', (e) => {
       e.stopPropagation();
-      win.classList.add('hidden');
-      win.classList.remove('active');
-      
-      // Remove indicator from dock
-      const dockItem = document.querySelector(`.dock button.icon[data-target="${win.id}"]`);
-      if (dockItem) {
-        dockItem.classList.remove('active');
-        const point = dockItem.querySelector('.point');
-        if (point) point.classList.add('hidden');
-      }
+      animateClose(win);
     });
     
     if (btnMin) btnMin.addEventListener('click', (e) => {
       e.stopPropagation();
-      win.classList.add('minimized');
-      win.classList.remove('active');
+      animateMinimize(win);
     });
     
     if (btnMax) btnMax.addEventListener('click', (e) => {
@@ -222,19 +260,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const win = document.getElementById(targetId);
       if (!win) return;
       
-      // If hidden or minimized, show it
-      if (win.classList.contains('hidden') || win.classList.contains('minimized')) {
-        win.classList.remove('hidden');
-        win.classList.remove('minimized');
+      if (win.classList.contains('hidden')) {
+        animateOpen(win);
+        bringToFront(win);
+        lazyLoadIframe(win);
+      } else if (win.classList.contains('minimized')) {
+        animateRestore(win);
         bringToFront(win);
         lazyLoadIframe(win);
       } else {
         // If it's already active and in front, minimize it
         if (win.classList.contains('active')) {
-          win.classList.add('minimized');
-          win.classList.remove('active');
+          animateMinimize(win);
         } else {
-          // Bring to front
           bringToFront(win);
         }
       }
@@ -246,8 +284,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const win = document.getElementById(targetId);
     if (!win) return;
     
-    win.classList.remove('hidden');
-    win.classList.remove('minimized');
+    if (win.classList.contains('minimized')) {
+      animateRestore(win);
+    } else if (win.classList.contains('hidden')) {
+      animateOpen(win);
+    }
     bringToFront(win);
     lazyLoadIframe(win);
     
@@ -295,6 +336,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('open-app', (e) => {
     const win = document.getElementById(e.detail.id);
     if (win) {
+      if (win.classList.contains('minimized')) {
+        animateRestore(win);
+      } else if (win.classList.contains('hidden')) {
+        animateOpen(win);
+      }
       bringToFront(win);
       lazyLoadIframe(win);
     }

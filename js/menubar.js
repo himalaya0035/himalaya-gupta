@@ -170,6 +170,30 @@ document.addEventListener("DOMContentLoaded", () => {
       help: [
         { label: 'Messages Help', disabled: true }
       ]
+    },
+    'Finder': {
+      file: [
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
+      ],
+      help: [
+        { label: 'Browse projects and experience', disabled: true }
+      ]
+    },
+    'Settings': {
+      file: [
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
+      ],
+      help: [
+        { label: 'Change themes, wallpapers & more', disabled: true }
+      ]
     }
   };
 
@@ -399,6 +423,9 @@ document.addEventListener("DOMContentLoaded", () => {
       { name: 'Messages', type: 'Application', id: 'imessage-window', icon: '💬', iconClass: 'icon-app' },
       { name: 'GitHub Stats', type: 'Application', id: 'github-stats-window', icon: '🐙', iconClass: 'icon-app' },
       { name: 'Resume', type: 'File', id: 'resume-window', icon: '📄', iconClass: 'icon-app' },
+      { name: 'Finder', type: 'Application', id: 'finder-window', icon: '📂', iconClass: 'icon-app' },
+      { name: 'System Preferences', type: 'Application', id: 'sysprefs-window', icon: '⚙️', iconClass: 'icon-app' },
+      { name: 'Settings', type: 'Application', id: 'sysprefs-window', icon: '⚙️', iconClass: 'icon-app' },
     ];
     items.push(...apps);
 
