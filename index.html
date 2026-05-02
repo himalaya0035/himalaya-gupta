@@ -126,6 +126,11 @@
     </div>
     <div class="os-content about-content">
       <div class="about-sidebar">
+        <div class="about-tab" data-tab="contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Get in Touch
+        </div>
+        <div class="about-sidebar-divider"></div>
         <a href="https://github.com/himalaya0035" target="_blank" class="about-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
@@ -134,18 +139,68 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
         </a>
-        <a href="mailto:guptahimalaya2@gmail.com" class="about-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Email
-        </a>
       </div>
-      <div class="about-main">
+
+      <!-- About Panel -->
+      <div class="about-main about-panel active" id="about-panel-about">
         <div class="about-avatar"><img src="assets/profilepic.jpg" alt="Himalaya Gupta" class="about-avatar-img" /></div>
         <h1 class="about-name">Hi, I'm Himalaya</h1>
         <p class="about-tagline">I'm the creator of this Desktop OS you're on right now 😉</p>
         <p class="about-bio">I'm a Senior Software Engineer with 3+ years of experience. I work primarily with Node.js, React, and cloud-native architecture, building systems that serve hundreds of thousands of users reliably.</p>
         <p class="about-bio">Backend engineering is where I'm most at home. Event-driven services, API design, authentication, real-time systems with WebSockets and Kafka. I've led small engineering teams, shipped 20+ features end-to-end, and built open-source tools that developers actually use.</p>
         <p class="about-bio">AWS Certified Developer. Hackathon winner. 300+ LeetCode problems solved. And this desktop OS you're browsing right now? Vanilla JavaScript, no frameworks.</p>
+        <div class="about-panel-switch-btn" id="about-go-contact">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Get in Touch
+        </div>
+        <div class="about-version">macOS Portfolio v2.0 · Built with vanilla JS</div>
+      </div>
+
+      <!-- Contact Panel -->
+      <div class="about-main about-panel" id="about-panel-contact">
+        <div class="about-panel-back" id="about-go-back">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          About
+        </div>
+        <h1 class="about-name" style="font-size: 22px; margin-bottom: 4px;">Get in Touch</h1>
+        <p class="about-tagline" style="font-size: 13px; margin-bottom: 12px;">Drop me a message and I'll get back to you.</p>
+
+        <div class="about-contact-email-card">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <a href="mailto:guptahimalaya2@gmail.com">guptahimalaya2@gmail.com</a>
+        </div>
+
+        <form class="about-contact-form" id="about-contact-form">
+          <input type="hidden" name="access_key" value="11c09763-fbc5-4401-a92f-67ff7682a753">
+          <input type="hidden" name="subject" value="New Contact from Portfolio">
+          <input type="checkbox" name="botcheck" style="display: none;">
+
+          <div class="about-form-row-group">
+            <div class="about-form-row">
+              <label class="about-form-label" for="contact-name">Name <span class="required">*</span></label>
+              <input type="text" id="contact-name" name="name" class="about-form-input" placeholder="Your name" required maxlength="60" autocomplete="name">
+            </div>
+            <div class="about-form-row">
+              <label class="about-form-label" for="contact-email">Email <span class="required">*</span></label>
+              <input type="email" id="contact-email" name="email" class="about-form-input" placeholder="you@example.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="about-form-row">
+            <label class="about-form-label" for="contact-phone">Phone <span class="optional-tag">(optional)</span></label>
+            <input type="tel" id="contact-phone" name="phone" class="about-form-input" placeholder="+1 (555) 000-0000" autocomplete="tel">
+          </div>
+          <div class="about-form-row">
+            <label class="about-form-label" for="contact-message">Message <span class="optional-tag">(optional)</span></label>
+            <textarea id="contact-message" name="message" class="about-form-input about-form-textarea" placeholder="Tell me about your project..." maxlength="500"></textarea>
+          </div>
+          <div class="about-form-actions">
+            <button type="submit" class="about-form-submit" id="contact-submit-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Send
+            </button>
+          </div>
+          <div class="about-form-status hidden" id="contact-form-status"></div>
+        </form>
       </div>
     </div>
   </div>
@@ -722,6 +777,101 @@
   <script src="js/finder.js"></script>
   <script src="js/sysprefs.js"></script>
   <script src="js/guestbook.js"></script>
+  <script>
+    // ── About Window: Tab Switching + Contact Form ──────────────────────
+    (function() {
+      const tabs = document.querySelectorAll('.about-tab');
+      const panels = document.querySelectorAll('.about-panel');
+      const form = document.getElementById('about-contact-form');
+
+      // Tab switching — single toggle between about and contact
+      var contactPanel = document.getElementById('about-panel-contact');
+      var aboutPanel = document.getElementById('about-panel-about');
+      var contactTab = document.querySelector('.about-tab[data-tab="contact"]');
+
+      function showContact() {
+        aboutPanel.classList.remove('active');
+        contactPanel.classList.add('active');
+        if (contactTab) contactTab.classList.add('active');
+      }
+
+      function showAbout() {
+        contactPanel.classList.remove('active');
+        aboutPanel.classList.add('active');
+        if (contactTab) contactTab.classList.remove('active');
+      }
+
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          if (tab.classList.contains('active')) {
+            showAbout();
+          } else {
+            showContact();
+          }
+        });
+      });
+
+      // "Get in Touch" button in About panel
+      var goContactBtn = document.getElementById('about-go-contact');
+      if (goContactBtn) goContactBtn.addEventListener('click', showContact);
+
+      // "Back to About" link in Contact panel
+      var goBackBtn = document.getElementById('about-go-back');
+      if (goBackBtn) goBackBtn.addEventListener('click', showAbout);
+
+      // Contact form submission via Web3Forms
+      if (!form) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var btn = document.getElementById('contact-submit-btn');
+        var status = document.getElementById('contact-form-status');
+        var nameVal = document.getElementById('contact-name').value.trim();
+        var emailVal = document.getElementById('contact-email').value.trim();
+
+        if (!nameVal || !emailVal) return;
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+          status.textContent = 'Please enter a valid email address.';
+          status.className = 'about-form-status error';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+
+        var formData = new FormData(form);
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.success) {
+            status.textContent = 'Message sent! I\'ll get back to you soon.';
+            status.className = 'about-form-status success';
+            form.reset();
+          } else {
+            status.textContent = 'Something went wrong. Try emailing me directly.';
+            status.className = 'about-form-status error';
+          }
+        })
+        .catch(function() {
+          status.textContent = 'Network error. Try emailing me directly.';
+          status.className = 'about-form-status error';
+        })
+        .finally(function() {
+          btn.disabled = false;
+          btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send';
+          setTimeout(function() {
+            status.className = 'about-form-status hidden';
+          }, 6000);
+        });
+      });
+    })();
+  </script>
   <script src="js/analytics.js"></script>
 </body>
 </html>

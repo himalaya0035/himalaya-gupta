@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     highestZ = highestZ + idx;
     
     win.addEventListener('mousedown', () => bringToFront(win));
+    win.addEventListener('touchstart', () => bringToFront(win), { passive: true });
     
     // Window Controls
     const btnClose = win.querySelector('.dot-red');
@@ -244,6 +245,71 @@ document.addEventListener("DOMContentLoaded", () => {
         clearSnap(dragTarget);
         dragTarget.classList.add('maximized');
       }
+    }
+    showSnapPreview(null);
+    isDragging = false;
+    dragTarget = null;
+    document.body.style.userSelect = '';
+  });
+
+  // ── Touch-based window dragging ──────────────────────────────────────
+  document.addEventListener('touchstart', (e) => {
+    const titleBar = e.target.closest('.os-title-bar');
+    if (!titleBar) return;
+    if (e.target.closest('.traffic-lights')) return;
+
+    dragTarget = titleBar.closest('.os-window');
+    if (!dragTarget) return;
+
+    // Un-snap if needed
+    if (dragTarget.classList.contains('maximized') || dragTarget.classList.contains('snapped-left') || dragTarget.classList.contains('snapped-right')) {
+      dragTarget.classList.remove('maximized', 'snapped-left', 'snapped-right');
+      const touch = e.touches[0];
+      const winWidth = Math.min(900, window.innerWidth * 0.9);
+      const winHeight = Math.round(window.innerHeight * 0.65);
+      dragTarget.style.width = winWidth + 'px';
+      dragTarget.style.height = winHeight + 'px';
+      dragTarget.style.left = (touch.clientX - winWidth / 2) + 'px';
+      dragTarget.style.top = touch.clientY + 'px';
+    }
+
+    isDragging = true;
+    bringToFront(dragTarget);
+
+    const touch = e.touches[0];
+    const rect = dragTarget.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+    startX = touch.clientX;
+    startY = touch.clientY;
+
+    dragTarget.style.transform = 'none';
+    dragTarget.style.margin = '0';
+    dragTarget.style.left = initialLeft + 'px';
+    dragTarget.style.top = initialTop + 'px';
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging || !dragTarget) return;
+
+    const touch = e.touches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+
+    let newLeft = initialLeft + dx;
+    let newTop = initialTop + dy;
+    if (newTop < 32) newTop = 32;
+
+    dragTarget.style.left = newLeft + 'px';
+    dragTarget.style.top = newTop + 'px';
+
+    // Prevent page scroll while dragging a window
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => {
+    if (isDragging && dragTarget) {
+      // No snap on touch — just drop in place
     }
     showSnapPreview(null);
     isDragging = false;

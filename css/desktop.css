@@ -142,9 +142,11 @@ body.desktop-mode {
   transition: all 0.2s;
 }
 
-.safari-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+@media (hover: hover) and (pointer: fine) {
+  .safari-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
 }
 
 .safari-address-bar {
@@ -271,8 +273,10 @@ body.desktop-mode {
   transition: background 0.2s;
 }
 
-.desktop-folder:hover {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .desktop-folder:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .folder-svg {
@@ -283,8 +287,10 @@ body.desktop-mode {
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.desktop-folder:hover .folder-svg {
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .desktop-folder:hover .folder-svg {
+    transform: scale(1.1);
+  }
 }
 
 .desktop-folder span {
@@ -340,8 +346,10 @@ body.desktop-mode {
   height: 24px;
 }
 
-.topbar-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .topbar-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
 }
 
 .topbar-item.active {
@@ -774,14 +782,16 @@ body.desktop-mode {
 .dot-yellow::before { content: "−"; }
 .dot-green::before  { content: "+"; }
 
-.traffic-lights:hover span {
-  transform: scale(1.15);
-}
+@media (hover: hover) and (pointer: fine) {
+  .traffic-lights:hover span {
+    transform: scale(1.15);
+  }
 
-.traffic-lights:hover span::before {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.1s;
+  .traffic-lights:hover span::before {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.1s;
+  }
 }
 
 .os-title-text {
@@ -858,16 +868,23 @@ body.desktop-mode {
   transform-origin: bottom center;
 }
 
-.icon:hover {
-  transform: scale(2.0) translateY(2px);
-  margin: 0 24px;
-}
+/* Dock magnification & tooltip — only on true pointer (mouse) devices */
+@media (hover: hover) and (pointer: fine) {
+  .icon:hover {
+    transform: scale(2.0) translateY(2px);
+    margin: 0 24px;
+  }
 
-/* More subtle magnification for neighbors to keep it smooth */
-.icon:hover + .icon, 
-.icon:has(+ .icon:hover) {
-  transform: scale(1.5) translateY(2px);
-  /* margin: 0 12px; */
+  /* More subtle magnification for neighbors to keep it smooth */
+  .icon:hover + .icon, 
+  .icon:has(+ .icon:hover) {
+    transform: scale(1.5) translateY(2px);
+  }
+
+  .icon:hover::after {
+    opacity: 1;
+    top: -30px;
+  }
 }
 
 /* Tooltip / App Name */
@@ -892,11 +909,6 @@ body.desktop-mode {
   opacity: 0;
   transition: opacity 0.2s, top 0.2s;
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
-
-.icon:hover::after {
-  opacity: 1;
-  top: -30px;
 }
 
 /* Active Indicators */
@@ -987,6 +999,27 @@ body.desktop-mode {
     width: 95vw !important;
   }
 
+  /* Larger traffic light buttons for touch */
+  .traffic-lights span {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+
+  .traffic-lights {
+    gap: 12px;
+  }
+
+  /* Always show close/min/max icons on touch devices */
+  .traffic-lights span::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .traffic-lights span {
+    transform: scale(1);
+  }
+
   /* Dock Fixes */
   .dock {
     height: 56px;
@@ -999,15 +1032,34 @@ body.desktop-mode {
     height: 44px;
   }
 
+  /* Disable hover magnification on touch — handled by @media (hover:hover) above */
   .icon:hover {
-    transform: scale(1.4) translateY(2px);
-    margin: 0 12px;
+    transform: none;
+    margin: 0;
   }
 
-  /* Hide Settings, Calculator, and Guest Book from dock on mobile */
+  .icon:hover + .icon,
+  .icon:has(+ .icon:hover) {
+    transform: none;
+  }
+
+  /* Tooltip never shows on mobile */
+  .icon::after {
+    display: none;
+  }
+
+  /* Tap feedback for dock icons */
+  .icon:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
+  }
+
+  /* Hide non-essential apps from dock on mobile */
   .dock .icon[data-target="sysprefs-window"],
   .dock .icon[data-target="calculator-window"],
-  .dock .icon[data-target="guestbook-window"] {
+  .dock .icon[data-target="guestbook-window"],
+  .dock .icon[data-target="json-editor-window"],
+  .dock .icon[data-target="gitpilot-window"] {
     display: none;
   }
 
@@ -1045,7 +1097,7 @@ body.desktop-mode {
     left: auto !important;
   }
 
-  /* Hide GitHub Stats from dock on mobile */
+  /* Hide GitHub Stats from dock on mobile (also hidden above) */
   .dock .icon[data-target="github-stats-window"] {
     display: none;
   }
@@ -1104,8 +1156,10 @@ body.desktop-mode {
   transition: background 0.2s;
 }
 
-.desktop-file:hover {
-  background: rgba(255, 255, 255, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .desktop-file:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .file-icon {
@@ -1119,8 +1173,10 @@ body.desktop-mode {
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.desktop-file:hover .file-icon {
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .desktop-file:hover .file-icon {
+    transform: scale(1.1);
+  }
 }
 
 .desktop-file span {
@@ -1273,10 +1329,12 @@ body.desktop-mode {
   transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
-#go-fullscreen-btn:hover {
-  background: #f8f8f8;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+@media (hover: hover) and (pointer: fine) {
+  #go-fullscreen-btn:hover {
+    background: #f8f8f8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+  }
 }
 
 #go-fullscreen-btn:active {
@@ -1491,8 +1549,10 @@ body.desktop-mode {
   transition: background 0.2s;
 }
 
-.nc-widget:hover {
-  background: rgba(255, 255, 255, 0.08);
+@media (hover: hover) and (pointer: fine) {
+  .nc-widget:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .nc-widget-header {
@@ -1683,8 +1743,10 @@ body.desktop-mode {
   transition: transform 0.1s;
 }
 
-.nc-contrib-day:hover {
-  transform: scale(1.4);
+@media (hover: hover) and (pointer: fine) {
+  .nc-contrib-day:hover {
+    transform: scale(1.4);
+  }
 }
 
 /* ── Now Playing Widget ───────────────────────────────────── */
@@ -2298,8 +2360,10 @@ body.desktop-mode {
   transition: transform 0.1s;
 }
 
-.gs-day:hover {
-  transform: scale(1.5);
+@media (hover: hover) and (pointer: fine) {
+  .gs-day:hover {
+    transform: scale(1.5);
+  }
 }
 
 /* ── Two Column Layout ────────────────────────────────────── */
@@ -2369,9 +2433,11 @@ body.desktop-mode {
   transition: background 0.15s, border-color 0.15s;
 }
 
-.gs-repo-card:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.12);
+@media (hover: hover) and (pointer: fine) {
+  .gs-repo-card:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
 }
 
 .gs-repo-name {
@@ -2812,9 +2878,11 @@ body.desktop-mode {
   flex-shrink: 0;
 }
 
-.imsg-send:hover {
-  background: #3a9dff;
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .imsg-send:hover {
+    background: #3a9dff;
+    transform: scale(1.05);
+  }
 }
 
 .imsg-send:active {
@@ -3046,8 +3114,47 @@ body.desktop-mode {
   padding: 20px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   flex-shrink: 0;
+}
+
+.about-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  cursor: default;
+  transition: background 0.15s, color 0.15s;
+}
+
+.about-tab:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.about-tab.active {
+  background: rgba(0, 97, 213, 0.5);
+  color: #fff;
+}
+
+.about-tab svg {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.about-tab.active svg {
+  opacity: 1;
+}
+
+.about-sidebar-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 8px 0;
 }
 
 .about-link {
@@ -3134,6 +3241,97 @@ body.desktop-mode {
   border-top: 0.5px solid rgba(255,255,255,0.06);
 }
 
+/* Panel switching */
+.about-panel {
+  display: none;
+}
+
+.about-panel.active {
+  display: block;
+}
+
+#about-panel-contact {
+  text-align: left;
+}
+
+#about-panel-contact .about-name,
+#about-panel-contact .about-tagline {
+  text-align: left;
+}
+
+/* Switch buttons between panels */
+.about-panel-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--acc, #00ff9d);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.about-panel-switch-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.about-panel-switch-btn svg {
+  color: var(--acc, #00ff9d);
+}
+
+.about-panel-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--acc, #00ff9d);
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: opacity 0.15s;
+}
+
+.about-panel-back:hover {
+  opacity: 0.7;
+}
+
+.about-contact-email-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-bottom: 16px;
+}
+
+.about-contact-email-card svg {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.about-contact-email-card a {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--acc, #00ff9d);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.about-contact-email-card a:hover {
+  opacity: 0.7;
+}
+
 @media (max-width: 768px) {
   #about-window:not(.maximized) {
     width: 95vw !important;
@@ -3150,11 +3348,22 @@ body.desktop-mode {
     width: 100%;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
     border-right: none;
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
     padding: 10px 12px;
     gap: 4px;
     overflow-x: auto;
+  }
+
+  .about-sidebar-divider {
+    display: none;
+  }
+
+  .about-tab {
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;
   }
 
   .about-link {
@@ -3184,6 +3393,144 @@ body.desktop-mode {
 
   .about-bio {
     font-size: 14px;
+  }
+}
+
+
+/* ── About Contact Form ───────────────────────────────────── */
+.about-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.about-form-row-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.about-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.about-form-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.3px;
+}
+
+.about-form-label .required {
+  color: #ff453a;
+}
+
+.about-form-label .optional-tag {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 10px;
+}
+
+.about-form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.about-form-input::placeholder {
+  color: rgba(255, 255, 255, 0.18);
+}
+
+.about-form-input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.about-form-textarea {
+  resize: none;
+  height: 64px;
+  line-height: 1.4;
+}
+
+.about-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.about-form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--acc, #00ff9d);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-form-submit:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.about-form-submit:active {
+  transform: translateY(0);
+}
+
+.about-form-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+.about-form-status {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.about-form-status.success {
+  background: rgba(48, 209, 88, 0.12);
+  color: #30d158;
+  border: 1px solid rgba(48, 209, 88, 0.2);
+}
+
+.about-form-status.error {
+  background: rgba(255, 69, 58, 0.12);
+  color: #ff453a;
+  border: 1px solid rgba(255, 69, 58, 0.2);
+}
+
+.about-form-status.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .about-form-row-group {
+    grid-template-columns: 1fr;
+  }
+
+  .about-form-input {
+    font-size: 16px; /* Prevents iOS zoom on focus */
   }
 }
 
@@ -3878,9 +4225,11 @@ body.desktop-mode {
   box-shadow: 0 3px 8px rgba(0,0,0,0.3);
 }
 
-.ss-wp-item:hover .ss-wp-thumb {
-  transform: scale(1.03);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+@media (hover: hover) and (pointer: fine) {
+  .ss-wp-item:hover .ss-wp-thumb {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  }
 }
 
 .ss-wp-item.active .ss-wp-thumb {
@@ -4160,8 +4509,10 @@ body.desktop-mode {
   transition: transform 0.15s, opacity 0.15s;
 }
 
-.gb-submit-mac:hover {
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .gb-submit-mac:hover {
+    transform: translateY(-1px);
+  }
 }
 
 .gb-submit-mac:active {

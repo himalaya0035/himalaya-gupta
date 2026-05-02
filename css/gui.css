@@ -35,17 +35,32 @@ html {
   min-height: 100%;
   background: var(--bg);
   overflow-x: hidden;
-  /* Scale App to 1.2x */
+  /* Scale App to 1.1x — use only zoom (not both zoom + transform) */
   zoom: 1.1;
-  -moz-transform: scale(1.1);
-  -moz-transform-origin: top center;
-  transform: scale(1.1);
-  transform-origin: top center;
   /* Premium Mesh Gradient */
   background-image: 
     radial-gradient(at 0% 0%, hsla(203, 80%, 15%, 0.4) 0px, transparent 50%),
     radial-gradient(at 100% 0%, hsla(280, 80%, 10%, 0.3) 0px, transparent 50%),
     radial-gradient(at 50% 100%, hsla(190, 80%, 15%, 0.3) 0px, transparent 50%);
+}
+
+/* Firefox doesn't support zoom — use transform as fallback */
+@supports not (zoom: 1.1) {
+  .gui-wrapper {
+    -moz-transform: scale(1.1);
+    -moz-transform-origin: top center;
+    transform: scale(1.1);
+    transform-origin: top center;
+  }
+}
+
+/* Disable scaling on small screens to prevent overflow */
+@media (max-width: 768px) {
+  .gui-wrapper {
+    zoom: 1;
+    transform: none;
+    -moz-transform: none;
+  }
 }
 
 /* Interactive Cursor Glow */
@@ -190,11 +205,13 @@ h1, h2, h3, h4 {
   color: var(--bg);
 }
 
-.btn-primary:hover {
-  transform: scale(1.05);
-  background: transparent;
-  color: var(--fg);
-  box-shadow: inset 0 0 0 2px var(--fg), 0 0 30px rgba(var(--acc-rgb), 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    transform: scale(1.05);
+    background: transparent;
+    color: var(--fg);
+    box-shadow: inset 0 0 0 2px var(--fg), 0 0 30px rgba(var(--acc-rgb), 0.3);
+  }
 }
 
 .btn-secondary {
@@ -203,11 +220,13 @@ h1, h2, h3, h4 {
   border: 1px solid var(--border);
 }
 
-.btn-secondary:hover {
-  background: var(--fg);
-  color: var(--bg);
-  border-color: var(--fg);
-  box-shadow: 0 0 30px rgba(var(--acc-rgb), 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .btn-secondary:hover {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+    box-shadow: 0 0 30px rgba(var(--acc-rgb), 0.2);
+  }
 }
 
 /* ── Bento Grid System ────────────────────────────────────────────── */
@@ -235,10 +254,12 @@ h1, h2, h3, h4 {
   flex-direction: column;
 }
 
-.bento-tile:hover {
-  transform: translateY(-8px);
-  border-color: rgba(var(--acc-rgb), 0.4);
-  background: rgba(255, 255, 255, 0.06);
+@media (hover: hover) and (pointer: fine) {
+  .bento-tile:hover {
+    transform: translateY(-8px);
+    border-color: rgba(var(--acc-rgb), 0.4);
+    background: rgba(255, 255, 255, 0.06);
+  }
 }
 
 /* Bento Tile Sizes */
@@ -302,9 +323,11 @@ h1, h2, h3, h4 {
   transition: all 0.3s ease;
 }
 
-.skill-pill:hover {
-  background: rgba(56, 189, 248, 0.1);
-  border-color: var(--acc);
+@media (hover: hover) and (pointer: fine) {
+  .skill-pill:hover {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: var(--acc);
+  }
 }
 
 .stat-item {
@@ -478,9 +501,11 @@ section.visible {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.wallpaper-item:hover .wallpaper-thumb {
-  transform: scale(1.04) translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+@media (hover: hover) and (pointer: fine) {
+  .wallpaper-item:hover .wallpaper-thumb {
+    transform: scale(1.04) translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  }
 }
 
 .wallpaper-item.active .wallpaper-thumb {

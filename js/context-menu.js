@@ -251,6 +251,48 @@
     }
   });
 
+  // ── Long-press support for touch devices ────────────────────────────
+  let longPressTimer = null;
+  let longPressTarget = null;
+
+  document.addEventListener('touchstart', (e) => {
+    if (e.target.closest('#terminal') || e.target.closest('iframe')) return;
+
+    longPressTarget = e;
+    longPressTimer = setTimeout(() => {
+      const touch = e.touches[0];
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!el) return;
+
+      const fileEl = el.closest('.desktop-file, .desktop-folder');
+      const dockBtn = el.closest('.dock button.icon');
+
+      if (fileEl) {
+        showMenu(touch.clientX, touch.clientY, getFileMenuItems(fileEl));
+      } else if (dockBtn) {
+        showMenu(touch.clientX, touch.clientY, getDockMenuItems(dockBtn));
+      } else if (el.closest('#desktop-wallpaper') || el.closest('#desktop-grid') || el === document.body) {
+        showMenu(touch.clientX, touch.clientY, getDesktopMenuItems());
+      }
+
+      longPressTarget = null;
+    }, 600);
+  }, { passive: true });
+
+  document.addEventListener('touchmove', () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+  }, { passive: true });
+
   // Hide on click or Escape
   document.addEventListener('click', hideMenu);
   window.addEventListener('keydown', (e) => {
