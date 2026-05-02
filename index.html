@@ -47,10 +47,13 @@
   <!-- Favicon: simple > in a box -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230d1117'/%3E%3Ctext x='4' y='24' font-family='monospace' font-size='22' fill='%2300ff9d'%3E%3E_%3C/text%3E%3C/svg%3E" />
 
-  <!-- Fonts -->
+  <!-- Fonts — preconnect already done, add preload for critical font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Preload default wallpaper -->
+  <link rel="preload" as="image" href="assets/background.webp" />
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/gui.css" />
@@ -726,10 +729,7 @@
   </div>
 
   <!-- load order: content → commands → terminal → boot -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-  </script>
+  <!-- PDF.js loaded lazily when resume window opens (see pdf-viewer.js) -->
   <script src="js/pdf-viewer.js"></script>
   <script src="js/content.js"></script>
   <script src="js/commands.js"></script>
@@ -775,23 +775,23 @@
       }
     })();
   </script>
-  <script src="js/gui-app.js"></script>
+  <script src="js/gui-app.js" defer></script>
   <script src="js/desktop.js"></script>
-  <script src="js/safari.js"></script>
-  <script src="js/wallpaper.js"></script>
+  <script src="js/safari.js" defer></script>
+  <script src="js/wallpaper.js" defer></script>
   <script src="js/menubar.js"></script>
-  <script src="js/battery.js"></script>
-  <script src="js/clock-popover.js"></script>
-  <script src="js/context-menu.js"></script>
-  <script src="js/notification-center.js"></script>
-  <script src="js/calculator.js"></script>
-  <script src="js/imessage.js"></script>
-  <script src="js/toasts.js"></script>
-  <script src="js/mission-control.js"></script>
-  <script src="js/github-stats.js"></script>
-  <script src="js/finder.js"></script>
-  <script src="js/sysprefs.js"></script>
-  <script src="js/guestbook.js"></script>
+  <script src="js/battery.js" defer></script>
+  <script src="js/clock-popover.js" defer></script>
+  <script src="js/context-menu.js" defer></script>
+  <script src="js/notification-center.js" defer></script>
+  <script src="js/calculator.js" defer></script>
+  <script src="js/imessage.js" defer></script>
+  <script src="js/toasts.js" defer></script>
+  <script src="js/mission-control.js" defer></script>
+  <script src="js/github-stats.js" defer></script>
+  <script src="js/finder.js" defer></script>
+  <script src="js/sysprefs.js" defer></script>
+  <script src="js/guestbook.js" defer></script>
   <script>
     // ── About Window: Tab Switching + Contact Form ──────────────────────
     (function() {
