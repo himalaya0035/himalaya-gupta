@@ -66,6 +66,7 @@
         ["skills",        "Tech stack & tools"],
         ["education",     "Academic background"],
         ["contact",       "All contact links"],
+        ["connect",       "Send me a message"],
         ["linkedin",      "Open LinkedIn profile"],
         ["github",        "Open GitHub profile"],
         ["email",         "Compose email"],
@@ -197,9 +198,100 @@ ${bullets}`;
       const cta = `
   ${dim(sep(55))}
   ${bold(acc("Ready to build something great?"))}
-  Try running ${cmd("sudo hire me", "sudo hire me")} to initiate the hiring protocol.`;
+  Run ${cmd("connect")} to send me a message directly from the terminal.
+  Or try ${cmd("sudo hire me", "sudo hire me")} to initiate the hiring protocol.`;
 
       return `\n${bold("CONTACT")}\n${sep(55)}\n${lines}\n${cta}\n`;
+    },
+
+    async connect() {
+      const T = window.Terminal;
+      const inputEl = document.getElementById('cmd-input');
+      const displayEl = document.getElementById('cmd-display');
+      const promptLabel = document.querySelector('#prompt-row .prompt-label');
+      const originalLabel = promptLabel.innerHTML;
+      T.isInteractive = true;
+
+      function setPromptLabel(text) {
+        promptLabel.innerHTML = `<span class="acc">${text}</span> <span class="sep">&gt;</span>`;
+      }
+
+      function restorePromptLabel() {
+        promptLabel.innerHTML = originalLabel;
+      }
+
+      function prompt(question) {
+        return new Promise(function(resolve) {
+          setPromptLabel(question);
+          inputEl.value = '';
+          displayEl.textContent = '';
+          inputEl.focus();
+
+          function handler(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              var val = inputEl.value.trim();
+              inputEl.removeEventListener('keydown', handler, true);
+              // Echo the prompt + answer into output
+              T.appendOutput(`  ${acc(question)} ${dim('>')} ${esc(val || '(skipped)')}`);
+              inputEl.value = '';
+              displayEl.textContent = '';
+              resolve(val);
+            }
+          }
+          inputEl.addEventListener('keydown', handler, true);
+        });
+      }
+
+      T.appendOutput(`\n${bold('CONNECT')}\n${sep(40)}`);
+      T.appendOutput(`  ${dim('Send me a message directly from the terminal.')}`);
+      T.appendOutput(`  ${dim('Press Enter to skip optional fields.')}\n`);
+
+      var name = await prompt('name *');
+      if (!name) {
+        T.isInteractive = false;
+        restorePromptLabel();
+        return err('\n  Name is required. Try again with: ') + cmd('connect') + '\n';
+      }
+
+      var email = await prompt('email *');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        T.isInteractive = false;
+        restorePromptLabel();
+        return err('\n  Valid email is required. Try again with: ') + cmd('connect') + '\n';
+      }
+
+      var phone = await prompt('phone');
+      var message = await prompt('message');
+
+      T.isInteractive = false;
+      restorePromptLabel();
+      T.appendOutput(`\n  ${dim('Sending...')}`);
+
+      try {
+        var formData = new FormData();
+        formData.append('access_key', '11c09763-fbc5-4401-a92f-67ff7682a753');
+        formData.append('subject', 'Terminal Contact from ' + name);
+        formData.append('name', name);
+        formData.append('email', email);
+        if (phone) formData.append('phone', phone);
+        if (message) formData.append('message', message);
+
+        var res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+        var data = await res.json();
+
+        if (data.success) {
+          return ok('\n  Message sent successfully.') + `\n  ${dim("I'll get back to you at")} ${acc(email)}\n`;
+        } else {
+          return err('\n  Failed to send. Try emailing me directly: ') + link('mailto:' + C.contact.email, C.contact.email) + '\n';
+        }
+      } catch(e) {
+        return err('\n  Network error. Try: ') + link('mailto:' + C.contact.email, C.contact.email) + '\n';
+      }
     },
 
     linkedin() {

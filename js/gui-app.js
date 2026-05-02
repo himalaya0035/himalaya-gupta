@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <h2>${data.title}</h2>
       <div class="hero-content">Senior Software Engineer building and scaling high-traffic platforms with Node.js and cloud-native architecture.</div>
       <div class="hero-actions">
-        ${data.contact.email ? `<a href="mailto:${data.contact.email}" class="btn btn-primary">Let's Connect</a>` : ''}
+        ${data.contact.email ? `<a href="#" class="btn btn-primary" onclick="window.openAboutContact(); return false;">Let's Connect</a>` : ''}
         ${data.contact.github ? `<a href="${data.contact.github}" target="_blank" class="btn btn-secondary">GitHub</a>` : ''}
       </div>
     </section>
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="cta-card">
           <h2>Let's Build Something Great</h2>
           <p>Always open to discussing new projects, senior engineering roles, or interesting collaborations.</p>
-          <a href="mailto:${data.contact.email}" class="btn btn-primary">Get in touch →</a>
+          <a href="#" class="btn btn-primary" onclick="window.openAboutContact(); return false;">Get in touch →</a>
         </div>
       </section>
 

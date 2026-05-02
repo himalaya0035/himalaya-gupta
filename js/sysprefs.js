@@ -167,7 +167,7 @@
 
   // ── Wallpaper ─────────────────────────────────────────────────────────
   function renderWallpaper(main) {
-    const currentPath = localStorage.getItem('desktopWallpaper') || 'assets/background2.jpg';
+    const currentPath = localStorage.getItem('desktopWallpaper') || 'assets/background.webp';
     const currentName = wallpapers.find(w => w.path === currentPath)?.name || 'Custom';
 
     const grid = wallpapers.map(wp => `

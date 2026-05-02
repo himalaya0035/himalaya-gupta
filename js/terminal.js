@@ -11,6 +11,7 @@
   let histIdx  = -1;
   let inputBuf = "";
   let isTyping = false;
+  let isInteractive = false;
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -158,8 +159,8 @@
 
   // ── input events ──────────────────────────────────────────────────────────
   inputEl.addEventListener("keydown", async (e) => {
-    if (isTyping) { 
-      e.preventDefault(); 
+    if (isTyping || isInteractive) { 
+      if (isTyping) e.preventDefault();
       return; 
     }
 
@@ -252,6 +253,8 @@
     typeAndExecute,
     focusInput: () => { if (!isTyping) inputEl.focus(); },
     getHistory: () => [...history],
+    get isInteractive() { return isInteractive; },
+    set isInteractive(v) { isInteractive = v; },
     enablePrompt() {
       promptRow.classList.remove("hidden");
       inputEl.focus();

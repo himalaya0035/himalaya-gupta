@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }).join('');
 
     // Get the currently selected wallpaper path from localStorage
-    const savedWallpaper = localStorage.getItem('desktopWallpaper') || 'assets/background2.jpg';
+    const savedWallpaper = localStorage.getItem('desktopWallpaper') || 'assets/background.webp';
     // Try to determine the wallpaper name from the path
     const wallpaperNames = {
       'assets/background.webp': 'Monterey',
