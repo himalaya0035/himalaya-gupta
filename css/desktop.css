@@ -1004,9 +1004,10 @@ body.desktop-mode {
     margin: 0 12px;
   }
 
-  /* Hide Settings and Calculator from dock on mobile */
+  /* Hide Settings, Calculator, and Guest Book from dock on mobile */
   .dock .icon[data-target="sysprefs-window"],
-  .dock .icon[data-target="calculator-window"] {
+  .dock .icon[data-target="calculator-window"],
+  .dock .icon[data-target="guestbook-window"] {
     display: none;
   }
 
@@ -3607,12 +3608,12 @@ body.desktop-mode {
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   SYSTEM PREFERENCES
+   SYSTEM SETTINGS (macOS Ventura style)
    ══════════════════════════════════════════════════════════════════════ */
 
 #sysprefs-window {
-  width: 680px;
-  height: 520px;
+  width: 740px;
+  height: 540px;
   max-width: 95vw;
   max-height: 80vh;
   top: 14%;
@@ -3621,258 +3622,297 @@ body.desktop-mode {
 
 #sysprefs-window .os-content {
   padding: 0 !important;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
-.sysprefs-content {
-  padding: 24px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.1) transparent;
+/* ── Two-pane layout ──────────────────────────────────────── */
+.ss-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* ── Home Grid ────────────────────────────────────────────── */
-.sp-home {
-  padding: 24px;
+/* ── Sidebar ──────────────────────────────────────────────── */
+.ss-sidebar {
+  width: 200px;
+  background: rgba(30, 30, 35, 0.6);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
-.sp-search-bar {
+.ss-sidebar-search {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  margin: 12px 12px 8px;
+  padding: 6px 10px;
   background: rgba(255, 255, 255, 0.06);
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin-bottom: 24px;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
 }
 
-.sp-search-input {
+.ss-search-input {
   background: transparent;
   border: none;
   color: #fff;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   outline: none;
   width: 100%;
 }
 
-.sp-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+.ss-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
 }
 
-.sp-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+.ss-sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
 }
 
-.sp-pane-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px 16px;
+.ss-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: default;
+  transition: background 0.12s;
+  margin-bottom: 1px;
+}
+
+.ss-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ss-sidebar-item.active {
+  background: rgba(0, 97, 213, 0.5);
+}
+
+.ss-sidebar-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  width: 22px;
   text-align: center;
-  cursor: pointer;
-  transition: background 0.15s, transform 0.2s, border-color 0.15s;
 }
 
-.sp-pane-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.sp-pane-icon {
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
-.sp-pane-label {
+.ss-sidebar-label {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-/* ── Pane Layout ──────────────────────────────────────────── */
-.sp-pane {
-  padding: 24px;
+/* ── Main pane ────────────────────────────────────────────── */
+.ss-main {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
 }
 
-.sp-back-btn {
-  background: none;
-  border: none;
-  color: var(--acc, #00ff9d);
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 16px;
-  transition: opacity 0.15s;
+.ss-pane {
+  padding: 28px 32px;
+  max-width: 520px;
 }
 
-.sp-back-btn:hover {
-  opacity: 0.7;
-}
-
-.sp-pane-title {
+.ss-pane-heading {
   font-family: 'Outfit', sans-serif;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
   margin-bottom: 24px;
 }
 
-.sp-section {
+/* ── Groups & Cards (macOS grouped rows) ──────────────────── */
+.ss-group {
   margin-bottom: 24px;
 }
 
-.sp-section-label {
+.ss-group-label {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
-}
-
-/* ── Theme Grid ───────────────────────────────────────────── */
-.sp-theme-grid {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.sp-theme-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.2s, background 0.15s;
-}
-
-.sp-theme-option:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.sp-theme-option.active {
-  border-color: var(--acc, #00ff9d);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.sp-theme-dot {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
-}
-
-.sp-theme-name {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 8px;
+  padding-left: 2px;
 }
 
-/* ── Preview Box ──────────────────────────────────────────── */
-.sp-preview-box {
-  border-radius: 12px;
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
+.ss-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
   overflow: hidden;
+}
+
+.ss-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  min-height: 40px;
+}
+
+.ss-row-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ss-row-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
+  max-width: 55%;
+}
+
+.ss-row-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 0 14px;
+}
+
+/* ── Color picker ─────────────────────────────────────────── */
+.ss-color-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.ss-color-option {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 3px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.ss-color-option.active {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.ss-color-option:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.ss-color-dot {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* ── Preview card ─────────────────────────────────────────── */
+.ss-preview-card {
   transition: background 0.3s, border-color 0.3s;
 }
 
-.sp-preview-bar {
+.ss-preview-titlebar {
   height: 28px;
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px 10px 0 0;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
   transition: background 0.3s;
 }
 
-.sp-preview-content {
+.ss-preview-body {
   padding: 16px;
 }
 
-.sp-preview-text {
+.ss-preview-line1 {
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-size: 13px;
+  margin-bottom: 6px;
   transition: color 0.3s;
 }
 
-.sp-preview-accent {
+.ss-preview-line2 {
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  margin-bottom: 14px;
   transition: color 0.3s;
 }
 
-/* ── Wallpaper Grid ───────────────────────────────────────── */
-.sp-wp-grid {
+.ss-preview-btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ss-preview-btn {
+  height: 24px;
+  width: 60px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ss-preview-btn-acc {
+  transition: background 0.3s;
+}
+
+/* ── Wallpaper grid ───────────────────────────────────────── */
+.ss-wp-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 14px;
 }
 
-.sp-wp-item {
+.ss-wp-item {
   cursor: pointer;
   text-align: center;
 }
 
-.sp-wp-thumb {
+.ss-wp-thumb {
   width: 100%;
   aspect-ratio: 16 / 10;
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
-  border: 3px solid transparent;
+  border-radius: 8px;
+  border: 2.5px solid transparent;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
 }
 
-.sp-wp-item:hover .sp-wp-thumb {
+.ss-wp-item:hover .ss-wp-thumb {
   transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
-.sp-wp-item.active .sp-wp-thumb {
+.ss-wp-item.active .ss-wp-thumb {
   border-color: var(--acc, #00ff9d);
-  box-shadow: 0 0 0 1px var(--acc, #00ff9d), 0 8px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 1px var(--acc, #00ff9d), 0 6px 16px rgba(0,0,0,0.4);
 }
 
-.sp-wp-name {
+.ss-wp-name {
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 6px;
 }
 
-.sp-wp-item.active .sp-wp-name {
+.ss-wp-item.active .ss-wp-name {
   color: #fff;
   font-weight: 600;
 }
 
-/* ── About Card ───────────────────────────────────────────── */
-.sp-about-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 32px;
+/* ── About hero ───────────────────────────────────────────── */
+.ss-about-hero {
   text-align: center;
+  margin-bottom: 28px;
 }
 
-.sp-about-logo {
-  font-size: 48px;
-  margin-bottom: 12px;
+.ss-about-icon {
+  font-size: 52px;
+  margin-bottom: 10px;
 }
 
-.sp-about-name {
+.ss-about-hero-name {
   font-family: 'Outfit', sans-serif;
   font-size: 22px;
   font-weight: 800;
@@ -3880,38 +3920,10 @@ body.desktop-mode {
   margin-bottom: 4px;
 }
 
-.sp-about-version {
+.ss-about-hero-sub {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.35);
-  margin-bottom: 20px;
-}
-
-.sp-about-divider {
-  height: 0.5px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 16px 0;
-}
-
-.sp-about-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-}
-
-.sp-about-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.sp-about-value {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
-  font-weight: 500;
-  text-align: right;
-  max-width: 60%;
 }
 
 @media (max-width: 768px) {
@@ -3921,6 +3933,333 @@ body.desktop-mode {
     left: 3vw !important;
     top: 60px !important;
   }
-  .sp-grid { grid-template-columns: repeat(2, 1fr); }
-  .sp-wp-grid { grid-template-columns: repeat(2, 1fr); }
+  .ss-sidebar { width: 130px; }
+  .ss-sidebar-label { font-size: 11px; }
+  .ss-sidebar-icon { font-size: 14px; }
+  .ss-pane { padding: 16px; }
+  .ss-pane-heading { font-size: 20px; }
+  .ss-wp-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   GUEST BOOK (macOS Notes style)
+   ══════════════════════════════════════════════════════════════════════ */
+
+#guestbook-window {
+  width: 740px;
+  height: 540px;
+  max-width: 95vw;
+  max-height: 85vh;
+  top: 10%;
+  left: 18%;
+}
+
+#guestbook-window .os-content {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+/* ── Two-pane layout ──────────────────────────────────────── */
+.gb-layout {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.gb-sidebar {
+  width: 220px;
+  background: rgba(30, 30, 35, 0.6);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.gb-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px 10px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.gb-sidebar-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.gb-sidebar-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.gb-sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.gb-sidebar-item {
+  padding: 10px 16px;
+  cursor: default;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.12s;
+}
+
+.gb-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.gb-sidebar-item.active {
+  background: rgba(0, 97, 213, 0.45);
+}
+
+.gb-sidebar-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gb-sidebar-preview {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gb-sidebar-time {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+  margin-top: 3px;
+}
+
+.gb-new-item {
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Main panel ───────────────────────────────────────────── */
+.gb-main {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+/* ── Form view ────────────────────────────────────────────── */
+.gb-form-view {
+  padding: 28px 32px;
+}
+
+.gb-form-header {
+  margin-bottom: 24px;
+}
+
+.gb-form-date {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
+
+.gb-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gb-input-mac {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.gb-input-mac::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 400;
+}
+
+.gb-input-mac:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.gb-textarea-wrap {
+  position: relative;
+}
+
+.gb-textarea-mac {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 8px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  outline: none;
+  resize: none;
+}
+
+.gb-textarea-mac::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.gb-char-count-mac {
+  position: absolute;
+  bottom: 4px;
+  right: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.gb-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+.gb-submit-mac {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--acc, #00ff9d);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.gb-submit-mac:hover {
+  transform: translateY(-1px);
+}
+
+.gb-submit-mac:active {
+  transform: translateY(0);
+}
+
+.gb-submit-mac:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+/* ── Detail view ──────────────────────────────────────────── */
+.gb-detail-view {
+  padding: 28px 32px;
+}
+
+.gb-detail-view.hidden {
+  display: none;
+}
+
+.gb-form-view.hidden {
+  display: none;
+}
+
+.gb-detail-date {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.gb-detail-card {
+  text-align: center;
+}
+
+.gb-detail-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 auto 16px;
+}
+
+.gb-detail-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.gb-detail-msg {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  #guestbook-window:not(.maximized) {
+    width: 94vw !important;
+    height: 75vh !important;
+    left: 3vw !important;
+    top: 60px !important;
+  }
+  .gb-sidebar {
+    width: 130px;
+  }
+  .gb-sidebar-header {
+    padding: 10px 12px 8px;
+  }
+  .gb-sidebar-item {
+    padding: 8px 12px;
+  }
+  .gb-sidebar-name {
+    font-size: 11px;
+  }
+  .gb-sidebar-preview {
+    font-size: 10px;
+  }
+  .gb-form-view, .gb-detail-view {
+    padding: 16px;
+  }
+  .gb-input-mac {
+    font-size: 16px;
+  }
+  .gb-textarea-mac {
+    font-size: 14px;
+  }
 }

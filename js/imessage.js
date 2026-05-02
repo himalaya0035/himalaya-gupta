@@ -336,6 +336,14 @@
     return CUSS_REGEX.test(normalizedMsg);
   }
 
+  // Expose for other apps (Guest Book, etc.)
+  window.profanityFilter = {
+    isAbusive: function(text) {
+      const normalized = normalizeMessage(text);
+      return CUSS_REGEX.test(normalized);
+    }
+  };
+
   const FALLBACK_REPLY = "I got your message. Please reach out at guptahimalaya2@gmail.com and I'll get back to you.";
 
   function escapeRegex(str) {

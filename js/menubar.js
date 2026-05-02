@@ -183,6 +183,18 @@ document.addEventListener("DOMContentLoaded", () => {
         { label: 'Browse projects and experience', disabled: true }
       ]
     },
+    'Guest Book': {
+      file: [
+        { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
+      ],
+      window: [
+        { label: 'Minimize', shortcut: '⌘M', action: minimizeActiveWindow },
+        { label: 'Zoom', action: maximizeActiveWindow }
+      ],
+      help: [
+        { label: 'Sign the guest book!', disabled: true }
+      ]
+    },
     'Settings': {
       file: [
         { label: 'Close Window', shortcut: '⌘W', action: closeActiveWindow }
@@ -426,6 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { name: 'Finder', type: 'Application', id: 'finder-window', icon: '📂', iconClass: 'icon-app' },
       { name: 'System Preferences', type: 'Application', id: 'sysprefs-window', icon: '⚙️', iconClass: 'icon-app' },
       { name: 'Settings', type: 'Application', id: 'sysprefs-window', icon: '⚙️', iconClass: 'icon-app' },
+      { name: 'Guest Book', type: 'Application', id: 'guestbook-window', icon: '📝', iconClass: 'icon-app' },
     ];
     items.push(...apps);
 

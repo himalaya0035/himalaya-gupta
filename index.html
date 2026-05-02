@@ -531,6 +531,19 @@
     <div class="os-content sysprefs-content" id="sysprefs-root"></div>
   </div>
 
+  <!-- Guest Book Window -->
+  <div id="guestbook-window" class="os-window hidden" data-app-title="Guest Book">
+    <div class="os-title-bar">
+      <div class="traffic-lights">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <span class="os-title-text">Guest Book</span>
+    </div>
+    <div class="os-content guestbook-content" id="guestbook-root"></div>
+  </div>
+
   <!-- Mission Control Overlay -->
   <div id="mission-control-overlay" class="hidden"></div>
 
@@ -620,6 +633,12 @@
       <hr class="point hidden" id="point-calculator">
     </button>
 
+    <!-- Guest Book -->
+    <button class="icon" data-title="Guest Book" data-target="guestbook-window" style="cursor: pointer;" aria-label="Open Guest Book">
+      <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #FF6B6B, #EE5A24); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(255,255,255,0.2);">📝</div>
+      <hr class="point hidden" id="point-guestbook">
+    </button>
+
     <!-- Settings -->
     <button class="icon" data-title="Settings" data-target="sysprefs-window" style="cursor: pointer;" aria-label="Open System Preferences">
       <img src="assets/settings.webp" alt="Settings" style="width: 36px; height: 36px; border-radius: 8px;">
@@ -702,6 +721,7 @@
   <script src="js/github-stats.js"></script>
   <script src="js/finder.js"></script>
   <script src="js/sysprefs.js"></script>
+  <script src="js/guestbook.js"></script>
   <script src="js/analytics.js"></script>
 </body>
 </html>

@@ -312,6 +312,25 @@
     obs.observe(mcOverlay, { attributes: true, attributeFilter: ['class'] });
   }
 
+  // ── Guest Book ──────────────────────────────────────────────────────
+  document.addEventListener('guestbook-sign', (e) => {
+    track('guestbook_signed', {
+      name: (e.detail?.name || '').substring(0, 40),
+      message_length: e.detail?.messageLength || 0
+    });
+  });
+
+  const gbWin = document.getElementById('guestbook-window');
+  if (gbWin) {
+    const obs = new MutationObserver(() => {
+      if (!gbWin.classList.contains('hidden')) {
+        track('guestbook_viewed', {});
+        obs.disconnect();
+      }
+    });
+    obs.observe(gbWin, { attributes: true, attributeFilter: ['class'] });
+  }
+
   // ── Session timing ────────────────────────────────────────────────────
   const sessionStart = Date.now();
 
