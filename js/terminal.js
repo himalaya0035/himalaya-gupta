@@ -83,6 +83,9 @@
     const cmd = raw.trim();
     if (!cmd) return;
 
+    // Dispatch for analytics
+    document.dispatchEvent(new CustomEvent('terminal-command', { detail: { command: cmd } }));
+
     echoCommand(cmd);
 
     // push to history (avoid consecutive duplicates)

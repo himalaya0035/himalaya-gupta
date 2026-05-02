@@ -73,9 +73,9 @@
   // ── Welcome Toasts on First Load ──────────────────────────────────────
   function showWelcomeToasts() {
     const C = window.CONTENT || {};
-    const hasSeenWelcome = sessionStorage.getItem('welcomeToastsShown');
+    const hasSeenWelcome = localStorage.getItem('welcomeToastsShown');
     if (hasSeenWelcome) return;
-    sessionStorage.setItem('welcomeToastsShown', '1');
+    localStorage.setItem('welcomeToastsShown', '1');
 
     const toasts = [
       {

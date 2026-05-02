@@ -498,6 +498,11 @@
         messages.push({ from: 'them', text: reply, time: getTimeNow() });
         saveMessages();
         renderMessages();
+
+        // Dispatch event for analytics tracking
+        document.dispatchEvent(new CustomEvent('imessage-conversation', {
+          detail: { userMessage: text, botReply: reply }
+        }));
       }, 1500 + Math.random() * 1000);
     }, 600);
   }

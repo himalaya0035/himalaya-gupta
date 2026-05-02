@@ -45,14 +45,9 @@
   });
 
   // ── Terminal commands ─────────────────────────────────────────────────
-  const cmdInput = document.getElementById('cmd-input');
-  if (cmdInput) {
-    cmdInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && cmdInput.value.trim()) {
-        track('terminal_command', { command: cmdInput.value.trim() });
-      }
-    });
-  }
+  document.addEventListener('terminal-command', (e) => {
+    track('terminal_command', { command: e.detail?.command || 'unknown' });
+  });
 
   // ── Spotlight ─────────────────────────────────────────────────────────
   const spotlightInput = document.getElementById('spotlight-input');
@@ -100,26 +95,14 @@
   };
 
   // ── iMessage ──────────────────────────────────────────────────────────
-  const sendBtn = document.getElementById('imsg-send');
-  const msgInput = document.getElementById('imsg-input');
-  if (sendBtn && msgInput) {
-    sendBtn.addEventListener('click', () => {
-      if (msgInput.value.trim()) {
-        track('message_sent', {
-          length: msgInput.value.trim().length,
-          text: msgInput.value.trim().substring(0, 100)
-        });
-      }
+  document.addEventListener('imessage-conversation', (e) => {
+    const { userMessage, botReply } = e.detail || {};
+    track('message_conversation', {
+      user_message: (userMessage || '').substring(0, 200),
+      bot_reply: (botReply || '').substring(0, 200),
+      user_message_length: (userMessage || '').length
     });
-    msgInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey && msgInput.value.trim()) {
-        track('message_sent', {
-          length: msgInput.value.trim().length,
-          text: msgInput.value.trim().substring(0, 100)
-        });
-      }
-    });
-  }
+  });
 
   // ── Calculator ────────────────────────────────────────────────────────
   document.addEventListener('click', (e) => {
