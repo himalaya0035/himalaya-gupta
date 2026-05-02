@@ -234,8 +234,17 @@
   // click anywhere → focus input
   document.addEventListener("click", (e) => {
     if (isTyping) { 
-      return; // Do not abort on click, just ignore (so user can scroll/copy)
+      return;
     }
+
+    // Tap ghost hint or TAB badge → autocomplete
+    if (e.target === ghostHint || e.target === tabBadge) {
+      e.stopPropagation();
+      autocomplete(inputEl.value);
+      inputEl.focus();
+      return;
+    }
+
     // If it's a command link, execute it
     const cmdLink = e.target.closest(".cmd-link");
     
@@ -244,8 +253,21 @@
       execute(command);
       return;
     }
+
+    // Tap a suggestion chip → execute
+    const chip = e.target.closest(".term-chip");
+    if (chip) {
+      execute(chip.dataset.cmd);
+      return;
+    }
+
     inputEl.focus();
   });
+
+  // ── Mobile suggestion chips (disabled) ──────────────────────────────────
+  function buildSuggestionChips() {
+    // no-op
+  }
 
   window.Terminal = {
     appendOutput,
@@ -257,6 +279,7 @@
     set isInteractive(v) { isInteractive = v; },
     enablePrompt() {
       promptRow.classList.remove("hidden");
+      buildSuggestionChips();
       inputEl.focus();
       scrollBottom();
     }

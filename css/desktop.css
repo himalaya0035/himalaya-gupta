@@ -1058,7 +1058,6 @@ body.desktop-mode {
   .dock .icon[data-target="sysprefs-window"],
   .dock .icon[data-target="calculator-window"],
   .dock .icon[data-target="guestbook-window"],
-  .dock .icon[data-target="json-editor-window"],
   .dock .icon[data-target="gitpilot-window"] {
     display: none;
   }
