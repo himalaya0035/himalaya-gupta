@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navRefresh = document.querySelector('[title="Refresh"]');
   const navTab = document.querySelector('[title="New Tab"]');
 
-  let history = ["himalaya-gupta.online"];
+  let history = ["himalayagupta.dev"];
   let historyIndex = 0;
 
   function setView(viewName, url = "") {
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (viewName === "local") {
       localView.classList.add("active");
-      urlInput.value = "himalaya-gupta.online";
+      urlInput.value = "himalayagupta.dev";
     } else if (viewName === "external") {
       externalView.classList.add("active");
       safariFrame.src = url;
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!url) return;
 
     // Simulate internal navigation
-    if (url === "himalaya-gupta.online" || url === "home") {
+    if (url === "himalayagupta.dev" || url === "home") {
       setView("local");
     } 
     // Handle external URLs
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   navRefresh.addEventListener("click", () => {
     const current = urlInput.value;
-    if (current === "himalaya-gupta.online") {
+    if (current === "himalayagupta.dev") {
       location.reload(); // Simple refresh for local
     } else {
       safariFrame.src = safariFrame.src;

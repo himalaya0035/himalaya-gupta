@@ -242,7 +242,7 @@ ${bullets}`;
         `${dim(pad("Uptime", 12))}${nf.uptime || "N/A"}`,
         `${dim(pad("Packages", 12))}${allSkills}`,
         `${dim(pad("Shell", 12))}${nf.shell || "bash"}`,
-        `${dim(pad("Terminal", 12))}${nf.terminal || "terminal.himalayagupta.com"}`,
+        `${dim(pad("Terminal", 12))}${nf.terminal || "terminal.himalayagupta.dev"}`,
         `${dim(pad("Editor", 12))}${nf.editor || "VS Code"}`,
         `${dim(pad("CPU", 12))}${nf.cpu || "Fueled by caffeine"}`,
         `${dim(pad("Memory", 12))}${dbLine}`,
@@ -343,7 +343,7 @@ ${bullets}`;
     exit() {
       return `
   ${dim("logout")}
-  ${dim("Connection to terminal.himalayagupta.com closed.")}
+  ${dim("Connection to terminal.himalayagupta.dev closed.")}
 
   ${acc("...")}
 

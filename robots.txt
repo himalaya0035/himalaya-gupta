@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://himalayagupta.com/sitemap.xml
+Sitemap: https://himalayagupta.dev/sitemap.xml

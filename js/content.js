@@ -96,7 +96,7 @@ AWS Certified Developer – Associate.`,
   neofetch: {
     uptime:   "3+ years in production",
     shell:    "bash & zsh",
-    terminal: "terminal.himalayagupta.com",
+    terminal: "terminal.himalayagupta.dev",
     cpu:      "Fueled by caffeine & deadlines",
     editor:   "VS Code & Vim"
   }
