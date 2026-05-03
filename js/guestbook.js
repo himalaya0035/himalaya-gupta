@@ -3,15 +3,24 @@
  * Guest Book app — message wall style.
  * All messages visible as a scrollable feed with a compose bar at the bottom.
  * Enter sends, Shift+Enter for newline.
- * Uses localStorage for persistence (swap for any API).
+ * Uses JSONBin.io for cloud persistence with localStorage as cache/fallback.
  */
 (() => {
   const root = document.getElementById('guestbook-root');
   if (!root) return;
 
+  // ── JSONBin config ────────────────────────────────────────────────────
+  const BIN_ID = '69f78748aaba882197686aef';
+  const ACCESS_KEY = '$2a$10$tijhUoRWvJneXBvBu6KxyurB.NrNdEORUmn8xmu9sVKWWzvVqa4Q.';
+  const API_BASE = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
   const STORAGE_KEY = 'guestbook-entries';
   const MAX_NAME = 40;
   const MAX_MSG = 200;
+  const MAX_ENTRIES = 100;
+
+  // In-memory cache of entries (source of truth after first load)
+  let cachedEntries = null;
 
   function escHtml(s) {
     if (!s) return '';
@@ -45,21 +54,68 @@
     return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
   }
 
+  // ── localStorage helpers (cache / fallback) ───────────────────────────
   function getLocalEntries() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
     catch(e) { return []; }
   }
 
-  function saveLocalEntry(entry) {
-    var entries = getLocalEntries();
-    entries.unshift(entry);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries.slice(0, 100)));
+  function saveLocalEntries(entries) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries.slice(0, MAX_ENTRIES))); }
+    catch(e) { /* quota exceeded — ignore */ }
   }
 
-  function render(entries) {
+  // ── JSONBin API ───────────────────────────────────────────────────────
+  function fetchEntries() {
+    return fetch(API_BASE + '/latest', {
+      method: 'GET',
+      headers: { 'X-Access-Key': ACCESS_KEY }
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('JSONBin read failed: ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      var entries = (data.record && data.record.entries) || [];
+      cachedEntries = entries;
+      saveLocalEntries(entries);
+      return entries;
+    });
+  }
+
+  function pushEntry(newEntry) {
+    // Optimistic: use cached entries if available, otherwise local
+    var entries = cachedEntries ? cachedEntries.slice() : getLocalEntries();
+    entries.unshift(newEntry);
+    entries = entries.slice(0, MAX_ENTRIES);
+
+    return fetch(API_BASE, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': ACCESS_KEY
+      },
+      body: JSON.stringify({ entries: entries })
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('JSONBin update failed: ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      var saved = (data.record && data.record.entries) || entries;
+      cachedEntries = saved;
+      saveLocalEntries(saved);
+      return saved;
+    });
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────
+  function render(entries, isLoading) {
     var feedHtml = '';
 
-    if (entries.length === 0) {
+    if (isLoading) {
+      feedHtml = '<div class="gb-empty">Loading messages…</div>';
+    } else if (entries.length === 0) {
       feedHtml = '<div class="gb-empty">No messages yet. Be the first to leave one.</div>';
     } else {
       feedHtml = entries.map(function(e) {
@@ -83,7 +139,7 @@
       '<div class="gb-layout">' +
         '<div class="gb-header">' +
           '<span class="gb-header-title">Guest Book</span>' +
-          '<span class="gb-header-count">' + entries.length + ' message' + (entries.length !== 1 ? 's' : '') + '</span>' +
+          '<span class="gb-header-count">' + (isLoading ? '' : entries.length + ' message' + (entries.length !== 1 ? 's' : '')) + '</span>' +
         '</div>' +
         '<div class="gb-feed" id="gb-feed">' + feedHtml + '</div>' +
         '<div class="gb-warning hidden" id="gb-warning">Keep it respectful. Your message was not sent.</div>' +
@@ -105,13 +161,11 @@
     var msgInput = document.getElementById('gb-message');
     var btn = document.getElementById('gb-submit');
 
-    // Auto-grow textarea
     msgInput.addEventListener('input', function() {
       this.style.height = 'auto';
       this.style.height = Math.min(this.scrollHeight, 80) + 'px';
     });
 
-    // Enter to send, Shift+Enter for newline
     msgInput.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -129,6 +183,17 @@
     if (!warning) return;
     warning.classList.remove('hidden');
     setTimeout(function() {
+      warning.classList.add('hidden');
+    }, 3000);
+  }
+
+  function showError() {
+    var warning = document.getElementById('gb-warning');
+    if (!warning) return;
+    warning.textContent = 'Something went wrong. Please try again.';
+    warning.classList.remove('hidden');
+    setTimeout(function() {
+      warning.textContent = 'Keep it respectful. Your message was not sent.';
       warning.classList.add('hidden');
     }, 3000);
   }
@@ -153,18 +218,45 @@
     btn.disabled = true;
 
     var entry = { name: name, message: message, timestamp: Date.now() };
-    saveLocalEntry(entry);
 
+    // Dispatch analytics event
     document.dispatchEvent(new CustomEvent('guestbook-sign', {
       detail: { name: name, messageLength: message.length }
     }));
 
-    loadAndRender();
+    // Push to JSONBin, fall back to localStorage on failure
+    pushEntry(entry)
+      .then(function(entries) {
+        render(entries, false);
+      })
+      .catch(function() {
+        // Fallback: save locally and re-render
+        var entries = getLocalEntries();
+        entries.unshift(entry);
+        entries = entries.slice(0, MAX_ENTRIES);
+        saveLocalEntries(entries);
+        cachedEntries = entries;
+        render(entries, false);
+        showError();
+      });
   }
 
+  // ── Initial load ──────────────────────────────────────────────────────
   function loadAndRender() {
-    var entries = getLocalEntries();
-    render(entries);
+    // Show local cache immediately, then refresh from JSONBin
+    var local = getLocalEntries();
+    render(local.length ? local : [], local.length === 0);
+
+    fetchEntries()
+      .then(function(entries) {
+        render(entries, false);
+      })
+      .catch(function() {
+        // JSONBin unreachable — stick with local cache
+        if (local.length === 0) {
+          render([], false);
+        }
+      });
   }
 
   var win = document.getElementById('guestbook-window');
